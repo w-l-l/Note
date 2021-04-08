@@ -576,3 +576,340 @@ ctx.strokeText('天天好心情', 50, 50)
 ```
 
 ![文本基线显示](/images/canvas/text_baseline.png)
+
+### 获取文本信息
+
+measureText(text)：返回一个 TextMetrics 对象，包含关于文本尺寸的信息（一般都用来获取文本的宽度）。
+
+参数：
+
+1. text：文本内容。
+
+```js
+ctx.font = '100px serif'
+const textInfo = ctx.measureText('天天好心情')
+console.log(textInfo)
+```
+
+![获取文本信息](/images/canvas/measureText.png)
+
+字体大下设置为 100px，一共 5 个字，所以宽度是 500px。
+
+## canvas阴影
+
+设置 `canvas` 图像或文字阴影需要如下属性：
+
+1. shadowOffsetX：图像 x 轴延伸距离。（默认值 0）
+2. shadowOffsetY：图像 y 轴延伸距离。（默认值 0）
+3. shadowBlur：用来设定阴影的模糊程度，其数值并不跟像素数量挂钩，也不受变换矩阵的影响。（默认值 0）
+4. shadowColor：必须是标准的CSS颜色值，用于设定阴影颜色效果。（默认是全透明的黑色）
+
+```js
+ctx.shadowOffsetX = 10
+ctx.shadowOffsetY = 10
+ctx.shadowBlur = 10
+ctx.shadowColor = 'red'
+ctx.fillRect(50, 50, 100, 100)
+```
+
+![canvas阴影](/images/canvas/shadow.png)
+
+## canvas像素相关
+
+### 获取区域内像素信息
+
+getImageData(x, y, width, height)：返回一个 ImageData 对象，用来描述 `canvas` 区域隐含的像素数据，这个区域通过矩形表示，起始点是 (x, y)，宽为 width，高为 height。
+
+imageData 对象中存储着 `canvas` 对象真实的像素数据，它包含以下几个**只读属性**：
+
+- width：图片的宽度，单位是像素。
+
+- height：图片的高度，单位是像素。
+
+- data：Uint8ClampedArray 类型的一维数组，包含着 RGBA 格式的整型数组，范围在 0-255 之间 (包括255)。按图像从左到右，从下到下记录像素的。
+
+```js
+const img = new Image()
+img.src = './img/react.png'
+img.onload = () => {
+  ctx.drawImage(img, 0, 0, 100, 100)
+  const imgData = ctx.getImageData(0, 0, 100, 100)
+  console.log(imgData)
+}
+```
+
+![图片像素信息](/images/canvas/getImageData.png)
+
+图像的长和宽都是 100，所以一共有 10000 个像素点 (100 * 100)，因为一个像素点对应一个 RGBA 值，一个 RGBA 值由 4 个数值构成，所以 data 数组的长度为 40000。
+
+该数组每 4 个值构成一个像素点。
+
+### 对画布进行像素数据的写入
+
+putImageData(imagedata, dx, dy)
+
+putImageData(imagedata, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight)
+
+>将数据从已有的 ImageData 对象绘制到位图的方法。 如果提供了一个绘制过的矩形，则只绘制该矩形的像素。此方法不受画布转换矩阵的影响。
+
+参数：
+
+1. imagedata：包含像素值的数组对象。
+2. dx：源图像数据在目标画布中的位置偏移量（x 轴方向的偏移量）。
+3. dy：源图像数据在目标画布中的位置偏移量（y 轴方向的偏移量）。
+4. dirtyX：可选，在源图像数据中，矩形区域左上角的位置。默认是整个图像数据的左上角（x 坐标）。
+5. dirtyY：可选，在源图像数据中，矩形区域左上角的位置。默认是整个图像数据的左上角（y 坐标）。
+6. dirtyWidth：可选，在源图像数据中，矩形区域的宽度。默认是图像数据的宽度。
+7. dirtyHeight：可选，在源图像数据中，矩形区域的高度。默认是图像数据的高度。
+
+```js
+const img = new Image()
+img.src = './img/react.png'
+img.onload = () => {
+  ctx.drawImage(img, 0, 0, 100, 100)
+  const imgData = ctx.getImageData(0, 0, 100, 100)
+  ctx.putImageData(imgData, 200, 100, 0, 0, 50, 50)
+}
+```
+
+![像素写入](/images/canvas/putImageData.png)
+
+### 创建imageData对象
+
+createImageData(width, height)
+
+createImageData(imagedata)
+
+> 创建一个新的、空的、指定大小的imageData 对象，所有像素在新对象中都是透明的。（data 数组中的值都是 0）
+
+参数：
+
+1. width：imageData 新对象的宽度。
+2. height：imageData 新对象的高度。
+3. imagedata：从现有的 ImageData 对象中，复制一个和其宽度和高度相同的对象。图像自身不允许被复制。（data 数组中的值都是 0）
+
+```js
+const img = new Image()
+img.src = './img/react.png'
+img.onload = () => {
+  ctx.drawImage(img, 0, 0, 100, 100)
+  const imgData = ctx.getImageData(0, 0, 100, 100)
+  const imgDataByData = ctx.createImageData(imgData)
+  console.log('imgDta创建', imgDataByData)
+  const imgDataByRect = ctx.createImageData(10, 10)
+  console.log('宽高创建', imgDataByRect)
+}
+```
+
+![创建imgData](/images/canvas/createImageData.png)
+
+### 像素扩展
+
+#### 获取某个坐标的像素
+
+通过 getImageData 方法我们可以获取到整个 `canvas` 画布的像素信息。已知坐标 (x, y)，通过 (y * canvas.width + x) 可以获取这是第几个像素。因为一个像素包含 RGBA 4 个数值，所以最后获取到的像素为 (y * canvas.width + x) * 4，加上紧跟的后 3 位所对应的数值构成的 RGBA 值。
+
+```js
+// 获取 imageData 中某个坐标的像素
+function getPixelInfo(imageData, x, y) {
+  const { width, data } = imageData
+  const pixel = []
+  const index = (y * width + x) * 4
+  pixel[0] = data[index]
+  pixel[1] = data[index + 1]
+  pixel[2] = data[index + 2]
+  pixel[3] = data[index + 3]
+  return pixel
+}
+```
+
+测试一下：
+
+```js
+ctx.fillStyle = 'red'
+ctx.fillRect(10, 10, 1, 1)
+const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+const pixel = getPixelInfo(imgData, 10, 10)
+console.log(pixel)
+```
+
+![获取像素信息](/images/canvas/getPixelInfo.png)
+
+#### 设置某个坐标的像素
+
+基本原理跟获取坐标像素一样，我们可以传入一个 RGBA 值来设置某些坐标的像素。
+
+```js
+// 设置 imageData 中某个坐标的像素
+function setPixelInfo(imageData, x, y, rgba) {
+  const { width, data } = imageData
+  const index = (y * width + x) * 4
+  data[index] = rgba[0]
+  data[index + 1] = rgba[1]
+  data[index + 2] = rgba[2]
+  data[index + 3] = rgba[3]
+}
+```
+
+测试一下：
+
+```js
+const imgData = ctx.createImageData(10, 10) // 创建一个10 * 10 imageData 对象
+const rgba = [255, 0, 0, 255] // RGBA 红色
+for (let y = 0; y < 10; y++) {
+  for (let x = 0; x < 10; x++) {
+    setPixelInfo(imgData, x, y, rgba) // 将每个像素点都设置为红色
+  }
+}
+ctx.putImageData(imgData, 100, 100) // 将 imageData 对象写入到 (100, 100) 开始的位置
+```
+
+![设置像素信息](/images/canvas/setPixelInfo.png)
+
+#### 马赛克小练习
+
+现在我们既能获取到坐标位置的像素，也能设置坐标位置的像素。基于这两点我们来实现一个马赛克的效果。
+
+实现原理：
+
+- 假如现在有一个 100 * 100 的图像，将一个像素点看做一个 1 * 1 的小方块，里面就只有一个 RGBA 值，一共有 100 * 100 = 10000 个小方块，10000 个像素点。
+
+- 将这个小方块变大，包含 2 * 2 个像素点，一共有 50 * 50 = 2500 个小方块。
+
+- 现在一个小方块里面包含 4 个像素点，可能存在多个 RGBA 值，随机取出其中的一个 RGBA 值，将这个小方块中的 4 个像素点的 RGNA 值，都设置成随机取出的这个 RGBA 值。
+
+- 现在每个小方块虽然包含 4 个像素点，但是这 4 个像素点的 RGBA 值都一样，也可以看作现在这个图像只有 2500 个像素点，像素点变少了，图像就模糊了，马赛克效果就形成了。
+
+```js
+/*
+  设置马赛克像素
+  imgData：imageData对象
+  size：马赛克程度，值越大越模糊（小方块宽高）
+*/
+function setMosaicPixel(imgData, size) {
+  const { width, height } = imgData
+  // 小方块变大，所以宽高要除以 size
+  for (let y = 0; y < height / size; y++) {
+    for (let x = 0; x < width / size; x++) {
+      // 随机获取小方块中的 (x, y) 坐标
+      const randomX = x * size + Math.floor(Math.random() * size)
+      const randomY = y * size + Math.floor(Math.random() * size)
+      // 获取这个坐标像素点的 RGBA 值
+      const randomPixel = getPixelInfo(imgData, randomX, randomY)
+      // 将这个小方块中的像素点都应用这个 RGBA 值
+      for (let MosaicX = 0; MosaicX < size; MosaicX++) {
+        for (let MosaicY = 0; MosaicY < size; MosaicY++) {
+          setPixelInfo(imgData, x * size + MosaicX, y * size + MosaicY, randomPixel)
+        }
+      }
+    }
+  }
+}
+
+const img = new Image()
+img.src = './img/react.png'
+img.onload = () => {
+  // 绘制图像
+  ctx.drawImage(img, 0, 0, 200, 100)
+  // 获取图像的信息
+  const imgData = ctx.getImageData(0, 0, 200, 100)
+  // 将图像马赛克化
+  setMosaicPixel(imgData, 2)
+  // 最后重新写入到画布中
+  ctx.putImageData(imgData, 0, 0)
+}
+```
+
+![马赛克图像](/images/canvas/setMosaicPixel.png)
+
+## canvas透明度
+
+globalAlpha：这个属性影响到 `canvas` 里所有图形的透明度，有效的值范围是 0（完全透明）到 1（完全不透明），默认是 1。
+
+```js
+ctx.globalAlpha = .2
+ctx.fillStyle = 'red'
+ctx.fillRect(50, 50, 50, 50)
+ctx.fillStyle = 'blue'
+ctx.fillRect(150, 50, 50, 50)
+```
+
+![透明度展示](/images/canvas/globalAlpha.png)
+
+## canvas图形合成设置
+
+globalCompositeOperation：设置或返回如何将一个源（新的 source）图像绘制到目标（已有的 destination）的图像上。
+
+可选值如下：
+
+1. source-over：源在上面，新的图像层级比较高。(默认值)
+2. source-in：只留下源与目标的重叠部分（源的那一部分）。
+3. source-out：只留下源超过目标的部分。
+4. source-atop：砍掉源溢出的部分。
+5. destination-over：目标在上面，旧的图像层级比较高。
+6. destination-in：只留下源与目标的重叠部分（目标的那一部分）。
+7. destination-out：只留下目标超过源的部分。
+8. destination-atop：砍掉目标溢出的部分。
+9. lighter：显示源图像 + 目标图像。
+10. copy：显示源图像，忽略目标图像。
+11. xor：使用异或操作对源图像和目标图像进行组合。
+
+```js
+ctx.globalCompositeOperation = 'xor'
+ctx.fillStyle = 'red'
+ctx.fillRect(50, 50, 50, 50)
+ctx.fillStyle = 'blue'
+ctx.fillRect(75, 75, 50, 50)
+```
+
+![图形合成设置](/images/canvas/globalCompositeOperation.png)
+
+## canvas将画布导出为图像
+
+canvas.toDataURL(type, encoderOptions)。
+
+通过 `canvas` 身上的 toDataURL 方法，返回一个包含画布内容的 base64 格式的 data url。
+
+参数：
+
+1. type：图片格式，默认为 image/png。
+2. encoderOptions：在指定图片格式为 image/jpeg 或 image/webp 的情况下，可以从 0-1 之间选择图片的质量。如果超出取值范围，将会使用默认值0.92。其他参数会被忽略。
+
+```js
+ctx.fillStyle = 'red'
+ctx.fillRect(50, 50, 100, 100)
+const dataUrl = canvas.toDataURL()
+console.log(dataUrl) // data:image/png;base64,iVBORw0KGgoAAAANSUh....
+```
+
+地址栏输入 data url：
+
+![画布data url](/images/canvas/toDataURL.png)
+
+## canvas事件操作
+
+`canvas` 中几乎没有提供任何事件操作的方法，但是我们可以通过 isPointInPath 方法，判断当前坐标是否在路径列表中，从而进行一些事件操作。
+
+isPointInPath(x, y)：判断在当前路径中是否包含检测点 (x, y)，返回 true / false。
+
+特别注意：
+
+- ctx.beginPath() 之前的路径检测不到，因为它会清空路径列表。
+
+- fillRect 和 strokeRect 这两个直接绘制矩形的方法不会生成路径，它们包含的坐标点 isPointInPath 检查不到。
+
+```js
+// 绘制一个路径矩形
+ctx.rect(50, 50, 100, 100)
+ctx.fill()
+
+// 给 canvas 绑定点击事件
+canvas.addEventListener('click', event => {
+  // 鼠标点击位置距离 canvas 的 offsetX 和 offsetY，就相当于在 canvas 中的坐标位置
+  const { offsetX, offsetY } = event
+  const isInPath = ctx.isPointInPath(offsetX, offsetY)
+  console.log('当前点击位置是否在路径列表中', isInPath)
+})
+```
+
+![canvas事件操作](/images/canvas/isPointInPath.png)
