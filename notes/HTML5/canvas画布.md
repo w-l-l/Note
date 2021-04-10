@@ -965,17 +965,19 @@ ctx.globalCompositeOperation：设置或返回如何将一个源（新的 source
 
 可选值如下：
 
-1. source-over：源在上面，新的图像层级比较高。(默认值)
-2. source-in：只留下源与目标的重叠部分（源的那一部分）。
-3. source-out：只留下源超过目标的部分。
-4. source-atop：砍掉源溢出的部分。
-5. destination-over：目标在上面，旧的图像层级比较高。
-6. destination-in：只留下源与目标的重叠部分（目标的那一部分）。
-7. destination-out：只留下目标超过源的部分。
-8. destination-atop：砍掉目标溢出的部分。
-9. lighter：显示源图像 + 目标图像。（重叠图形的颜色是通过颜色值相加来确定的）
-10. copy：显示源图像，忽略目标图像。
-11. xor：那些重叠和正常绘制之外的其他地方是透明的。
+| 属性值 | 描述 |
+| -----: | :---- |
+| source-over | 源在上面，新的图像层级比较高。（默认值） |
+| source-in | 只留下源与目标的重叠部分。（源的那一部分） |
+| source-out | 只留下源超过目标的部分。 |
+| source-atop | 砍掉源溢出的部分。 |
+| destination-over | 目标在上面，旧的图像层级比较高。 |
+| destination-in | 只留下源与目标的重叠部分。（目标的那一部分） |
+| destination-out | 只留下目标超过源的部分。 |
+| destination-atop | 砍掉目标溢出的部分。 |
+| lighter | 显示源图像 + 目标图像。（重叠图形的颜色是通过颜色值相加来确定的） |
+| copy | 显示源图像，忽略目标图像。 |
+| xor | 那些重叠和正常绘制之外的其他地方是透明的。 |
 
 ```js
 // 设置图像重叠的地方不显示
