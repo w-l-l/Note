@@ -2,7 +2,7 @@
 
 ## canvas画布的宽度与高度
 
-`canvas` 标签只有两个属性：width 和 height。
+`canvas` 标签只有两个常用的标签属性：width 和 height。
 
 当没有设置宽度和高度的时候，`canvas` 会初始化成宽300px，高150px的画布。
 
