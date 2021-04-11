@@ -60,7 +60,7 @@ ctx.fillRect(50, 50, 100, 100)
 ctx.strokeRect(200, 50, 100, 100)
 ```
 
-![填充矩形和边框矩形绘制](/images/canvas/fill_stroke_Rect.png)
+![填充矩形和边框矩形绘制](/images/HTML5/canvas/fill_stroke_Rect.png)
 
 ### strokeRect边框矩形渲染问题
 
@@ -78,7 +78,7 @@ ctx.strokeRect(50, 50, 100, 100)
 ctx.strokeRect(200.5, 50.5, 100, 100)
 ```
 
-![strokeRect边框矩形渲染问题](/images/canvas/strokeRect.png)
+![strokeRect边框矩形渲染问题](/images/HTML5/canvas/strokeRect.png)
 
 ## canvas清除区域
 
@@ -91,7 +91,7 @@ ctx.fillRect(50, 50, 100, 100)
 ctx.clearRect(100, 100, 50, 50)
 ```
 
-![清除区域](/images/canvas/clearRect.png)
+![清除区域](/images/HTML5/canvas/clearRect.png)
 
 ## canvas样式和颜色
 
@@ -125,7 +125,7 @@ ctx.fillRect(50, 50, 100, 100)
 ctx.strokeRect(200, 50, 100, 100)
 ```
 
-![图像样式设置](/images/canvas/styleRect.png)
+![图像样式设置](/images/HTML5/canvas/styleRect.png)
 
 ## canvas路径
 
@@ -152,7 +152,7 @@ ctx.rect(200, 50, 100, 100)
 ctx.stroke()
 ```
 
-![设置路径绘制矩形](/images/canvas/path_rect.png)
+![设置路径绘制矩形](/images/HTML5/canvas/path_rect.png)
 
 ### 重置路径和闭合路径
 
@@ -196,7 +196,7 @@ ctx.closePath()
 ctx.stroke()
 ```
 
-![路径重置闭合](/images/canvas/begin_close_path.png)
+![路径重置闭合](/images/HTML5/canvas/begin_close_path.png)
 
 ### 路径绘线样式
 
@@ -216,7 +216,7 @@ ctx.lineTo(100, 100)
 ctx.stroke()
 ```
 
-![路径绘线末端样式](/images/canvas/lineCap.png)
+![路径绘线末端样式](/images/HTML5/canvas/lineCap.png)
 
 ## canvas状态
 
@@ -246,7 +246,7 @@ ctx.restore()
 ctx.fillRect(200, 50, 100, 100)
 ```
 
-![canvas状态](/images/canvas/save_restore.png)
+![canvas状态](/images/HTML5/canvas/save_restore.png)
 
 ## canvas圆形 / 圆弧
 
@@ -268,7 +268,7 @@ ctx.arc(100, 100, 50, 0, 2 * Math.PI, false)
 ctx.stroke()
 ```
 
-![绘制圆](/images/canvas/arc.png)
+![绘制圆](/images/HTML5/canvas/arc.png)
 
 ctx.arcTo(x1, y1, x2, y2, radius)：根据设置的两个控制点和半径画一段圆弧。
 
@@ -293,7 +293,7 @@ ctx.arcTo(200, 0, 100, 100, 20)
 ctx.stroke()
 ```
 
-![圆弧](/images/canvas/arcTo.png)
+![圆弧](/images/HTML5/canvas/arcTo.png)
 
 ## canvas贝塞尔曲线
 
@@ -329,7 +329,7 @@ ctx.quadraticCurveTo(200, 0, 100, 100, 20)
 ctx.stroke()
 ```
 
-![二次贝塞尔曲线](/images/canvas/quadraticCurveTo.png)
+![二次贝塞尔曲线](/images/HTML5/canvas/quadraticCurveTo.png)
 
 ### 三次贝塞尔
 
@@ -355,7 +355,7 @@ ctx.bezierCurveTo(200, 0, 100, 100, 200, 100, 20)
 ctx.stroke()
 ```
 
-![三次贝塞尔曲线](/images/canvas/bezierCurveTo.png)
+![三次贝塞尔曲线](/images/HTML5/canvas/bezierCurveTo.png)
 
 ## canvas变换
 
@@ -363,7 +363,7 @@ ctx.stroke()
 
 ctx.translate(x, y)：对当前 `canvas` 画布进行平移变换。
 
-![平移变换原理](/images/canvas/translate_origin.png)
+![平移变换原理](/images/HTML5/canvas/translate_origin.png)
 
 参数：
 
@@ -378,13 +378,13 @@ ctx.translate(50, 50)
 ctx.fillRect(0, 0, 100, 100)
 ```
 
-![平移变换](/images/canvas/translate.png)
+![平移变换](/images/HTML5/canvas/translate.png)
 
 ### 旋转变换
 
 ctx.rotate(angle)：将当前 `canvas` 画布对照原点顺时针旋转。
 
-![旋转变换原理](/images/canvas/rotate_origin.png)
+![旋转变换原理](/images/HTML5/canvas/rotate_origin.png)
 
 参数：
 
@@ -401,7 +401,7 @@ ctx.rotate(45 * Math.PI / 180)
 ctx.fillRect(0, 0, 100, 100)
 ```
 
-![旋转变换](/images/canvas/rotate.png)
+![旋转变换](/images/HTML5/canvas/rotate.png)
 
 ### 伸缩变换
 
@@ -429,7 +429,7 @@ ctx.scale(2, 1)
 ctx.fillRect(0, 0, 100, 100)
 ```
 
-![图像伸缩](/images/canvas/scale_box.png)
+![图像伸缩](/images/HTML5/canvas/scale_box.png)
 
 文字翻转：
 
@@ -440,7 +440,7 @@ ctx.font = '48px serif'
 ctx.fillText('canvas', -200, 100)
 ```
 
-![文字翻转](/images/canvas/scale_text.png)
+![文字翻转](/images/HTML5/canvas/scale_text.png)
 
 ## canvas背景
 
@@ -480,7 +480,7 @@ img.onload = () => {
 }
 ```
 
-![定位图像](/images/canvas/drawImage_1.png)
+![定位图像](/images/HTML5/canvas/drawImage_1.png)
 
 - ctx.drawImage(img, x, y, width, height)：在画布上定位图像，并规定图像的宽度和高度。
 
@@ -488,7 +488,7 @@ img.onload = () => {
 ctx.drawImage(img, 0, 0, 100, 100)
 ```
 
-![定位图像设置宽高](/images/canvas/drawImage_2.png)
+![定位图像设置宽高](/images/HTML5/canvas/drawImage_2.png)
 
 - ctx.drawImage(img, sx, sy, swidth, sheight, x, y, width, height)：剪切图像，并在画布上定位被剪切的部分。
 
@@ -496,7 +496,7 @@ ctx.drawImage(img, 0, 0, 100, 100)
 ctx.drawImage(img, 0, 0, 100, 100, 0, 0, 100, 100)
 ```
 
-![定位图像设置宽高并剪切图像](/images/canvas/drawImage_3.png)
+![定位图像设置宽高并剪切图像](/images/HTML5/canvas/drawImage_3.png)
 
 ### 设置背景
 
@@ -516,7 +516,7 @@ ctx.fillStyle = pat
 ctx.fillRect(0, 0, 300, 100)
 ```
 
-![设置背景](/images/canvas/createPattern.png)
+![设置背景](/images/HTML5/canvas/createPattern.png)
 
 ## canvas渐变
 
@@ -545,7 +545,7 @@ ctx.fillStyle = line
 ctx.fillRect(0, 0, 300, 100)
 ```
 
-![线性渐变](/images/canvas/createLinearGradient.png)
+![线性渐变](/images/HTML5/canvas/createLinearGradient.png)
 
 ### 径向渐变
 
@@ -564,7 +564,7 @@ grad.addColorStop(1, 'green')
 ctx.fillStyle = grad
 ctx.fillRect(0, 0, 400, 200)
 ```
-![径向渐变](/images/canvas/createRadialGradient.png)
+![径向渐变](/images/HTML5/canvas/createRadialGradient.png)
 
 
 ## canvas文本相关
@@ -594,7 +594,7 @@ ctx.fillText('天天好心情', 50, 100)
 ctx.fillText('天天好心情', 50, 150, 30)
 ```
 
-![简单文本显示](/images/canvas/text.png)
+![简单文本显示](/images/HTML5/canvas/text.png)
 
 ### 文本样式
 
@@ -610,7 +610,7 @@ ctx.font = '30px sans-serif'
 ctx.strokeText('天天好心情', 50, 50)
 ```
 
-![字体大小文本显示](/images/canvas/text_font.png)
+![字体大小文本显示](/images/HTML5/canvas/text_font.png)
 
 #### 文本对齐方式
 
@@ -634,7 +634,7 @@ ctx.font = '30px sans-serif'
 ctx.textAlign = 'center'
 ctx.strokeText('天天好心情', 50, 50)
 ```
-![文本center显示](/images/canvas/text_center.png)
+![文本center显示](/images/HTML5/canvas/text_center.png)
 
 #### 文本基线对齐方式
 
@@ -664,7 +664,7 @@ ctx.textBaseline = 'top'
 ctx.strokeText('天天好心情', 50, 50)
 ```
 
-![文本基线显示](/images/canvas/text_baseline.png)
+![文本基线显示](/images/HTML5/canvas/text_baseline.png)
 
 ### 文本在canvas中垂直居中显示
 
@@ -679,7 +679,7 @@ ctx.textBaseline = 'middle'
 ctx.fillText('天天好心情', canvas.width / 2, canvas.height / 2)
 ```
 
-![文本垂直居中显示](/images/canvas/text_vertical_center.png)
+![文本垂直居中显示](/images/HTML5/canvas/text_vertical_center.png)
 
 ### 获取文本信息
 
@@ -696,7 +696,7 @@ const textInfo = ctx.measureText('天天好心情')
 console.log(textInfo)
 ```
 
-![获取文本信息](/images/canvas/measureText.png)
+![获取文本信息](/images/HTML5/canvas/measureText.png)
 
 字体大下设置为 100px，一共 5 个字，所以宽度是 500px。
 
@@ -721,7 +721,7 @@ ctx.shadowColor = 'red'
 ctx.fillRect(50, 50, 100, 100)
 ```
 
-![canvas阴影](/images/canvas/shadow.png)
+![canvas阴影](/images/HTML5/canvas/shadow.png)
 
 ## canvas像素相关
 
@@ -748,7 +748,7 @@ img.onload = () => {
 }
 ```
 
-![图片像素信息](/images/canvas/getImageData.png)
+![图片像素信息](/images/HTML5/canvas/getImageData.png)
 
 图像的长和宽都是 100，所以一共有 10000 个像素点 (100 * 100)，因为一个像素点对应一个 RGBA 值，一个 RGBA 值由 4 个数值构成，所以 data 数组的长度为 40000。
 
@@ -783,7 +783,7 @@ img.onload = () => {
 }
 ```
 
-![像素写入](/images/canvas/putImageData.png)
+![像素写入](/images/HTML5/canvas/putImageData.png)
 
 ### 创建imageData对象
 
@@ -814,7 +814,7 @@ img.onload = () => {
 }
 ```
 
-![创建imgData](/images/canvas/createImageData.png)
+![创建imgData](/images/HTML5/canvas/createImageData.png)
 
 ### 像素扩展
 
@@ -847,7 +847,7 @@ const pixel = getPixelInfo(imgData, 10, 10)
 console.log(pixel)
 ```
 
-![获取像素信息](/images/canvas/getPixelInfo.png)
+![获取像素信息](/images/HTML5/canvas/getPixelInfo.png)
 
 #### 设置某个坐标的像素
 
@@ -882,7 +882,7 @@ for (let y = 0; y < 10; y++) {
 ctx.putImageData(imgData, 100, 100)
 ```
 
-![设置像素信息](/images/canvas/setPixelInfo.png)
+![设置像素信息](/images/HTML5/canvas/setPixelInfo.png)
 
 #### 马赛克小练习
 
@@ -942,7 +942,7 @@ img.onload = () => {
 }
 ```
 
-![马赛克图像](/images/canvas/setMosaicPixel.png)
+![马赛克图像](/images/HTML5/canvas/setMosaicPixel.png)
 
 ## canvas透明度
 
@@ -957,7 +957,7 @@ ctx.fillStyle = 'blue'
 ctx.fillRect(150, 50, 50, 50)
 ```
 
-![透明度展示](/images/canvas/globalAlpha.png)
+![透明度展示](/images/HTML5/canvas/globalAlpha.png)
 
 ## canvas图像合成设置
 
@@ -988,7 +988,7 @@ ctx.fillStyle = 'blue'
 ctx.fillRect(75, 75, 50, 50)
 ```
 
-![图像合成设置](/images/canvas/globalCompositeOperation.png)
+![图像合成设置](/images/HTML5/canvas/globalCompositeOperation.png)
 
 ### 刮刮卡小练习
 
@@ -1050,7 +1050,7 @@ canvas.onmousedown = function(event) {
 }
 ```
 
-![刮刮卡小练习](/images/canvas/scratch_card.png)
+![刮刮卡小练习](/images/HTML5/canvas/scratch_card.png)
 
 ## canvas将画布导出为图像
 
@@ -1073,7 +1073,7 @@ console.log(dataUrl)
 
 地址栏输入 data url：
 
-![画布data url](/images/canvas/toDataURL.png)
+![画布data url](/images/HTML5/canvas/toDataURL.png)
 
 ## canvas事件操作
 
@@ -1101,4 +1101,4 @@ canvas.onclick = event => {
 }
 ```
 
-![canvas事件操作](/images/canvas/isPointInPath.png)
+![canvas事件操作](/images/HTML5/canvas/isPointInPath.png)
