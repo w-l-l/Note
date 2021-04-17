@@ -7,6 +7,7 @@
 - [音视频](/notes/HTML5/音视频.md)
 - [表单相关元素](/notes/HTML5/表单相关元素.md)
 - [元素位置参数](/notes/HTML5/元素位置参数.md)
+- [移动端概念总结](/notes/HTML5/移动端概念总结.md)
 
 ## JavaScript
 
