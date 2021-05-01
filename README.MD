@@ -14,3 +14,4 @@
 - [滚轮事件](/notes/JavaScript/滚轮事件.md)
 - [数据类型](/notes/JavaScript/数据类型.md)
 - [数据类型转换](/notes/JavaScript/数据类型转换.md)
+- [运算符](/notes/JavaScript/运算符.md)
