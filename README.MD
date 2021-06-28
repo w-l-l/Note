@@ -15,3 +15,4 @@
 - [数据类型](/notes/JavaScript/数据类型.md)
 - [数据类型转换](/notes/JavaScript/数据类型转换.md)
 - [运算符](/notes/JavaScript/运算符.md)
+- [流程控制语句](/notes/JavaScript/流程控制语句.md)
