@@ -22,7 +22,7 @@ document.documentElement.addEventListener('mousewheel', function(event) {
 
 - 向下滚动 wheelDelta 的值为 -120。
 
-![非 Firefox 浏览器中](/images/JavaScript/mousewheel/wheelDelta_120.png)
+![非 Firefox 浏览器中](./img/wheelDelta_120.png)
 
 但是现在在 Chrome 浏览器中发现。
 
@@ -30,7 +30,7 @@ document.documentElement.addEventListener('mousewheel', function(event) {
 
 - 向下滚动 wheelDelta 的值为 -150。
 
-![Chrome 浏览器中](/images/JavaScript/mousewheel/wheelDelta_150.png)
+![Chrome 浏览器中](./img/wheelDelta_150.png)
 
 ## Firefox浏览器中
 
@@ -49,7 +49,7 @@ document.documentElement.addEventListener('DOMMouseScroll', function(event) {
 
 - 向下滚动 detail 的值为 3。
 
-![Firefox 浏览器中](/images/JavaScript/mousewheel/detail_3.png)
+![Firefox 浏览器中](./img/detail_3.png)
 
 ## 滚轮事件兼容性处理
 
@@ -59,7 +59,7 @@ document.documentElement.addEventListener('DOMMouseScroll', function(event) {
 
 在 Chrome 浏览器中举例。
 
-![Chrome 浏览器中快速滚动](/images/JavaScript/mousewheel/wheelDelta_300.png)
+![Chrome 浏览器中快速滚动](./img/wheelDelta_300.png)
 
 可以很明显的看见，wheelDelta 的值出现了正负 150 的倍数值。不过不用担心这些，我们只需要通过值的正负，来判断鼠标是向上滚动，还是向下滚动就行了。
 
@@ -105,8 +105,8 @@ function myMousewheel(element, upCallback, downCallback) {
 
 非 Firefox 浏览器中测试。
 
-![非 Firefox 浏览器中测试](/images/JavaScript/mousewheel/myMousewheel_noFirefox.png)
+![非 Firefox 浏览器中测试](./img/myMousewheel_noFirefox.png)
 
 Firefox 浏览器中测试。
 
-![Firefox 浏览器中测试](/images/JavaScript/mousewheel/myMousewheel_Firefox.png)
+![Firefox 浏览器中测试](./img/myMousewheel_Firefox.png)

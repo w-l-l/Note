@@ -113,7 +113,7 @@ console.log(box3.offsetLeft, box3.offsetTop) // 300 300
 console.dir(box3) // 如下图
 ```
 
-![box3位置属性](/images/HTML5/elementLocation/box3_location.png)
+![box3位置属性](./img/box3_location.png)
 
 ### 分清parentNode和offsetParent
 
@@ -135,7 +135,7 @@ DOMRect 对象包含 8 个属性：
 
 > 如果是标准盒子模型，元素的尺寸等于 width / height + padding + borderWidth 的总和。如果 box-sizing: border-box，元素的的尺寸等于 width / height。
 
-![getBoundingClientRect原理图](/images/HTML5/elementLocation/getBoundingClientRect.png)
+![getBoundingClientRect原理图](./img/getBoundingClientRect.png)
 
 ```html
 <div style="padding: 200px">
@@ -157,7 +157,7 @@ const domRect = box.getBoundingClientRect()
 console.log(domRect)
 ```
 
-![box元素大小及其相对于视口的位置](/images/HTML5/elementLocation/getBoundingClientRect_box.png)
+![box元素大小及其相对于视口的位置](./img/getBoundingClientRect_box.png)
 
 ## 其他位置距离相关
 

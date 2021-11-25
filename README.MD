@@ -1,18 +1,18 @@
-# 林小酱的笔记
+# 学习笔记
 
 ## HTML5
 
-- [语义化标签](/notes/HTML5/语义化标签.md)
-- [canvas画布](/notes/HTML5/canvas画布.md)
-- [音视频](/notes/HTML5/音视频.md)
-- [表单相关元素](/notes/HTML5/表单相关元素.md)
-- [元素位置参数](/notes/HTML5/元素位置参数.md)
-- [移动端概念总结](/notes/HTML5/移动端概念总结.md)
+- [语义化标签](./HTML5/语义化标签/index.md)
+- [canvas画布](./HTML5/canvas画布/index.md)
+- [音视频](./HTML5/音视频/index.md)
+- [表单相关元素](./HTML5/表单相关元素/index.md)
+- [元素位置参数](./HTML5/元素位置参数/index.md)
+- [移动端概念总结](./HTML5/移动端概念总结/index.md)
 
 ## JavaScript
 
-- [滚轮事件](/notes/JavaScript/滚轮事件.md)
-- [数据类型](/notes/JavaScript/数据类型.md)
-- [数据类型转换](/notes/JavaScript/数据类型转换.md)
-- [运算符](/notes/JavaScript/运算符.md)
-- [流程控制语句](/notes/JavaScript/流程控制语句.md)
+- [滚轮事件](./JavaScript/滚轮事件/index.md)
+- [数据类型](./JavaScript/数据类型/index.md)
+- [数据类型转换](./JavaScript/数据类型转换/index.md)
+- [运算符](./JavaScript/运算符/index.md)
+- [流程控制语句](./JavaScript/流程控制语句/index.md)
