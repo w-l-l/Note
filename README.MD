@@ -16,3 +16,4 @@
 - [数据类型转换](./JavaScript/数据类型转换/index.md)
 - [运算符](./JavaScript/运算符/index.md)
 - [流程控制语句](./JavaScript/流程控制语句/index.md)
+- [函数Function](./JavaScript/函数Function/index.md)
