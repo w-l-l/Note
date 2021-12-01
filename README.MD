@@ -20,3 +20,4 @@
 - [构造函数](./JavaScript/构造函数/index.md)
 - [数组](./JavaScript/数组/index.md)
 - [正则表达式](./JavaScript/正则表达式/index.md)
+- [BOM](./JavaScript/BOM/index.md)
