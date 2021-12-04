@@ -154,3 +154,21 @@ function getStyle(element, styleName) {
   return window.getComputedStyle ? getComputedStyle(element)[styleName] : element.currentStyle[styleName]
 }
 ```
+
+## DOM其他样式操作的属性
+
+- `clientWidth,clientHeight`：这两个属性可以获取元素的可见宽度和高度，包括内容区和内边距。（不包括 `border`、`margin` 和滚动条）  
+这些属性值返回的是一个数字，不带 `px` 的，可以直接用来进行计算。  
+这些属性都是只读的，不能修改。
+
+- `clientLeft,clientTop`：获取元素的左边框和上边框宽度，出现滚动条也包含滚动条的宽度。
+
+- `offsetWidth,offsetHeight`：获取元素整个的宽度和高度，包括内容区、`padding`、`border` 和滚动条。（不包括 `margin`）
+
+- `offsetLeft,offsetTop`：获取当前元素相对于定位父元素的水平垂直偏移量。
+
+- `scrollWidth,scrollHeight`：可以获取元素整个内容滚动区域的宽度和高度。
+
+- `scrollLeft,scrollTop`：可以获取元素水平垂直滚动的距离。
+
+当满足 `scrollHeight - scrollTop == clientHeight` 时，说明垂直滚动条滚动到底了。
