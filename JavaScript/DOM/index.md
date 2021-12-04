@@ -97,3 +97,60 @@
 `node.parentNode.removeChild(node)`
 
 使用 `innerHTML` 也可以完成 `DOM` 的相关操作，一般我们会两种方式结合使用。
+
+## DOM样式相关
+
+通过 js 修改元素的样式。
+
+```js
+element.style.key = value
+```
+
+注意：如果 css 的样式中含有 `-`，使用 js 修改样式就必须转成驼峰命名法。
+
+```js
+element.style.backgroundColor = value
+```
+
+通过 `style` 属性设置的样式都是内联样式，而内联样式有较高的优先级，所以通过 js 修改的样式往往会立即显示。
+
+但是如果在样式中写了 `!important`，则此时样式会有最高的优先级，即使通过 js 也不能覆盖样式，此时将会导致 js 修改样式失效，所以尽量不要为样式添加 `!important`。
+
+通过 `style` 属性设置和读取的都是内联样式，无法读取样式表中的样式。
+
+**window.getComputedStyle(element, [pseudoElt])**：获取元素当前的样式。（IE8及以下浏览器不支持）
+
+参数：
+
+- `element`：要获取样式的元素。
+
+- `pseudoElt`：可选，可以传递一个伪元素，一般都传 `null`。
+
+```js
+window.getComputedStyle(document.body, '::after')
+```
+
+该方法会返回一个对象，对象中封装了当前元素对应的样式。
+
+如果获取的样式没有设置，则会获取到真实的值，而不是默认值。（比如：没有设置 `width`，它不会获取到 `auto`，而是一个真实的长度）
+
+**element.currentStyle**：获取元素当前显示的样式。（只有 IE 浏览器支持，其他的浏览器都不支持）
+
+它可以用来读取当前元素正在显示的样式。
+
+如果当前元素没有设置该样式，则获取它的默认值。
+
+```js
+// 获取 body 标签现在的背景样式
+document.body.currentStyle.background
+```
+
+**通过 currentStyle 和 getComputedStyle() 获取到的样式都是只读的，不能修改，如果修改必须通过 style 属性**
+
+定义一个函数，用来获取指定元素的指定样式。
+
+```js
+function getStyle(element, styleName) {
+  return window.getComputedStyle ? getComputedStyle(element)[styleName] : element.currentStyle[styleName]
+}
+```
