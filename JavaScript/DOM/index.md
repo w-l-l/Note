@@ -172,3 +172,188 @@ function getStyle(element, styleName) {
 - `scrollLeft,scrollTop`：可以获取元素水平垂直滚动的距离。
 
 当满足 `scrollHeight - scrollTop == clientHeight` 时，说明垂直滚动条滚动到底了。
+
+## DOM事件相关
+
+当事件的响应函数触发时，浏览器每次都会将一个事件对象作为实参传递进响应函数。
+
+在事件对象中封装了当前事件相关的一切信息。
+
+比如：鼠标的坐标，键盘那个键被按下，鼠标滚轮滚动的方向...
+
+```js
+element.onclick = function(event) {
+  console.log(event)
+}
+```
+
+注意：在 IE8 及以下浏览器中，响应函数被触发时，浏览器不会传递事件对象，是将事件对象作为 `window` 对象的属性保存的。
+
+```js
+// 解决方法
+element.onclick = function(event) {
+  event = event || window.event
+}
+```
+
+### 事件绑定
+
+使用 `element.onXxx = foo` 的形式绑定响应函数，它只能同时为一个元素的一个事件绑定一个响应函数。
+
+不能绑定多个，否则，后面绑定的会覆盖掉前面的。
+
+`element.addEventListener(type, callback, useCapture)`：通过这个方法也可以为元素绑定响应事件。
+
+- `type`：事件名字符串，不要 `on`。
+
+- `callback`：事件回调函数。
+
+- `useCapture`：布尔值，默认 `false`（事件冒泡），设置为 `true` 则事件捕获。
+
+使用 `addEventListener()` 可以同时为一个元素的相同事件同时绑定多个响应函数。
+
+当事件触发时，响应函数会按照函数的绑定顺序执行。
+
+如果为同一事件多次添加同一个监听函数，该函数只会执行一次，多余的添加将自动被去除。
+
+```js
+function callback(event) {
+  console.log(event)
+}
+
+document.addEventListener('click', callback)
+document.addEventListener('click', callback)
+```
+
+虽然注册了 2 个点击事件，但是都是调用的同一个回调函数，所以当点击事件触发时，只会执行一次回调。
+
+```js
+document.addEventListener('click', function(event) {
+  console.log(event)
+})
+document.addEventListener('click', function(event) {
+  console.log(event)
+})
+```
+
+这种单独指定回调函数的方式才会执行两次。
+
+注意：IE8 及以下浏览器不支持 `addEventListener`。
+
+`attachEvent(type, callback)`：在 IE8 中可以使用 `attachEvent()` 来绑定事件。
+
+- `type`：事件名字符串，要 `on`。
+
+- `callback`：事件回调函数。
+
+**注意：IE8 及以下浏览器没有事件捕获阶段。**
+
+这个方法也可以同时为一个事件绑定多个处理函数。
+
+不同的是它是后绑定先执行，执行顺序和 `addEventListener()` 相反。
+
+```js
+document.attachEvent('onclick', function() {
+  console.log(111)
+})
+document.attachEvent('onclick', function() {
+  console.log(222)
+})
+// 打印顺序 222 --> 111
+```
+
+注意：`addEventListener()` 中的 `this` 是绑定的事件对象，`attachEvent()` 中的 `this` 则是 `window`。
+
+两者的兼容性处理如下：
+
+```js
+function bind(element, type, callback) {
+  if(element.addEventListener) {
+    element.addEventListener(type, callback)
+  } else {
+    element.attachEvent('on' + type, callback.bind(element))
+  }
+}
+```
+
+### 事件冒泡（Bubble）
+
+所谓的事件冒泡指的是事件的向上传导，当后代元素上的事件被触发时，其祖先元素的相同事件也会被触发。
+
+在开发中大部分情况事件冒泡都是有用的，如果不希望发生事件冒泡可以通过事件对象来取消冒泡。
+
+```js
+event.cancelBubble = true // 已废弃
+event.stopPropagation() // 推荐使用
+
+event.stopImmediatePropagation() // 元素注册多个相同事件，执行该函数后，后续注册的事件将不再触发
+```
+
+`event.stopImmediatePropagation()`方法阻止同一事件的其他监听函数被调用，不管监听函数定义在当前节点还是其他节点。
+
+也就是说，该方法阻止事件的传播，比 `event.stopPropagation()` 更彻底。
+
+如果同一节点对于**同一事件**指定了多个监听函数，这些函数会根据添加的顺序依次调用。
+
+只要其中有一个监听函数调用了 `event.stopImmediatePropagation()` 方法，其他的监听函数就不会再执行了。
+
+### 事件委派（事件委托）
+
+我们希望，只绑定一次事件，即可应用到多个元素上，即使元素是后添加的，我们可以尝试将其绑定给元素的共同祖先元素。
+
+`事件委派`：指将事件统一绑定给元素的共同的祖先元素，这样当后代元素上的事件触发时，会一直冒泡到祖先元素。
+
+从而通过祖先元素的响应函数来处理事件。
+
+事件委派是利用了冒泡，通过委派可以减少事件绑定的次数，提高程序的性能。
+
+核心：`冒泡`、`target 属性`。
+
+```js
+document.body.onclick = function(event) {
+  if(event.target.className.split(' ').indexOf('class 类名') === -1) return
+  // 代码逻辑...
+}
+```
+
+### 事件的传播
+
+关于事件的传播，网景公司和微软公司有不同的理解。
+
+- 微软公司认为：事件应该是由内向外传播，也就是当事件触发时，应当先触发当前元素上的事件。然后再向当前元素的祖先元素上传播，也就是说事件应该在冒泡阶段执行。
+
+- 网景公司认为：事件应该是由外向内传播，也就是当前事件触发时，应该先触发当前元素最外层的祖先元素事件，然后再向内传播给后代元素。
+
+`W3C` 综合两个公司的方案，将事件的传播分为三个阶段。
+
+1. `捕获阶段`：在捕获阶段时，从最外层的祖先元素，向目标元素进行事件的捕获，但是默认此时不会触发事件。
+
+2. `目标阶段`：事件捕获到目标元素，捕获结束开始在目标元素上触发事件。
+
+3. `冒泡阶段`：事件从目标元素向它的祖先元素传递，依次触发祖先元素上的事件。
+
+如果希望在捕获阶段就触发事件，可以将 `addEventListener()` 的第三个参数设置为 `true`。
+
+一般情况下我们不会希望在捕获阶段触发事件，所以这个参数默认是 `false`。
+
+### 鼠标拖拽注意事项
+
+当我们拖拽一个网页中的内容时，浏览器会默认去搜索引擎中搜索内容。
+
+此时会导致拖拽功能的异常，这个是浏览器提供的默认行为。
+
+如果不希望发生这个行为，这可以通过 `return false` 来取消默认行为。
+
+但是这招对 IE8 及以下浏览器不起作用。
+
+在 IE8 及以下浏览器我们可以使用 `element.setCapture()` 来解决。
+
+`element.setCapture()`：在处理一个 `mousedown` 事件过程中调用这个方法来把全部的鼠标事件重新定向到这个元素，直到鼠标按钮释放或者 `document.releaseCapture()` 被调用。
+
+`element.setCapture()` 只有 IE 支持，但是火狐中调用不会报错，其他浏览器调用会报错。
+
+当调用一个元素的 `setCapture()` 方法以后，这个元素将会把下一次所有的鼠标按下相关事件捕获到自身上。
+
+`document.releaseCapture()`：释放鼠标捕获。
+
+`element.setCapture()` 和 `document.releaseCapture()` 必须成对出现。
