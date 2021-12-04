@@ -78,3 +78,22 @@
 - `node.scrollIntoView(boolean)`：让当前元素滚动到浏览器窗口的可视区域内。  
 `true`：元素的顶端和其所在滚动区的可视区域的顶端对齐。  
 `false`：元素的底端和其所在滚动区的可视区域的底端对齐。
+
+## DOM操作
+
+- `document.createElement(tagName)`：创建一个元素节点对象。  
+它需要一个标签名作为参数，将会根据该标签名创建元素节点对象。
+
+- `document.createTextNode(text)`：创建一个文本节点对象。  
+需要一个文本内容作为参数，将会根据该内容创建文本节点。
+
+- `parentElement.appendChild(node)`：向父节点中添加一个新的子节点到末尾。
+
+- `parentElement.insertBefore(newNode, oldNode)`：在指定的子节点前插入新的子节点。
+
+- `parentElement.replaceChild(newNode, oldNode)`：使用指定的子节点替换已有的子节点。
+
+- `parentElement.removeChild(node)`：删除一个节点。  
+`node.parentNode.removeChild(node)`
+
+使用 `innerHTML` 也可以完成 `DOM` 的相关操作，一般我们会两种方式结合使用。
