@@ -54,16 +54,11 @@ navigator.userAgent // Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537
 
 - `history.forward()`：可以跳转下一个页面，作用和浏览器的前进按钮一样。
 
-- `history.go(n)`：可以用来跳转到指定的页面。
-<br>
-需要一个整数作为参数。
-<br>
-`n=1`：表示向前跳转一个页面，相当于 `forward()`。
-<br>
-`n=2`：表示向前跳转两个页面。
-<br>
-`n=-1`：表示向后跳转一个页面，相当于 `back()`。
-<br>
+- `history.go(n)`：可以用来跳转到指定的页面。  
+需要一个整数作为参数。  
+`n=1`：表示向前跳转一个页面，相当于 `forward()`。  
+`n=2`：表示向前跳转两个页面。  
+`n=-1`：表示向后跳转一个页面，相当于 `back()`。  
 `n=-2`：表示向后跳转两个页面。
 
 ## location
@@ -82,8 +77,7 @@ location = 'https://www.baidu.com'
 location.assign('https://www.baidu.com')
 ```
 
-- `location.reload()`：用于重新加载当前页面，作用和刷新按钮一样。
-<br>
+- `location.reload()`：用于重新加载当前页面，作用和刷新按钮一样。  
 如果在方法中传递一个 `true`，则会强制清空缓存刷新页面。
 
 ```js
@@ -91,8 +85,7 @@ location.reload() // 正常刷新
 location.reload(true) // 清空缓存刷新
 ```
 
-- `location.replace(url)`：可以使用一个新的页面替换当前页面，调用完毕也会跳转页面。
-<br>
+- `location.replace(url)`：可以使用一个新的页面替换当前页面，调用完毕也会跳转页面。  
 不会生成历史记录，使用回退按钮不能回到之前的页面。
 
 ```js

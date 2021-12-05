@@ -281,7 +281,9 @@ true && console.log('...') // console 会执行
 false && console.log('...') // console 不会执行
 ```
 
-- 对于非 Boolean 类型的值进行 `&&` 运算时：<br>&emsp;如果第一个值为 true，则返回第二个值。<br>&emsp;如果第一个值为 false，则直接返回第一个值。
+- 对于非 Boolean 类型的值进行 `&&` 运算时：  
+如果第一个值为 true，则返回第二个值。  
+如果第一个值为 false，则直接返回第一个值。
 
 ```js
 1 && 0 // 0
@@ -313,7 +315,9 @@ true || console.log('...') // console 不会执行
 false || console.log('...') // console 会执行
 ```
 
-- 对于非 Boolean 类型的值进行 `||` 运算时：<br>&emsp;如果第一个值为 true，则返回第一个值。<br>&emsp;如果第一个值为 false，则直接返回第二个值。
+- 对于非 Boolean 类型的值进行 `||` 运算时：  
+如果第一个值为 true，则返回第一个值。  
+如果第一个值为 false，则直接返回第二个值。
 
 ```js
 1 || 0 // 1

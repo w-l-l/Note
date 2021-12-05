@@ -326,7 +326,10 @@ Symbol.keyFor(symbol2) // one
 
 - 接下来不断调用 `next` 方法，指针会一直往后移动，直到指向最后一个成员。
 
-- 每次调用 `next` 方法，返回的是一个包含 value 和 done 的对象。<br>value：当前成员的值。<br>done：布尔值。（表示当前数据是否遍历结束）<br>遍历结束时，value 的值为 undefined，done 值为true。
+- 每次调用 `next` 方法，返回的是一个包含 value 和 done 的对象。  
+value：当前成员的值。  
+done：布尔值。（表示当前数据是否遍历结束）  
+遍历结束时，value 的值为 undefined，done 值为true。
 
 默认情况下，`for of` 只能遍历具备 iterator 接口的数据。
 
