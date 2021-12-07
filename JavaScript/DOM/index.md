@@ -357,3 +357,31 @@ document.body.onclick = function(event) {
 `document.releaseCapture()`：释放鼠标捕获。
 
 `element.setCapture()` 和 `document.releaseCapture()` 必须成对出现。
+
+## 滚轮事件
+
+`onmousewheel`：鼠标滚轮滚动的事件，会在滚轮滚动时触发。
+
+注意：火狐浏览器不支持该事件，需要通过 `DOMMouseScroll` 来绑定滚动事件，并且必须通过 `DOM2` 的形式绑定，也就是 `addEventListener()` 来绑定。
+
+这两种事件都是通过事件对象中的一个属性来判断是向上还是向下滚动。
+
+- `onmousewheel`：通过 `event.wheelDelta` 来判断鼠标滚动的方向。  
+向上滚：120。  
+向下滚：-120。
+
+- `DOMMouseScroll`：通过 `event.detail` 来判断鼠标滚动的方向。  
+向上滚：-3。  
+向下滚：3。
+
+兼容写法：
+
+```js
+function wheel(event) {
+  if(event.wheelDelta > 0 || event.detail < 0) {
+    // 向上滚
+  } else {
+    // 向下滚
+  }
+}
+```
