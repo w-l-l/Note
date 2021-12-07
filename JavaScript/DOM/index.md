@@ -425,3 +425,40 @@ function wheel(event) {
   }
 }
 ```
+
+## 键盘事件
+
+- `onkeydown`：按键被按下时触发的事件。  
+对于 `onkeydown` 来说，如果一直按着某个按键不松手，则事件会一直触发。  
+当 `onkeydown` 连续触发时，第一次和第二次之间会间隔稍微长一点，其他的会非常的快。  
+这种设计是为了防止误操作的行为发生。
+
+- `onkeyup`：按键松开触发的事件。
+
+键盘事件一般都会绑定给一些可以获得焦点的对象或者是 `document`。
+
+按键的事件对象中有几个常用的属性：
+
+- `keyCode`：获取按键的编码。
+
+- `altKey`：判断 alt 键是否被按下。
+
+- `ctrlKey`：判断 ctrl 键是否被按下。
+
+- `shiftKey`：判断 shift 键是否被按下。
+
+按下：`true`，未按下：`false`。
+
+注意：如果在 `onkeydown` 中取消了默认行为，则输入的内容不会在文本框中显示。
+
+```html
+<input type="text" />
+```
+
+```js
+const input = document.querySelector('input')
+input.addEventListener('keydown', function(event) {
+  console.log(event)
+  event.preventDefault()
+})
+```
