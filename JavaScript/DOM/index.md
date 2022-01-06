@@ -462,3 +462,23 @@ input.addEventListener('keydown', function(event) {
   event.preventDefault()
 })
 ```
+
+## 复合事件
+
+用来处理 IME（input method editor）输入编辑器的输入序列，可以让用户输入在物理键盘上找不到的字符。（如：搜狗输入法）
+
+IME 通常需要同时按住多个键，但最终只输入一个字符。
+
+符合事件就是针对检测和处理这种输入而设计的，有以下三种复合事件。
+
+- `compositionstart`：在 IME 的文本复合系统打开时触发，表示要开始输入了。
+
+- `compositionupdate`：在向 IME 输入字段中插入新字符时触发。
+
+- `compositionend`：在 IME 的文本复合系统关闭时触发，表示返回正常键盘输入状态。
+
+```js
+htmlElement.addEventListener('compositionstart', function(event) {
+  console.log(event.data) // 输入的内容
+})
+```
