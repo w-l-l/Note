@@ -528,3 +528,23 @@ window.addEventListener('hashchange', function() {
   console.log('hashchange')
 })
 ```
+
+## 触摸与手势事件
+
+触摸事件：
+
+- `touchstart`：当手指触摸屏幕时触发，即使已经有一个手指放在了屏幕上也会触发。
+
+- `touchmove`：当手指在屏幕上滑动时连续地触发，在这个事件发生期间，调用 `event.preventDefault()` 可以阻止滚动。
+
+- `touchend`：当手指从屏幕上移开时触发。
+
+- `touchcancel`：当系统停止跟踪时触发。
+
+手势事件：
+
+- `gesturestart`：当一个手指已经按在屏幕上而另一个手指又触摸屏幕时触发。
+
+- `gesturechange`：当触摸屏幕的任何一个手指的位置发生变化时触发。
+
+- `gestureend`：当任何一个手指从屏幕上面移开时触发。
