@@ -482,3 +482,49 @@ htmlElement.addEventListener('compositionstart', function(event) {
   console.log(event.data) // 输入的内容
 })
 ```
+
+## HTML5事件
+
+- `contextmenu`：上下文菜单事件。
+
+通过单击鼠标右键可以调出上下文菜单。
+
+通过 `event.preventDefault()` 可以阻止菜单不显示。
+
+```js
+window.addEventListener('contextmenu', function(event) {
+  event.preventDefault()
+})
+```
+
+- `beforeunload`：在浏览器（关闭、刷新、跳转）页面之前触发，可以通过它来显示提示信息，取消关闭并继续使用原有页面。
+
+显示弹出对话框，必须将 `event.returnValue` 的值设置为要显示给用户的字符串（对 IE 及 Fiefox 而言），同时作为函数的值返回（对 Safari 和 Chrome 而言）。
+
+```js
+window.addEventListener('beforeunload', function(event) {
+  return event.returnValue = 'xxx'
+})
+```
+
+- `DOMContentLoaded`：该事件在形成完整的 DOM 树之后就会触发，不理会图片、JavaScript 文件、css 文件或其他资源是否已经下载完毕。
+
+比 `load` 事件先执行。
+
+```js
+window.addEventListener('DOMContentLoaded', function() {
+  console.log('DOMContentLoaded')
+})
+
+window.addEventListener('load', function() {
+  console.log('load')
+})
+```
+
+- `hashchange`：url 的参数列表（及 url 中 # 号后面的所有字符串）发生改变时触发。
+
+```js
+window.addEventListener('hashchange', function() {
+  console.log('hashchange')
+})
+```
