@@ -617,3 +617,17 @@ window.dispatchEvent(myEvent)
 // 在 body 元素内部的最后添加一个新的元素
 document.body.insertAdjacentHTML('beforeend', '<div>添加的新元素</div>')
 ```
+
+## 剪贴板事件
+
+- `beforecopy`：在发生复制操作前触发。
+
+- `copy`：在发生复制操作时触发。
+
+- `beforecut`：在发生剪切操作前触发。
+
+- `cut`：在发生剪切操作时触发。
+
+- `beforepaste`：在发生粘贴操作前触发。
+
+- `paste`：在发生粘贴操作时触发。
