@@ -548,3 +548,55 @@ window.addEventListener('hashchange', function() {
 - `gesturechange`：当触摸屏幕的任何一个手指的位置发生变化时触发。
 
 - `gestureend`：当任何一个手指从屏幕上面移开时触发。
+
+## 自定义事件（dispatchEvent发送）
+
+`Event(typeArg, eventInit)`：构造函数，创建一个新的事件对象。
+
+- `typeArg`：创建事件的名称。
+
+- `eventInit`：可选配置项。  
+`bubbles`：表示事件是否冒泡，默认 false。  
+`cancelable`：表示事件能否被取消，默认 false。
+`composed`：指示事件是否会在影子 DOM 根节点之外触发侦听器，默认 false。
+
+例如：
+
+```js
+// 创建新的事件
+const myEvent = new Event('myEvent', { bubbles: true })
+
+// 绑定事件监听
+window.addEventListener('myEvent', function(event) {
+  console.log(event)
+})
+
+// 触发事件
+window.dispatchEvent(myEvent)
+```
+
+`CustomEvent(typeArg, eventInit)`：自定义事件的标准格式，推荐使用。
+
+- `typeArg`：创建事件的名称。
+
+- `eventInit`：可选配置项。  
+`detail`：需要传递的数据。  
+`bubbles`：表示是否冒泡。  
+`cancelable`：表示能否被取消。
+
+例如：
+
+```js
+// 自定义事件
+const myEvent = new CustomEvent('myEvent', {
+  detail: { name: '自定义事件' }
+})
+
+// 绑定事件监听
+window.addEventListener('myEvent', function(event) {
+  console.log(event.detail) // { name: '自定义事件' }
+})
+
+// 触发事件
+window.dispatchEvent(myEvent)
+```
