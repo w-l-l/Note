@@ -21,3 +21,4 @@
 - [数组](./JavaScript/数组/index.md)
 - [正则表达式](./JavaScript/正则表达式/index.md)
 - [BOM](./JavaScript/BOM/index.md)
+- [DOM](./JavaScript/DOM/index.md)
