@@ -1,6 +1,12 @@
 # 函数Function
 
+具有特定功能的 n 条语句的封装体。
+
 函数也是一个对象，函数中可以封装一些功能代码，在需要时可以执行这些功能代码。
+
+只有函数是可执行的，其他类型的数据是不可执行的。
+
+函数特点：提高代码复用，便于阅读和交流。
 
 使用 typeof 检查一个函数时，会返回 function。
 
@@ -91,31 +97,70 @@ foo() // 只会打印 1
 
 `return` 后可以跟任意类型的值。
 
-## 立即执行函数
+## 立即执行函数（IIFE）
+
+全称：Immediately Invoked Function Expression。
 
 函数定义完，立即被调用，这种函数叫做立即执行函数（IFEE）。
 
+立即执行函数的作用：
+
+- 隐藏实现。
+
+- 不会污染外部（全局）命名空间。
+
+- 用它来编写 JavaScript 模块。
+
 立即执行函数往往只会执行一次。
 
-```js
-// 函数声明
-(function foo() {
-  console.log(1)
-})() // 直接打印 1
-
-// 函数表达式
-const foo = function() {
-  console.log(1)
-}() // 直接打印 1
-```
-
-立即执行函数也能传递参数。
+在开发过程中通常在函数自调用前面加个分号，防止编译出错。
 
 ```js
-(function foo(a, b) {
-  console.log(a + b)
-})(1, 2) // 打印 3
+;(function() {
+  ...
+})()
 ```
+
+向外暴露一个全局函数。
+
+```js
+;(function(window) {
+  let n = 0
+  function test() {
+    console.log(++n)
+  }
+  window.$ = {
+    test
+  }
+})(window)
+
+// 调用执行
+window.$.test()
+```
+
+自调用函数的几种形式。
+
+1. `(funcion(){...}())`
+
+2. `(function(){...})()`
+
+3. `var foo = function(){...}()`
+
+4. `true && function(){...}()`
+
+5. `false || function(){...}()`
+
+6. `0,function(){...}()`
+
+7. `!function(){...}()`
+
+8. `~function(){...}()`
+
+9. `-function(){...}()`
+
+10. `+function(){...}()`
+
+11. `new function(){...}()`
 
 ## arguments
 
@@ -151,3 +196,23 @@ function foo() {
 
 foo() // true
 ```
+
+## 回调函数
+
+什么函数才是回调函数？
+
+- 你定义的。
+
+- 你没有调用。
+
+- 但是最终执行了（在某个时刻或某个条件下）。
+
+常见的回调函数：
+
+- DOM 事件的回调函数 --> 发生事件的 DOM 元素。
+
+- 定时器回调函数 --> window。
+
+- ajax 请求回调函数。
+
+- 生命周期回调函数。
