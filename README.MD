@@ -22,3 +22,4 @@
 - [正则表达式](./JavaScript/正则表达式/index.md)
 - [BOM](./JavaScript/BOM/index.md)
 - [DOM](./JavaScript/DOM/index.md)
+- [数据变量](./JavaScript/数据变量/index.md)
