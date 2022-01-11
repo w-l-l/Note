@@ -122,3 +122,11 @@ Person.prototype.say = function() {
 const person = new Person('孙悟空', 18)
 person.say() // 我叫孙悟空，今年18岁
 ```
+
+## 探索 instanceof
+
+`instanceof` 是如何判断的。
+
+表达式：`object instanceof constructor`。
+
+如果 constructor 函数的显式原型对象在 object 对象的原型链上，则返回 true，否则返回 false。
