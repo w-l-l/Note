@@ -29,3 +29,35 @@ f2.test() // test
 
 f1.__proto__.test === f2.__proto__.test // true
 ```
+
+## 显式原型与隐式原型
+
+每个函数 Function 都有一个 `prototype`，即显式原型（属性）。
+
+每个实例对象都有一个 `__proto__`，可称为隐式原型（属性）。
+
+对象的隐式原型的值为其对应构造函数的显式原型的值（地址值）。
+
+```js
+function Foo() {}
+
+const foo = new Foo()
+
+foo.__proto__ === Foo.prototype // true
+```
+
+程序员能直接操作显式原型，但不能直接操作隐式原型（ES6 之前）。
+
+注意：通过 Function.prototype.bind 方法构造出来的函数没有 prototype 属性。
+
+因为 Function.prototype 是函数对象。
+
+```js
+Function.prototype // ƒ () { [native code] }
+```
+
+也可以理解为 Function.prototype 函数没有 prototype 属性。
+
+```js
+Function.prototype.prototype // undefined
+```
