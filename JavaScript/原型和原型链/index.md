@@ -61,3 +61,42 @@ Function.prototype // ƒ () { [native code] }
 ```js
 Function.prototype.prototype // undefined
 ```
+
+## 原型链（隐式原型链）
+
+访问一个对象的属性时，先在自身属性中查找，找到返回。
+
+如果没有，再沿着 `__proto__` 这条链上查找，找到返回。
+
+如果最终没找到，返回 undefined，不会报错。
+
+```js
+function Foo() {}
+
+Foo.prototype.key = 'key'
+
+const foo = new Foo()
+foo.key // 'key'
+foo.key = 'foo'
+foo.key // 'foo'
+foo.__proto__.key // 'key'
+```
+
+函数的显式原型指向的对象默认是空 Object 实例对象（但 Object 不满足）。
+
+```js
+Object.prototype instanceof Object // false
+```
+
+所有函数都是 Function 的实例（包含 Function）。
+
+```js
+// Function 是通过 new 自己产生的实例
+Function.__proto__ === Function.prototype // true
+```
+
+Object 的原型对象是原型链的尽头。
+
+```js
+Object.prototype.__proto__ // null
+```
