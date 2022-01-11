@@ -100,3 +100,25 @@ Object 的原型对象是原型链的尽头。
 ```js
 Object.prototype.__proto__ // null
 ```
+
+## 原型链属性问题
+
+读取对象的属性值时，没有会自动到原型链中查找。
+
+设置对象的属性时，不会查找原型链，如果当前对象中没有此属性，直接添加此属性并设置其值。
+
+方法一般定义在原型中，属性一般通过构造函数定义在对象本身上。
+
+```js
+function Person(name, age) {
+  this.name = name
+  this.age = age
+}
+
+Person.prototype.say = function() {
+  console.log(`我叫${this.name}，今年${this.age}岁`)
+}
+
+const person = new Person('孙悟空', 18)
+person.say() // 我叫孙悟空，今年18岁
+```
