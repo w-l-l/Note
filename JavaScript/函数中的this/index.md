@@ -10,6 +10,17 @@
 
 在定义函数的时候，`this` 还没有确定，只有在执行时才动态绑定的。
 
+本质上任何函数在执行时都是通过某个对象调用的。
+
+```js
+function foo() {
+  console.log(this)
+}
+
+foo() // window
+window.foo() // window
+```
+
 ## this的情况
 
 以函数形式调用时，严格模式下 this 为 undefined，非严格模式下为 window。

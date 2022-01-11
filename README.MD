@@ -23,3 +23,4 @@
 - [BOM](./JavaScript/BOM/index.md)
 - [DOM](./JavaScript/DOM/index.md)
 - [数据变量](./JavaScript/数据变量/index.md)
+- [函数中的this](./JavaScript/函数中的this/index.md)
