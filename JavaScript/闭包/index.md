@@ -63,3 +63,27 @@ fn() // 2
 fn() // 3
 f = null // 闭包死亡（包含闭包的函数对象引用断开，成为垃圾对象）
 ```
+
+## 闭包应用（自定义js模块）
+
+js 模块：具有特定功能的 js 文件。
+
+将所有的数据和功能都封装在一个函数内部（私有的）。
+
+只向外暴露一个包含 n 个方法的对象或函数。
+
+模板的使用者，只需要通过模块暴露的对象调用方法来实现对应的功能。
+
+```js
+(function(window) {
+  // 私有数据
+  var count = 0
+  window.utils = {
+    getCount() {
+      console.log(++count) 
+    }
+  }
+})(window)
+utils.getCount() // 1
+utils.getCount() // 2
+```
