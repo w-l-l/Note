@@ -87,3 +87,21 @@ js 模块：具有特定功能的 js 文件。
 utils.getCount() // 1
 utils.getCount() // 2
 ```
+
+## 闭包的缺点及解决
+
+缺点：函数执行完后，函数内部的局部变量没有释放，占用内存时间会变长。容易造成内存泄漏。
+
+解决：能不用闭包就不要使用，使用之后记得及时释放。
+
+```js
+function foo() {
+  var arr = new Array(10000)
+  return function() {
+    console.log(arr.length)
+  }
+}
+var fn = foo()
+fn() // 10000
+fn = null // 让内部函数成为垃圾对象 --> 回收闭包
+```
