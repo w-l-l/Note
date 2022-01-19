@@ -28,3 +28,4 @@
 - [执行上下文](./JavaScript/执行上下文/index.md)
 - [作用域](./JavaScript/作用域/index.md)
 - [闭包](./JavaScript/闭包/index.md)
+- [分号问题](./JavaScript/分号问题/index.md)
