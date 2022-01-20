@@ -30,3 +30,4 @@
 - [闭包](./JavaScript/闭包/index.md)
 - [分号问题](./JavaScript/分号问题/index.md)
 - [对象创建模式](./JavaScript/对象创建模式/index.md)
+- [线程机制与事件机制](./JavaScript/线程机制与事件机制/index.md)

@@ -149,3 +149,54 @@ setTimeout(function() {
 定时器回调函数是在主线程执行的，js 是单线程。
 
 定时器是通过事件循环模型实现的。
+
+## Web Worker
+
+H5 规范提供了 js 分线程的实现，取名为 Web Worker。
+
+相关 API：
+
+- `Worker`：构造函数，加载分线程执行的 js 文件。
+
+- `Worker.prototype.onmessage`：用于接收另一个线程的回调函数（event.data 是接收到的数据）。
+
+- `Worker.prototype.postMessage`：向另一个线程发送消息。
+
+不足：
+
+- Worker 内代码不能操作 dom（更新 ui）。
+
+- 分线程中的全局对象不再是 window，所以在分线程中不可能更新界面。
+
+- 不能跨域加载 js。
+
+- 不是每个浏览器都支持这个新特性。
+
+```js
+// 创建一个 Worker 对象
+var worker = new Worker('worker.js')
+// 绑定接收消息的监听
+worker.onmessage = function(event) {
+  console.log('主线程接收分线程返回的数据：' + event.data)
+  alert(event.data)
+}
+
+var data = 'xx'
+
+// 向分线程发送消息
+worker.postMessage(data)
+console.log('主线程向分线程发送数据：' + data)
+```
+
+worker.js
+```js
+console.log(this) // DedicatedWorkerGlobalScope 对象
+this.onmessage = function(event) {
+  console.log('分线程接收到主线程发送的数据：' + event.data)
+  var data = 'xxx'
+  postMessage(data)
+  console.log('分线程向主线程返回数据：' + data)
+  // alert(data) alert 是 window 的方法，在分线程不能调用
+  // 分线程中的全局对象不再是 window，所以在分线程中不可能更新界面
+}
+```
