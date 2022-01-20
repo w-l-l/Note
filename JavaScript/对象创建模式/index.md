@@ -28,3 +28,22 @@ var obj = {
   age: 18
 }
 ```
+
+## 工厂模式
+
+通过工厂函数动态创建对象并返回。
+
+使用场景：需要创建多个对象。
+
+缺点：对象没有一个具体的类型，都是 Object 类型。
+
+```js
+function createPerson(name, age) {
+  return {
+    name: name,
+    age: age
+  }
+}
+createPerson('xxx', 18)
+createPerson('xxx', 20)
+```
