@@ -47,3 +47,51 @@ function createPerson(name, age) {
 createPerson('xxx', 18)
 createPerson('xxx', 20)
 ```
+
+## 自定义构造函数模式
+
+通过 new 关键字创建对象。
+
+使用场景：需要创建多个类型确定的对象。
+
+缺点：每个对象都有相同的数据（方法），浪费内存。
+
+```js
+function Person(name, age) {
+  this.name = name
+  this.age = age
+  this.say = function() {
+    console.log(this.name)
+  }
+}
+
+var p1 = new Person('p1', 18)
+var p2 = new Person('p2', 20)
+
+p1.say() // p1
+p2.say() // p2
+p1.say === p2.say // false
+```
+
+## 构造函数+原型的组合模式
+
+自定义构造函数，属性在函数中初始化，方法添加到原型上。
+
+使用场景：需要创建多个类型确定的对象。
+
+```js
+function Person(name, age) {
+  this.name = name
+  this.age = age
+}
+Person.prototype.say = function() {
+  console.log(this.name)
+}
+
+var p1 = new Person('p1', 18)
+var p2 = new Person('p2', 20)
+
+p1.say() // p1
+p2.say() // p2
+p1.say === p2.say // true
+```
