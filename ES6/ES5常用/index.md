@@ -71,3 +71,17 @@ setTimeout(function() {
   console.log(this) // window
 })
 ```
+
+## JSON对象
+
+- `JSON.stringify`：js 对象（数组）转化为 json 对象（数组）。
+
+```js
+JSON.stringify({ name: '孙悟空' }) // "{\"name\":\"孙悟空\"}"
+```
+
+- `JSON.parse`：json 对象（数组）转化为 js 对象（数组）。
+
+```js
+JSON.parse('{"name": "孙悟空"}') // {name: "孙悟空"}
+```
