@@ -85,3 +85,107 @@ JSON.stringify({ name: '孙悟空' }) // "{\"name\":\"孙悟空\"}"
 ```js
 JSON.parse('{"name": "孙悟空"}') // {name: "孙悟空"}
 ```
+
+## Object扩展
+
+属性描述符 `descriptor`：
+
+- `value`：指定值。
+
+- `writable`：标识当前属性值是否是可修改的，默认 false。
+
+- `configurable`：标识当前属性是否可配置（删除、对该属性重新定义），默认 false。
+
+- `enumerable`：标识当前属性是否可枚举，默认 false。
+
+- `get`：用来获取当前属性值的回调函数，默认 undefined。
+
+- `set`：监视当前属性值变化触发的回调函数，并且实参为修改后的值，默认值 undefined。
+
+访问器属性：`configurable`、`enumerable`、`get`、`set`。
+
+数据属性：`configurable`、`enumerable`、`writable`、`value`。
+
+`get` 和 `value`、`set` 和 `writable` 不能同时存在，否则会报错。
+
+```js
+var o = {}
+
+Object.defineProperty(o, 'name', {
+  get() {
+    return '孙悟空'
+  },
+  value: '猪八戒'
+}) // 报错
+
+Object.defineProperty(o, 'age', {
+  set(v) {
+    console.log(v)
+  },
+  writable: true
+}) // 报错
+```
+
+- `Object.create(prototype, [descriptors])`：以指定对象为原型创建新的对象。
+
+```js
+var o1 = {
+  name: '孙悟空'
+}
+var o2 = Object.create(o1)
+
+o2.__proto__ === o1 // true
+```
+
+- `Object.defineProperty(obj, prop, descriptor)`：在对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。
+
+```js
+var o = {}
+
+Object.defineProperty(o, 'name', {
+  value: '孙悟空'
+})
+
+o.name // 孙悟空
+```
+
+- `Object.defineProperties(obj, props)`：可以在对象上定义多个新的属性或者修改现有属性，并返回该对象。
+
+```js
+var o = {}
+
+Object.defineProperties(o, {
+  name: {
+    value: '孙悟空'
+  },
+  age: {
+    value: 18
+  }
+})
+
+o.name // 孙悟空
+o.age // 18
+```
+
+对象本身的两个方法：
+
+- `get propertyName(){}`：用来得到当前属性值的回调函数。
+
+- `set propertyName(){}`：用来监视当前属性值变化的函数。
+
+```js
+var o = {
+  v: '孙悟空',
+  get name() {
+    return this.v
+  },
+  set name(v) {
+    this.v = v
+  }
+}
+o.v // 孙悟空
+o.name // 孙悟空
+o.name = '猪八戒'
+o.v // 猪八戒
+o.name // 猪八戒
+```
