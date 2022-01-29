@@ -33,3 +33,22 @@ let a = 1 // a is not defined
 let a = 1
 window.a // undefined
 ```
+
+## const关键字
+
+`cosnt` 用来声明一个常量。
+
+使用 const 定义标识符，必须进行赋值。
+
+```js
+const x // Missing initializer in const declaration
+```
+
+不能修改。
+
+```js
+const a = 1
+a = 2 // Assignment to constant variable
+```
+
+其他特点跟 let 一样。
