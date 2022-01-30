@@ -35,3 +35,4 @@
 ## ES6
 
 - [ES5常用](./ES6/ES5常用/index.md)
+- [ES6常用](./ES6/ES6常用/index.md)
