@@ -164,3 +164,23 @@ foo.bind(o)() // window
 foo.call(o) // window
 foo.apply(o) // window
 ```
+
+## 扩展运算符
+
+`rest(可变)参数`：用来取代 arguments，但比 arguments 灵活，只能是最后部分使用扩展运算符接收参数。
+
+```js
+function foo(...params) {
+  console.log(params)
+}
+foo(1, 2, 3, 4) // [1, 2, 3, 4]
+```
+
+对象和数组使用：
+
+```js
+let a = [1, 2, 3]
+let b = [0, ...a, 4] // [0, 1, 2, 3, 4]
+let x = { name: '孙悟空' }
+let y = { ...x, age: 18 } // { name: '孙悟空', age: 18 }
+```
