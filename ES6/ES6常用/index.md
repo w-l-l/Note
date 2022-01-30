@@ -105,3 +105,62 @@ let str = `我叫${name}，今年${age}岁。`
 
 str // 我叫孙悟空，今年18岁。
 ```
+
+## 箭头函数
+
+箭头函数通常用来定义匿名函数。
+
+```js
+let foo = () => {
+  console.log('foo执行了')
+}
+foo() // foo执行了
+```
+
+函数体如果只有一个表达式，可以不用大括号包裹，默认会返回当前表达式的结果。
+
+函数体如果有多个语句，必须用大括号包裹，若有需要返回的内容，需要手动返回。
+
+```js
+let foo = (n) => n + 1
+foo(2) // 3
+```
+
+不同参数的写法：
+
+```js
+// 没有参数
+let foo = () => 1 + 1
+
+// 一个参数，可以不用写小括号
+let foo = n => n + 1
+
+// 多个参数
+let foo = (a, b, c) => a + b + c
+```
+
+箭头函数的特点：
+
+- 比普通函数更加简洁。
+
+- 箭头函数没有自己的 this，也没有 arguments，箭头函数的 this 不是调用的时候决定的，而是在定义的时候，所处在的对象就是它的 this。
+
+- 箭头函数的 this 看外层是否有函数。
+
+- 如果有，外层函数的 this 就是内部箭头函数的 this。
+
+- 如果没有，则 this 是 window。
+
+- 使用 bind、call、apply 指定 this 在箭头函数中是无效的。
+
+```js
+let foo = () => console.log(this)
+let o = {
+  name: '孙悟空',
+  age: 18
+}
+
+foo.bind(o)() // window
+foo.call(o) // window
+foo.apply(o) // window
+```
