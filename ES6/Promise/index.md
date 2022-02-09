@@ -174,3 +174,29 @@ Promise.reject(1).finally(_ => {
   console.log('finally') // finally
 })
 ```
+
+## Promise 案例
+
+如果前面的 promise 执行失败，我们不想让后续的 promise 操作被终止，可以为每个 promise 指定失败的回调。
+
+```js
+Promise.reject('error').then(success => {
+  console.log(success, 1) // promise 是失败状态，所以该回调不会执行
+}).then(success => {
+  console.log(success, 2) // promise 操作被终止
+})
+
+Promise.reject('error').then(_ => {}, error => {
+  console.log(error) // error
+}).then(success => {
+  console.log(success, 2) // undefined 2
+})
+```
+
+如果前面的 promise 执行失败，则立即终止所有 promise 的执行。
+
+```js
+new Promise(...).then(...).then(...).catch(error => {
+  console.log(error) // 使用 catch 捕获
+})
+```
