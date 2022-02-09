@@ -58,3 +58,119 @@ let promise = new Promise((resolve, reject) => resolve(100))
 
 promise.then(e => new Promise((resolve, reject) => reject(e))).then(_ => {}, e => console.log(`接收到数据 ${e}`)) // 接收到数据 100
 ```
+
+## Promise 扩展
+
+```js
+// Promise 构造函数执行时立即调用 exector 函数
+new Promise((resolve, reject) => {...} /* exector */)
+```
+
+静态方法：
+
+- `Promise.resolve(value)`：返回一个状态由给定 value 决定的 promise 对象。如果该值是 thenable（带有 then 方法的对象），返回的 promise 对象的最终状态由 then 方法执行决定；否则的话（该 value 为空，基本类型或者不带 then 方法的对象），返回的 promise 对象状态为 fulfilled，并且将该 value 传递给对应的 then 方法。通常而言，如果您不知道一个值是否是 promise 对象，使用 Promise.resolve(value) 来返回一个 promise 对象，这样就能将该 value 以 promise 对象形式使用。
+
+```js
+Promise.resolve({
+  then(resolve, reject) {
+    resolve(100)
+  }
+}) // fulfilled 100
+
+Promise.resolve(new Promise((resolve, reject) => reject(100))) // rejected 100
+
+Promise.resolve(100) // fulfilled 100
+```
+
+- `Promise.reject(error)`：返回一个状态为失败的 promise 对象，并将给定的失败信息传递给对应的处理方法。
+
+```js
+Promise.reject(100) // rejected 100
+```
+
+- `Promise.all([p1, p2...])`：所有 promise 实例成功的时候才会触发成功回调，有一个实例失败就触发失败回调。
+
+```js
+const p1 = new Promise((resolve, reject) => setTimeout(resolve(1)))
+const p2 = new Promise((resolve, reject) => setTimeout(resolve(2)))
+
+Promise.all([p1, p2]) // fulfilled [1, 2]
+
+const p3 = new Promise((resolve, reject) => setTimeout(reject(3)))
+
+Promise.all([p1, p3]) // rejected 3
+```
+
+- `Promise.race([p1, p2...])`：数组中某一个 promise 对象先执行成功就触发成功的回调，先执行失败就触发失败的回调。
+
+```js
+const p1 = new Promise((resolve, reject) => setTimeout(resolve(1)))
+const p2 = new Promise((resolve, reject) => setTimeout(resolve(2)))
+
+Promise.race([p1, p2]) // fulfilled 1
+
+const p3 = new Promise((resolve, reject) => setTimeout(reject(3)))
+
+Promise.race([p3, p1]) // rejected 3
+```
+
+- `Promise.any([p1, p2...])`：接收一个 promsie 对象的集合，当其中的一个 promise 成功，就返回那个成功的 promise 的值。
+
+```js
+const p1 = new Promise((resolve, reject) => setTimeout(resolve(1)))
+const p2 = new Promise((resolve, reject) => setTimeout(resolve(2)))
+const p3 = new Promise((resolve, reject) => setTimeout(reject(3)))
+
+Promise.any([p3, p2, p1]) // fulfilled 2
+```
+
+- `Promise.allSettled([p1, p2...])`：等到所有的 promise 都行执行通过（不管成功或失败），返回一个 promise，并带有一个对象数组，每个对象对应每个 promise 的结果。
+
+```js
+const p1 = new Promise((resolve, reject) => setTimeout(resolve(1)))
+const p2 = new Promise((resolve, reject) => setTimeout(resolve(2)))
+const p3 = new Promise((resolve, reject) => setTimeout(reject(3)))
+
+Promise.allSettled([p1, p2, p3])
+/*
+  fulfilled
+  [
+    { status: 'fulfilled', value: 1 },
+    { status: 'fulfilled', value: 2 },
+    { status: 'rejected', reason: 3 }
+  ]
+*/
+```
+
+原型方法：
+
+- `Promise.prototype.catch(errorCallback)`：promise 实例失败的回调，返回一个新的 promise 实例。
+
+```js
+Promise.reject(1).catch(error => {
+  console.log(error) // 1
+})
+```
+
+- `Promise.prototype.then(successCallback, errorCallback)`：promise 实例成功或失败对应的回调，返回一个新的 promise 实例。
+
+```js
+Promise.resolve(1).then(success => {
+  console.log(success) // 1
+  return Promise.reject(2)
+}).then(_ => {}, error => {
+  console.log(error) // 2
+})
+```
+
+- `Promise.prototype.finally(finallyCallback)`：不管 promise 实例成功还是失败都会执行 finally 回调，返回一个新的 promise 实例。
+
+```js
+Promise.resolve(1).finally(_ => {
+  console.log('finally') // finally
+})
+
+Promise.reject(1).finally(_ => {
+  console.log('finally') // finally
+})
+```
