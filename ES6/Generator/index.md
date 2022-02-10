@@ -57,3 +57,54 @@ g.next() // { value: 1, done: false }
 g.next(100) // 打印 100，返回 { value: 2, done: false }
 g.next(200) // 打印 200，返回 { value: undefined, done: true }
 ```
+
+## Generator 方法
+
+- `Generator.prototype.next(value)`：返回一个由 yield 表达式生成的值。
+
+- `Generator.prototype.return(value)`：返回给定的值并结束生成器。
+
+```js
+function* gen() {
+  yield 1
+  yield 2
+  yield 3
+}
+
+const g = gen()
+g.next() // { value: 1, done: false }
+g.return(100) // { value: 100, done: true }
+g.next() // { value: undefined, done: true }
+```
+
+- `Generator.prototype.throw(new Error(xxx))`：向生成器抛出一个错误。
+
+```js
+function* gen() {
+  yield 1
+  yield 2
+  yield 3
+}
+
+const g = gen()
+g.next() // { value: 1, done: false }
+g.throw(new Error('报错了')) // 直接报错
+g.next() // { value: undefined, done: true }
+```
+
+该异常可以通过 try...catch 进行捕获。
+
+```js
+function* gen() {
+  try {
+    yield 1
+    yield 2
+    yield 3
+  } catch (e) {}
+}
+
+const g = gen()
+g.next() // { value: 1, done: false }
+g.throw(new Error('报错了')) // 不报错 { value: undefined, done: true }
+g.next() // { value: undefined, done: true }
+```
