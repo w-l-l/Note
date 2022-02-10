@@ -38,3 +38,4 @@
 - [ES6常用](./ES6/ES6常用/index.md)
 - [Promise](./ES6/Promise/index.md)
 - [Generator](./ES6/Generator/index.md)
+- [async函数](./ES6/async函数/index.md)
