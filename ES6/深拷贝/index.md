@@ -103,3 +103,43 @@ obj2 // { name: { name: '孙悟空' } }
 obj2.name.name = '猪八戒'
 obj1 // { name: { name: '孙悟空' } }
 ```
+
+## 实现深拷贝（不适用循环引用）
+
+```js
+// 获取类型
+function getType(obj) {
+  return Object.prototype.toString.call(obj).slice(8, -1)
+}
+
+// 深度拷贝
+function deepClone(obj) {
+  let result, objType = getType(obj)
+  switch(objType) {
+    case 'Object':
+      result = {}
+      break
+    case 'Array':
+      result = []
+      break
+    default:
+      return obj // 如果是其他数据类型，则直接将数据返回
+  }
+  // 遍历目标对象
+  for(let k in obj) {
+    let value = obj[k]
+    result[k] = deepClone(value) // 递归解决多层次问题
+  }
+  return result
+}
+
+let arr1 = [[1], 2, 3]
+let arr2 = deepClone(arr1)
+arr2 // [[1], 2, 3]
+arr2[0][0] = 100
+arr1 // [[1], 2, 3]
+```
+
+**完整深拷贝**
+
+![完整深拷贝](./img/deep-clone.png)

@@ -40,3 +40,4 @@
 - [Generator](./ES6/Generator/index.md)
 - [async函数](./ES6/async函数/index.md)
 - [class类](./ES6/class类/index.md)
+- [深拷贝](./ES6/深拷贝/index.md)
