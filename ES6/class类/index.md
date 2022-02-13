@@ -157,3 +157,59 @@ Person.prototype.name // undefiend
 Person.prototype.name = '孙悟空'
 Person.prototype.name // 孙悟空
 ```
+
+## 私有字段
+
+在属性前面加上 `#` 号，可以表示私有字段，只能内部访问，外部是访问不了的。
+
+```js
+class Person {
+  // 注意：私有字段必须在封闭类中声明
+  #name
+  #age
+  constructor(name, age) {
+    this.#name = name
+    this.#age = age
+  }
+  say() {
+    console.log(this.#name, this.#age)
+  }
+}
+
+const per = new Person('孙悟空', 100)
+per.say() // 孙悟空 100
+per.#name // 报错
+per['#name'] // 报错
+```
+
+私有字段无法在外部访问，读写只能通过内部函数调用进行读写。
+
+```js
+class Person {
+  // 注意：私有字段必须在封闭类中声明
+  #name
+  #age
+  constructor(name, age) {
+    this.#name = name
+    this.#age = age
+  }
+  say() {
+    console.log(this.#name, this.#age)
+  }
+  get() {
+    return {
+      name: this.#name,
+      age: this.#age
+    }
+  }
+  set(name, age) {
+    this.#name = name
+    this.#age = age
+  }
+}
+
+const per = new Person('孙悟空', 100)
+per.get() // { name: '孙悟空', age: 100 }
+per.set('猪八戒', 200)
+per.get() // { name: '猪八戒', age: 200 }
+```
