@@ -13,3 +13,70 @@
 - 私有的行为（操作数据）--> 内部的函数。
 
 - 向外暴露 n 个行为。
+
+## 模块化的进化过程
+
+- 全局 function 模式：
+
+```js
+function a() { ... }
+function b() { ... }
+
+/*
+  将不同的功能封装成不同的全局函数
+  Global 被污染了，很容易引起命名冲突
+*/
+```
+
+- 命名空间模式（namespace）：
+
+```js
+let obj = {
+  data: { ... },
+  a() { ... },
+  a() { ... }
+}
+
+/*
+  简单的对象封装
+  作用：减少了全局变量
+  问题：不安全（数据不是私有的，外部可以直接修改）
+*/
+```
+
+- IIFE 模式：
+
+```js
+(function(window) {
+  let data = { ... }
+  function a() { ... }
+  function b() { ... }
+  window.myModule = { a, b }
+})(window)
+
+/*
+  匿名函数自调用（闭包）
+  将数据和行为封装到一个函数内部，通过给 window 添加属性来向外暴露接口
+  IIFE：immediately invoked function expression（立即调用函数表达式）
+  作用：数据是私有的，外部只能通过暴露的方法操作
+  问题：如果当前模块依赖另一个模块怎么办？
+*/
+```
+
+- IIFE 增强模式：
+
+```js
+(function(window, $) {
+  let data = { ... }
+  function a() { ... }
+  function b() {
+    $('body').css('background', 'red')
+  }
+  window.myModule = { a, b }
+})(window, jQuery)
+
+/*
+  引入依赖
+  这就是现代模块实现的基石
+*/
+```
