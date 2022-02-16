@@ -39,12 +39,12 @@ node 环境默认使用的就是 CommonJS 模块化。
 2. 创建项目结构。
 
 ```js
-|-modules
-  |-module1.js
-  |-module2.js
-  |-module3.js
-|-app.js
-|-package.json
+|--modules
+  |--module1.js
+  |--module2.js
+  |--module3.js
+|--app.js
+|--package.json
   // {
   //   "name": "CommonJS_node",
   //   "version": "1.0.0"
@@ -88,4 +88,67 @@ uniq()
 
 ```js
 node app.js
+```
+
+## CommonJS_Browserify
+
+1. 创建项目结构：
+
+```js
+|--js
+  |--dist // 打包生成文件的目录
+  |--src // 源码所在的目录
+    |--module1.js
+    |--module2.js
+    |--module3.js
+    |--app.js // 应用主文件
+|--index.html
+|--package.json
+  // {
+  //   "name": "browserify_test",
+  //   "version": "1.0.0"
+  // }
+```
+
+2. 下载 browserify。
+
+```js
+npm install browserify --save-dev
+```
+
+3. 定义模块代码：
+
+```js
+// module1.js
+module.exports = {
+  foo() { ... }
+}
+
+// module2.js
+module.exports = function() { ... }
+
+// module3.js
+exports.foo = function() { ... }
+
+// app.js
+// 引用模块
+let module1 = require('./module1')
+let module2 = require('./module2')
+let module3 = require('./module3')
+// 使用模块
+module1.foo()
+module2()
+module3.foo()
+```
+
+4. 打包处理 js：
+
+```js
+browserify js/src/app.js -o js/dist/bundle.js
+```
+
+5. 页面使用引入：
+
+```html
+<script type="text/javascript" src="js/dist/bundle.js"></script>
 ```
