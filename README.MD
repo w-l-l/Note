@@ -47,3 +47,4 @@
 - [模块化介绍](./模块化/模块化介绍/index.md)
 - [CommonJS](./模块化/CommonJS/index.md)
 - [AMD](./模块化/AMD/index.md)
+- [CMD](./模块化/CMD/index.md)
