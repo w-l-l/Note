@@ -49,3 +49,4 @@
 - [AMD](./模块化/AMD/index.md)
 - [CMD](./模块化/CMD/index.md)
 - [ES6](./模块化/ES6/index.md)
+- [CommonJS与ES6的差异](./模块化/CommonJS与ES6的差异/index.md)
