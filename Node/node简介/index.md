@@ -63,3 +63,49 @@ require() 可以传递一个文件的路径作为参数，node 将会自动根�
 - `第三方模块`：由第三方机构或个人提供，第三方模块的标识也是它的名字。
 
 - `文件模块`：由用户自己创建的模块，文件模块的标识就是文件的路径（绝对路径、相对路径 --> 相对路径使用 `.` 或 `..` 开头）。
+
+## global 全局对象
+
+在 node 中有一个全局对象 `global`，它的作用和网页中的 window 类似。
+
+在全局中创建的未定义直接赋值的变量（函数）都会作为 global 的属性（方法）保存。
+
+当 node 在执行代码模块时，它会将文件中的代码放在一个函数中：
+
+```js
+function(exports, require, module, __filename, __dirname) {
+  // 模块中的代码
+}
+```
+
+实际上模块中的代码都是包装在一个函数中执行的，并且在函数执行时，同时传递了 5 个参数：
+
+- `exports`：该对象用来将变量或函数暴露到外部。
+
+- `require`：函数，用来引入外部的模块。
+
+- `module`：module 代表的是当前模块本身，exports 就是 module 的属性，即可以使用 exports 导出，也可以使用 module.exports 导出。
+
+```js
+module.exports === exports // true
+```
+
+通过 exports 只能使用 `.` 的方式来向外暴露内部变量。
+
+```js
+exports.propName = value
+```
+
+而 module.exports 即可以通过 `.` 的形式，也可以直接赋值。
+
+```js
+module.exports.propName = value
+
+module.exports = { ... }
+```
+
+- `__filename`：当前模块的完整路径。
+
+- `__dirname`：当前模块所在文件夹的完整路径。
+
+![全局函数](./img/function.png)
