@@ -42,3 +42,68 @@ cnpm 是淘宝团队把 npm 官网的插件都同步到了中国的服务器，�
 // cnpm 设置
 npm install -g cnpm --registry=https://registry.npm.taobao.org
 ```
+
+## package 详情
+
+包（package）：将多个模块组合为一个完整的功能，就是一个包。
+
+包的主要结构：
+
+- `bin`：二进制的可执行文件，一般都是一些工具包中才有。
+
+- `lib`：js 文件。
+
+- `doc`：文档。
+
+- `test`：测试代码。
+
+- `package.json`：包的描述文件。
+
+**package.json：**
+
+它是一个 json 格式的文件，在它里面保存了包各种相关的信息。
+
+- `name`：包名。
+
+- `version`：版本。
+
+- `dependencies`：依赖。
+
+- `main`：包的主要文件。
+
+- `bin`：可执行文件。
+
+**package-lock.json：**
+
+`npm5` 以前是没有 `package-lock.json` 这个文件的，npm5 之后才加入这个文件的。
+
+当你安装包的时候，npm 都会生成或者更新 package-lock.json 这个文件。
+
+- npm5 以后的版本安装包不需要加 `--save` 参数，它会自动保存依赖信息。
+
+- 当你安装包的时候，会自动创建或更新 package-lock.json 这个文件。
+
+- package-lock.json 这个文件会保存 `node_modules` 中所有包的信息（版本、下载地址等）。  
+这样重新 `npm install` 的时候速度就可以得到提升。
+
+- 从文件名看，有一个 `lock` 称之为锁，这个 lock 代表是用来锁定版本的。
+
+我们按照包的时候，版本号前面都有一个 `^` 符号。
+
+```json
+"dependencies": {
+ "@types/node": "^8.0.33",
+}
+```
+
+这个符号代表的**向后（新）兼容依赖**，如果 `@types/node` 的版本超过 8.0.33，重新 npm install 的时候就会安装最新的包，也就是实际安装的包的版本可能是 8.0.35。
+
+package-lock.json 这个文件就是来解决这个问题的。锁定版本号，防止自动升级。
+
+**node 搜索包的流程：**
+
+1. 通过 npm 下载的包都放到 `node_modules` 文件夹中，我们通过 npm 下载的包，直接通过包名引入即可。
+
+2. node 在使用模块名字来引入模块时，它会首先在当前目录的 node_modules 中寻找是否含有该模块。如果有则直接使用，没有则去上一级目录中的 node_modules 中寻找。如果有则直接使用，没有则再去上一级目录中的 node_modules 中寻找，直到找到为止。如果直到找到磁盘根目录还是没有，则报错。
+
+`npm-shrinkwrap.json`：可以用来指定第三方包的子依赖版本。
