@@ -164,3 +164,34 @@ ws.write('第三次写入，')
 ws.write('第四次写入，')
 ws.end()
 ```
+
+## 简单文件读取
+
+**同步文件读取**
+
+- `fs.readFileSync(path[,options])`：返回一个 buffer 数组。  
+path：要读取文件的路径。  
+options：读取的选项配置。  
+encoding：格式（默认 null）。  
+flag：模式（默认 r）。
+
+```js
+const fs = require('fs')
+const bufArr = fs.readFileSync('./hello.txt')
+console.log(bufArr.toString())
+```
+
+**异步文件读取**
+
+- `fs.readFile(path[,options], callback)`  
+callback：接收两个参数。  
+err：错误对象。  
+data：读取到的数据，会返回一个 buffer 数组。
+
+```js
+const fs = require('fs')
+fs.readFile('./hello.txt', (err, data) => {
+  if(err) return console.log('读取失败...')
+  console.log(data.toString())
+})
+```
