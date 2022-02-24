@@ -39,3 +39,42 @@ const fd = fs.openSync('./hello.txt', 'w')
 fs.writeSync(fd, '要写入的内容')
 fs.closeSync(fd)
 ```
+
+## 异步文件的写入
+
+打开文件：
+
+- `fs.open(path, flag[,mode], callback)`  
+callback：异步调用的方法，结果都是通过回调函数的参数返回的。  
+回调函数接收两个参数：  
+err：错误对象，没有错误则为 `null`。  
+fd：文件的描述符。
+
+向文件写入内容：
+
+- `fs.write(fd, string[,position[,encoding]], callback)`  
+callback接收三个参数：  
+err：错误对象，没有错误则为 `null`。  
+written：实际写入的字节数。  
+str：写入的数据。
+
+保存并关闭文件：
+
+- `fs.close(fd, callback)`  
+callback接收一个参数：  
+err：错误对象，没有错误则为 `null`。
+
+示例：
+
+```js
+const fs = require('fs')
+fs.open('./hello.txt', 'w', (err, fd) => {
+  if(err) return console.log(err)
+  fs.write(fd, '异步写入内容', (err, written, str) => {
+    if(!err) console.log('文件写入成功...', written, str)
+    fs.close(fd, err => {
+      if(!err) console.log('文件关闭...')
+    })
+  })
+})
+```
