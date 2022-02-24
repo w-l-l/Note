@@ -108,3 +108,59 @@ fs.writeFile('./hello.txt', '异步简单文件写入', err => {
   console.log(err || '文件写入成功...')
 })
 ```
+
+## 流式文件的写入
+
+同步、异步、简单文件的写入都不适合大文件的写入，性能较差，容易导致内存溢出。
+
+创建一个可写流：
+
+- `fs.createWriteStream(path[,options])`：返回一个新的 writeStream 对象。  
+path：文件路径。  
+options：配置参数。  
+flags：'w'，指定用什么模式打开文件。  
+encoding：'utf-8'，编码格式。  
+fd：null，指定该属性时，createWriteStream 会根据传入的 fd 创建一个流，忽略 path。  
+mode：0o666。  
+autoClose：true，该属性为 true（默认）时，当发生错误或文件读取结束时会自动关闭文件描述符。
+
+可以通过监听流的 open 和 close 事件来监听流的打开和关闭。
+
+- `on(event, callback)`：为流对象绑定一个事件。
+
+- `once(event, callback)`：为流对象绑定一个一次性事件，该事件将会在触发一次以后自动失效。
+
+常用事件：
+
+- `error`：读取文件发生错误事件。
+
+- `open`：已打开要写入的文件事件。
+
+- `finish`：文件已经写入完成事件。
+
+- `close`：文件关闭事件。
+
+流文件写入：
+
+- `writeStreamObj.write('写入的内容')`
+
+关闭流：
+
+- `writeStreamObj.end()`
+
+示例：
+
+```js
+const fs = require('fs')
+const ws = fs.createWriteStream('./hello.txt')
+ws.once('open', _ => console.log('流打开...'))
+ws.once('close', _ => console.log('流关闭...'))
+ws.once('finish', _ => console.log('写入完成...'))
+ws.once('error', _ => console.log('读取出错...'))
+
+ws.write('第一次写入，')
+ws.write('第二次写入，')
+ws.write('第三次写入，')
+ws.write('第四次写入，')
+ws.end()
+```
