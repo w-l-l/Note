@@ -15,7 +15,7 @@ const fs = require('fs')
 - `fs.openSync(path, flags[,mode])`  
 path：要打开文件的路径。  
 flags：打开文件要做的操作类型（默认 w）（r：只读的，w：可写的）。  
-mode：设置文件的操作权限，一般不传（默认0o666）。  
+mode：设置文件的操作权限，一般不传（默认 0o666）。  
 返回值（fd）：该方法会返回一个文件的描述符作为结果，我们可以通过该描述符来对文件进行各种操作。
 
 向文件写入内容：
@@ -53,7 +53,7 @@ fd：文件的描述符。
 向文件写入内容：
 
 - `fs.write(fd, string[,position[,encoding]], callback)`  
-callback接收三个参数：  
+callback 接收三个参数：  
 err：错误对象，没有错误则为 `null`。  
 written：实际写入的字节数。  
 str：写入的数据。
@@ -61,7 +61,7 @@ str：写入的数据。
 保存并关闭文件：
 
 - `fs.close(fd, callback)`  
-callback接收一个参数：  
+callback 接收一个参数：  
 err：错误对象，没有错误则为 `null`。
 
 示例：
@@ -76,5 +76,35 @@ fs.open('./hello.txt', 'w', (err, fd) => {
       if(!err) console.log('文件关闭...')
     })
   })
+})
+```
+
+## 简单文件的写入
+
+**同步文件的写入**
+
+- `fs.writeFileSync(file, data[,options])`  
+file：要操作的文件路径。  
+data：要写入的数据。  
+options：3 个选项，可以进行设置。  
+encoding：编码格式（默认 utf-8）。  
+mode：权限（默认 0o666）。  
+flag：打开文件要做的操作类型（默认 w）
+
+```js
+const fs = require('fs')
+fs.writeFileSync('./hello.txt', '同步简单文件写入')
+```
+
+**异步文件写入**
+
+- `fs.writeFile(file, data[,options], callback)`  
+callback 接收一个参数：  
+err：错误对象，没有错误则为 `null`。
+
+```js
+const fs = require('fs')
+fs.writeFile('./hello.txt', '异步简单文件写入', err => {
+  console.log(err || '文件写入成功...')
 })
 ```
