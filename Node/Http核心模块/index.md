@@ -27,3 +27,57 @@
 - 发送的并不是文件，本质上来讲发送的是文件的内容。
 
 - 当浏览器收到服务器响应内容之后，就会根据你的 `Content-Type` 进行对应的解析处理。
+
+## web 服务器
+
+在 node 中专门提供了一个核心模块：`http`。
+
+`http` 这个模块的职责就是帮你创建编写服务器的。
+
+服务器的职责：
+
+- 提供服务：数据的服务。
+
+- 发请求。
+
+- 接收请求。
+
+- 处理请求。
+
+- 发送响应。
+
+加载 `http` 核心模块。
+
+```js
+const http = require('http')
+```
+
+使用 `http.createServer()` 方法创建一个 web 服务器，返回一个 `server` 实例。
+
+```js
+const server = http.createServer()
+```
+
+注册 request 请求事件。
+
+```js
+// 当客户端请求过来，就会自动触发服务器的 request 请求事件，然后执行回调函数
+server.on('request', (request, response) => {
+  console.log('收到客户端的请求了...')
+})
+```
+
+绑定端口号，启动服务器。
+
+```js
+server.listen(3000 /* 端口号 */, _ => console.log('服务器启动成功...'))
+```
+
+**简写方式**：
+
+```js
+const http = require('http')
+http.createServer((request, response) => {
+  console.log('收到客户端的请求了...')
+}).listen(3000, _ => conosle.log('服务器启动成功...'))
+```
