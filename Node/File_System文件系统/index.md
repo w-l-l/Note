@@ -13,7 +13,7 @@ const fs = require('fs')
 打开文件（在内存中打开的）：  
 
 - `fs.openSync(path, flags[,mode])`  
-path：要打开文件的路径。  
+path：要打开文件的路径（也可以是绝对路径）。  
 flags：打开文件要做的操作类型（默认 w）（r：只读的，w：可写的）。  
 mode：设置文件的操作权限，一般不传（默认 0o666）。  
 返回值（fd）：该方法会返回一个文件的描述符作为结果，我们可以通过该描述符来对文件进行各种操作。
@@ -194,4 +194,46 @@ fs.readFile('./hello.txt', (err, data) => {
   if(err) return console.log('读取失败...')
   console.log(data.toString())
 })
+```
+
+## 流式文件读取
+
+流式文件读取也适用于一些比较大的文件，可以分多次将文件读取到内存中。
+
+创建可读流：
+
+- `fs.createReadStream(path[,option])`：返回一个 ReadStream 对象。  
+path：要读取文件的路径。  
+options：配置选项。
+
+如果要读取一个可读流中的数据，必须要为可读流绑定一个 `data` 事件，`data` 事件绑定完毕，它会自动开始读取数据。
+
+```js
+const fs = require('fs')
+const rs = fs.createReadStream('./hello.txt')
+rs.on('data', data => {
+  console.log(data.toString())
+})
+```
+
+复制图片：
+
+```js
+const fs = require('fs')
+const rs = fs.createReadStream('./demo.jpg')
+const ws = fs.createWriteStream('./copy.jpg')
+
+rs.on('data', data => ws.write(data))
+rs.on('close', _ => ws.end())
+```
+
+**流式文件快捷读取**：
+
+- `readStreamObj.pipe(writeStreamObj)`：可以将可读流中的内容，直接输出到可写流中。
+
+```js
+const fs = require('fs')
+const rs = fs.createReadStream('./demo.jpg')
+const ws = fs.createWriteStream('./copy.jpg')
+rs.pipe(ws)
 ```
