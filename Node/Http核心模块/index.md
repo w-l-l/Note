@@ -79,5 +79,21 @@ server.listen(3000 /* 端口号 */, _ => console.log('服务器启动成功...')
 const http = require('http')
 http.createServer((request, response) => {
   console.log('收到客户端的请求了...')
-}).listen(3000, _ => conosle.log('服务器启动成功...'))
+}).listen(3000, _ => console.log('服务器启动成功...'))
 ```
+
+## request 请求事件
+
+`request` 请求事件处理函数，需要接收 `request` 和 `response` 两个参数：
+
+- `request`：请求对象。  
+请求对象可以用来获取客户端大的一些请求信息。  
+&emsp;`requset.url`：获取到的是端口号之后的那一部分路径，也就是说所有的 url 都是以 / 开头的。  
+&emsp;`request.socket.remoteAddress`：请求我的客户端的 ip 地址。  
+&emsp;`request.socket.remotePort`：请求我的客户端程序的端口。
+
+- `response`：响应对象。  
+响应对象可以用来给客户端发送响应信息。  
+&emsp;`response.write('要返回的数据')`：可以用来给客户端发送响应信息，`response.write` 可以使用多次，但是最后一定要使用 `response.end` 来结束响应，否则客户端会一直等待。  
+&emsp;`response.end()`：告诉客户端，我的话说完了，你可以呈递给用户了。也可以在 `response.end('要返回的数据')` 的同时发送响应数据，可以不使用 `response.write()`，这样比较简单。  
+**注意：response 响应的内容只能是二进制数据（buffer）后者字符串。**

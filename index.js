@@ -1,0 +1,10 @@
+const http = require('http')
+http.createServer((request, response) => {
+  // console.log(request.url)
+  // console.log(request.socket.remoteAddress)
+  // console.log(request.socket.remotePort)
+  // response.write('1')
+  // response.write('2')
+  // response.write('3')
+  response.end('5646')
+}).listen(3000, _ => console.log('服务器启动成功...'))
