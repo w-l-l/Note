@@ -40,6 +40,10 @@ fs.writeSync(fd, '要写入的内容')
 fs.closeSync(fd)
 ```
 
+**flag 状态**：
+
+![flag状态](./img/flag.png)
+
 ## 异步文件的写入
 
 打开文件：
@@ -237,3 +241,51 @@ const rs = fs.createReadStream('./demo.jpg')
 const ws = fs.createWriteStream('./copy.jpg')
 rs.pipe(ws)
 ```
+
+## 其他操作
+
+- `fs.exists(path, callback)`  
+`fs.existsSync(path)`：检查一个文件是否存在。
+
+- `fs.stat(path, callback)`  
+`fs.statSync(path)`：获取文件信息。它会返回一个对象，这个对象保存了当前状态的相关信息。  
+callback 接收两个参数：  
+&emsp;err：错误信息。  
+&emsp;stat：相关信息对象：  
+&emsp;&emsp;size：文件的大小。  
+&emsp;&emsp;isFile()：是否是一个文件。  
+&emsp;&emsp;isDirectory()：是否是一个文件夹（目录）。
+
+- `fs.unlink(path, callback)`  
+`fs.unlinkSync(path)`：删除文件。
+
+- `fs.readdir(path[,options], callback)`  
+`fs.readdirSync(path[,options])`：读取一个目录的目录结构。  
+options：encoding 编码格式。  
+callback 接收两个参数：  
+&emsp;err：错误对象。  
+&emsp;files：一个字符串数组，每一个元素就是一个文件夹或文件的名字。
+
+- `fs.truncate(path, len, callback)`  
+`fs.truncateSync(path, len)`：截断文件，将文件修改为指定的大小。
+
+- `fs.mkdir(path[,mode], callback)`  
+`fs.mkdirSync(path[,mode])`：创建一个目录。
+
+- `fs.rmdir(path, callback)`  
+`fs.rmdirSync(path)`：删除一个目录。
+
+- `fs.rename(oldPath, newPath, callback)`  
+`fs.renameSync(oldPath, newPath)`：对文件进行重命名，也可以对文件进行移动。  
+oldPath：旧的文件路径。  
+newPath：新的文件路径。
+
+- `fs.watchFile(filename[,options], listener)`：监视文件的修改。  
+filename：要监视文件的名字。  
+options：配置选项：  
+&emsp;persistent：只要监视文件，该进程是否应该继续执行（默认 true）。  
+&emsp;interval：以毫秒为单位轮询目标的频率（默认 5007）。  
+listener：回调函数，接收两个参数：  
+&emsp;curr：当前文件的状态。  
+&emsp;prev：修改前文件的状态。  
+&emsp;这两个对象都是 `stats` 对象。
