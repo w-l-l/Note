@@ -118,6 +118,32 @@ response.setHeader('Content-Type', 'text/plain;charset=utf-8')
 // text/html：html 格式的文本
 ```
 
+## 客户端重定向
+
+如何通过服务器让客户端重定向？
+
+状态码：
+
+- `301`：永久重定向，浏览器会记住。  
+a.com --> b.com  
+a.com 不会请求 a 了，直接跳转到 b。
+
+- `302`：临时重定向，浏览器不记忆。  
+a.com --> b.com  
+a.com 还会请求 a，然后告诉浏览器你往 b 去。
+
+```js
+response.statusCode = 302
+```
+
+在响应头中通过 `location` 告诉客户端往哪儿重定向。
+
+```js
+response.setHeader('location', '/')
+```
+
+**注意：服务端的重定向针对异步请求无效（客户端异步操作需要重定向时，必须在客户端操作，服务端操作无效）。**
+
 ## 服务器端渲染
 
 说白了就是在服务器使用模板引擎。
