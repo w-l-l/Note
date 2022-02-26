@@ -97,3 +97,23 @@ http.createServer((request, response) => {
 &emsp;`response.write('要返回的数据')`：可以用来给客户端发送响应信息，`response.write` 可以使用多次，但是最后一定要使用 `response.end` 来结束响应，否则客户端会一直等待。  
 &emsp;`response.end()`：告诉客户端，我的话说完了，你可以呈递给用户了。也可以在 `response.end('要返回的数据')` 的同时发送响应数据，可以不使用 `response.write()`，这样比较简单。  
 **注意：response 响应的内容只能是二进制数据（buffer）后者字符串。**
+
+## Content-Type
+
+在服务器默认发送的数据，其实是 `utf-8` 编码的内容。
+
+但浏览器不知道你是 `utf-8` 编码的内容。
+
+浏览器在不知道服务器响应内容的编码的情况下，会按照当前操作系统的默认编码去解析。
+
+- 中午操作系统的默认编码是 `gbk`。
+
+解决方法就是正确的告诉浏览器我给你发送的内容是什么编码的。
+
+在 `http` 协议中，`Content-Type` 就是用来告知对方我给你发送的数据内容是什么类型。
+
+```js
+response.setHeader('Content-Type', 'text/plain;charset=utf-8')
+// text/plain：普通文本
+// text/html：html 格式的文本
+```
