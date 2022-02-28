@@ -186,3 +186,41 @@ app.post('/post', (request, response) => {
   console.log(request.body)
 })
 ```
+
+## express 路由模块的提取
+
+职责：
+
+- 处理路由。
+
+- 根据不同的请求方法 + 请求路径设置具体的请求处理函数。
+
+- 模块的职责要单一，不要乱写。
+
+- 我们划分模块的目的就是为了增强项目代码的可维护性，提高开发效率。
+
+创建 `router.js`：
+
+```js
+const express = require('express')
+const router = express.Router() // 创建一个路由器
+// 将路由都挂载到 router 路由器中
+router.get('/', callback)
+router.post('/post', callback)
+
+// 将 router 暴露出去
+module.exports = router
+```
+
+入口文件中：
+
+```js
+const express = require('express')
+const app = express()
+// 引入路由模块
+const router = require('./router')
+// 将路由器挂载到 app 服务
+app.use(router)
+```
+
+**注意：配置模板引擎和 body-parser 一定要在 app.use(router) 挂载路由之前**。
