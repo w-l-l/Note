@@ -96,3 +96,16 @@ app.use('/use', express.static('public')) // public 文件夹中有一张 a.png
 ```
 
 `http://127.0.0.1:3000/use/a.png` 这样才能访问到 a.png。
+
+## 路由
+
+路由其实就是一张表，这个表有具体的映射关系。
+
+`express` 设置路由可以链式调用。
+
+```js
+app.get('/', callback)
+.get('/login', callback)
+.post('/user', callback)
+.listen(3000, _ => console.log('服务器启动成功...'))
+```
