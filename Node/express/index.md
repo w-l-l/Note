@@ -53,3 +53,19 @@ app.get('/', (request, response) => {
 ```
 
 `response.send`、`response.redirect`、`response.render` 这些方法 express 会自动结束响应。
+
+## nodemon 自动重启服务
+
+全局安装 `nodemon`。
+
+```js
+npm i nodemon -g
+```
+
+执行 js 文件。
+
+```js
+nodemon xxx.js
+```
+
+将 node 命令转换成 nodemon 命令，每次修改保存文件，服务器就会自动重启。
