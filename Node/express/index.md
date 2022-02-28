@@ -69,3 +69,30 @@ nodemon xxx.js
 ```
 
 将 node 命令转换成 nodemon 命令，每次修改保存文件，服务器就会自动重启。
+
+## 静态资源管理
+
+```js
+app.use(express.static('静态文件夹'))
+```
+
+`express` 在静态目录查找文件，因此，存放静态文件的目录名不会出现在 url 中。
+
+例如：`app.use(express.static(public))`，public 文件夹中有一张 `a.png`。在浏览器输入 `http://127.0.0.1:3000/a.png` 就能访问到。
+
+**注意：如果存在多个静态资源目录，目录中有相同名字的文件，express.static 中间件函数会根据目录的添加顺序查找所需要的文件，只要找到就立刻返回，不会向下查找。**
+
+所以最好为静态资源设置不同的前缀。
+
+```js
+// 为服务器创建虚拟路径前缀（文件系统中实际不存在该路径）
+app.use('/前缀', express.static('静态文件夹'))
+```
+
+例如：
+
+```js
+app.use('/use', express.static('public')) // public 文件夹中有一张 a.png
+```
+
+`http://127.0.0.1:3000/use/a.png` 这样才能访问到 a.png。
