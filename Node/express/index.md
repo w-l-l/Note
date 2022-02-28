@@ -259,3 +259,49 @@ app.use(session({
 更严谨的做法是 `delete` 语法：delete request.session.key。
 
 **注意：默认 session 数据是内存存储的，服务器一旦重启就会丢失，真正的生产环境会把 session 进行持久化存储**。
+
+## express 中间件概念
+
+中间件：处理请求的，本质就是一个函数。
+
+**注意：同一个请求经过的中间件都是同一个请求对象和响应对象**。
+
+在 `express` 中，对中间件有几种分类。
+
+1. `app.use(url, (req, res, next) => { ... })`：以 `/xxx` 开头。  
+当请求进来，会从第一个中间件开始进行匹配，如果匹配，则进来。  
+如果请求进入中间件之后，没有调用 `next`，则代码会停在当前中间件。  
+如果调用了 `next`，则继续向后找到第一个匹配的中间件，如果不匹配，则继续匹配下一个中间件。
+
+2. `app.use((req, res, next) => { ... })`：万能匹配。  
+不关心请求路径和请求方法的中间件。  
+也就是说任何请求都会进入这个中间件。  
+中间件本身是一个方法，该方法接收三个参数：  
+&emsp;request：请求对象。  
+&emsp;response：响应对象。  
+&emsp;next：下一个中间件。  
+当一个请求进入中间件之后，如果不调用 `next`，则会停留在当前中间件。  
+所以 `next` 是一个方法，用来调用下一个中间件的。  
+调用 `next` 方法也是要匹配的，满足条件才调用，不是调用紧挨着的那个。
+
+**以上两个称为应用程序中间件**。
+
+3. 除了以上中间件之外，还有一种最常用的 `路由级别中间件`。  
+严格匹配请求方法和请求路径的中间件：`app.get`、`app.post`、`app.put`、`app.delete`。
+
+4. 错误处理中间件：
+
+```js
+app.use((err, req, res, next) => {
+  console.log(err.stack)
+  res.status(500).send('something broke')
+})
+```
+
+错误处理中间件一般放在最后，中间件跟先后顺序有关，当上面的中间件调用 `next` 传参的时候，则直接往后找到带有 4 个参数的应用程序级别的中间件（必须是 4 个参数）。
+
+5. 内置中间件：`express.static`、`express.json`、`express.urlencoded` 等等。
+
+6. 第三方中间件：`body-parser`、`express-art-template` 等等。
+
+**注意：如果没有匹配的中间件，则 express 会默认输出 Cannot GET 路径**。
