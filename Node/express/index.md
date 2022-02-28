@@ -305,3 +305,30 @@ app.use((err, req, res, next) => {
 6. 第三方中间件：`body-parser`、`express-art-template` 等等。
 
 **注意：如果没有匹配的中间件，则 express 会默认输出 Cannot GET 路径**。
+
+## 其他
+
+`express` 处理 404 错误。
+
+```js
+// express 对于没有设定的请求路径，默认返回 、、Cannot GET 路径
+// 可以通过中间件自己来定制 404 如何处理
+app.use((req, res) => {
+  // 所有未处理的请求路径都会跑到这里 404
+})
+```
+
+`md5` 加密。
+
+安装中间件：
+
+```js
+npm i blueimp-md5 --save
+```
+
+使用：
+
+```js
+const md5 = require('blueimp-md5')
+console.log(md5(123456))
+```
