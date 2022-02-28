@@ -148,3 +148,41 @@ app.get('/', (request, response) => {
 ```js
 app.set('views', '目录路径')
 ```
+
+## express 中配置解析表单 post 提交请求
+
+安装中间件。
+
+```js
+npm i body-parser --save
+```
+
+配置 `body-parser`。
+
+```js
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+```
+
+只要加入这个配置，则在 `request` 请求对象上会多出一个属性 `body`。
+
+`request.body` 可以来获取表单的 post 请求。
+
+```js
+app.post('/post', (request, response) => {
+  response.send(request.body)
+})
+```
+
+`express` 最新版本可以直接获取 post 请求数据，不允许安装 `body-parser`，低版本才需要安装。
+
+```js
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
+app.post('/post', (request, response) => {
+  console.log(request.body)
+})
+```
