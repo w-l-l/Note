@@ -224,3 +224,38 @@ app.use(router)
 ```
 
 **注意：配置模板引擎和 body-parser 一定要在 app.use(router) 挂载路由之前**。
+
+## express 中的 session 操作
+
+安装中间件：
+
+```js
+npm i express-session --save
+```
+
+配置：
+
+```js
+const session = require('express-session')
+const express = require('express')
+const app = express()
+app.use(session({
+  // 配置加密字符串，它会在原有加密基础之上和这个字符串拼起来去加密。目的是为了增加安全性，防止客户端恶意伪造
+  secret: 'xxx',
+  // 强制保存 session，即使它没有变化。默认是 true，建议设置成 false，session 变化时再保存
+  resave: false,
+  // 无论你是否使用 session，我都默认直接给你分配一把钥匙（cookie 存在浏览器上）。
+  saveUninitialized: true
+}))
+```
+
+配置好之后可以通过 `request.session` 来访问和设置 `session` 成员了。
+
+- 添加 session 数据：request.session.key = value。
+
+- 访问 session 数据：request.session.key。
+
+- 删除 session 数据：request.session.key = null。  
+更严谨的做法是 `delete` 语法：delete request.session.key。
+
+**注意：默认 session 数据是内存存储的，服务器一旦重启就会丢失，真正的生产环境会把 session 进行持久化存储**。
