@@ -109,3 +109,42 @@ app.get('/', callback)
 .post('/user', callback)
 .listen(3000, _ => console.log('服务器启动成功...'))
 ```
+
+## express 模板渲染（配置使用 art-template 模板引擎）
+
+安装相关的模块包。
+
+```js
+npm i art-template express-art-template --save
+```
+
+使用：
+
+```js
+const express = require('express')
+const app = express()
+app.engine('html', require('express-art-template'))
+```
+
+第一个参数表示当以 .html 结尾文件的时候，可以使用 `art-template` 模板渲染。
+
+`express-art-template` 是专门用来在 `express` 中把 `art-template` 整合到 `express` 中。
+
+虽然外面不需要引入 `art-template`，但还是要安装，因为 `express-art-template` 内部依赖于 `art-template`。
+
+```js
+app.get('/', (request, response) => {
+  // 用法和 art-template 是一样的
+  response.render('index.html', { ... })
+})
+```
+
+`response.render` 方法默认是不可以使用的，但是配置了模板引擎就可以使用了。
+
+`response.render('模板名(或 views 下的路径)', { 模板数据 })`：默认会去项目中的 views 目录下查找该模板文件，也就是说 `express` 有一个约定，开发人员把所有的视图文件都放到 views 目录中。
+
+该目录名也是可以修改的：
+
+```js
+app.set('views', '目录路径')
+```
