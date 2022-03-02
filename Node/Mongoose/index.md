@@ -114,3 +114,41 @@ User.findByIdAndUpdate(id, {/* 修改的内容 */}, {/* 选项 */}, (err, result
 ```
 
 **mongoose 所有的 api 都支持 promise 的方式调用**。
+
+## 使用 node 操作 mysql 数据库
+
+安装 mysql 包。
+
+```js
+npm i mysql --save
+```
+
+创建连接。
+
+```js
+const mysql = require('mysql')
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'root',
+  database: 'user'
+})
+```
+
+连接数据库。
+
+```js
+connection.connect()
+```
+
+执行数据操作。
+
+```js
+connection.query('mysql语句', (err, results, fields) => { ... })
+```
+
+关闭连接。
+
+```js
+connection.end()
+```
