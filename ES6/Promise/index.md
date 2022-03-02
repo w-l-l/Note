@@ -200,3 +200,22 @@ new Promise(...).then(...).then(...).catch(error => {
   console.log(error) // 使用 catch 捕获
 })
 ```
+
+## 使用 Promise 封装 ajax 请求
+
+```js
+// 可以通过回调函数获取数据，也可以使用 then 获取数据
+function promiseAjax(url, callback) {
+  return new Promise((resolve, reject) => {
+    const xml = new XMLHttpRequest()
+    xml.onload = _ => {
+      const res = JSON.parse(xml.responseText)
+      callback && callback(res)
+      resolve(res)
+    }
+    xml.onerror = err => void reject(err)
+    xml.open('get', url, true)
+    xml.send()
+  })
+}
+```
