@@ -73,3 +73,44 @@ const User = mongoose.model('User', model)
   返回值：模型构造函数。
 */
 ```
+
+## Mongoose 常用参数
+
+- `save`：新增数据。
+
+```js
+const demo = new User({
+  name: '孙悟空',
+  age: 18
+})
+
+demo.save((err, result) => { ... })
+```
+
+- `find`：查询数据。
+
+```js
+User.find({/* 条件可选 */}, {/* 投影 */}, {/* 选项 */}, (err, result) => { ... }) // 没有条件就查询全部
+
+User.findOne({/* 条件可选 */}, {/* 投影 */}, {/* 选项 */}, (err, result) => { ... }) // 查询第一条符合条件的数据
+
+// 选项中设置 lean: true，可以将文档对象转换为 Object 对象
+```
+
+- `remove`：删除数据。
+
+```js
+// 没有条件就删除全部
+User.remove({/* 条件可选 */}, (err, result) => { ... })
+```
+
+- `update`：修改数据。
+
+```js
+User.update({/* 查询条件 */}, {/* 修改的内容 */}, {/* 选项 */}, (err, result) => { ... })
+
+// 根据 id 修改数据
+User.findByIdAndUpdate(id, {/* 修改的内容 */}, {/* 选项 */}, (err, result) => { ... })
+```
+
+**mongoose 所有的 api 都支持 promise 的方式调用**。
