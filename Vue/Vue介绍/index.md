@@ -106,3 +106,32 @@ Object.defineProperty(obj, 'name', {
 深度监视：`propName: { deep: true, handler(newValue, oldValue) {} }`。
 
 - 另一种添加监方式：`vm.$watch(propName, function(newValue, oldValue) {})`
+
+## MVVM
+
+`M(model)`：保存页面中的数据。
+
+```js
+const vm = new Vue({
+  data: {}
+})
+
+// 组件中 data 属性必须是一个函数，返回一个对象
+export default {
+  data() {
+    return {}
+  }
+}
+```
+
+`V(view)`：页面的 html 结构。
+
+```html
+<div id="app"></div>
+```
+
+`VM(Vue实例)`：vm 是一个调度者，分割了 `M` 和 `V`，每当 `V` 层想要获取后保存数据的时候，都要由 `VM` 做中间的处理。
+
+```js
+const vm = new Vue({ ... })
+```
