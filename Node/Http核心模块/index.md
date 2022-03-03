@@ -182,6 +182,70 @@ template.render(data.toString(), {
 // template.render 第一个参数必须是字符串
 ```
 
+### 模板继承
+
+定义模板文件 layout.html。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    {{ block 'head' }}
+    <!-- 留一个样式坑，将要留给继承该模板的模板去填坑 -->
+    {{ /block }}
+  </head>
+  <body>
+    <!-- 包含公共头部 -->
+    {{ include './header.html' }}
+
+    {{ block 'content' }}
+    <!-- 留一个内容坑，将要留给继承该模板的模板去填坑 -->
+    <!-- 坑里可以有一些默认内容 -->
+    <h1>默认内容</h1>
+    {{ /block }}
+    <!-- 包含公共底部 -->
+    {{ include './footer.html' }}
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    {{ block 'script' }}
+    <!-- 留一个脚本坑 -->
+    {{ /block }}
+  </body>
+</html>
+```
+
+`block` 命名一个符号（如 head）占位，然后这个模板继承的时候，用实际的内容替换就行了。
+
+`include` 引入子模板，如果需要数据，可以在后面跟上 data，`{{ include './header.html' data }}`，子模板需要使用的数据，必须是父级数据（用 {} 包裹）。
+
+使用模板文件。
+
+```html
+{{ extend './layout.html' }}
+{{ block 'head' }}
+<style>
+  body {
+    background-color: skyblue;
+  }
+</style>
+{{ /block }}
+
+{{ block 'content' }}
+<div>
+  <h1>index 页面填坑内容</h1>
+</div>
+{{ /block }}
+
+{{ block 'script' }}
+<script>
+  window.alert('index 页面自己的 js 脚本')
+</script>
+{{ /block }}
+```
+
+`extend` 继承一个模板。
+
 ### 服务端渲染过程
 
 浏览器收到 `html` 响应之后，从上到下依次解析。
