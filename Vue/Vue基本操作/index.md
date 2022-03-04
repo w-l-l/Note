@@ -254,3 +254,63 @@ show 指令：`v-show`，只是简单地切换元素的 display 样式。
 <!-- item 是从 1 循环到 10，不是从 0 循环到 9 -->
 <p v-for="item in 10">{{ item }}</p>
 ```
+
+## 事件处理
+
+事件修饰符：
+
+- `.stop`：阻止事件冒泡。  
+event.stopPropagation()
+
+- `.prevent`：阻止浏览器默认行为。  
+event.preventDefault()
+
+- `.capture`：设置事件捕获模式。
+
+- `.self`：元素自身才触发。  
+`event.target === 当前元素` 该元素的事件不能通过内部元素冒泡触发。
+
+- `.once`：事件只触发一次。
+
+- `.passive`：不阻止事件的默认行为。  
+**注意：不要把 .passive 和 .prevent 一起使用，因为 .prevent 将会被忽略**。
+
+`.stop` 和 `.self` 的区别：.self 只会阻止自己身上冒泡行为的触发，并不会真正阻止冒泡的行为。
+
+****
+
+按键修饰符：`.enter`、`.tab`、`.delete(捕获删除和退格)`、`.esc`、`.space`、`.up`、`.down`、`.left`、`.right`、`.page-down`。
+
+自定义按键修饰符别名：`Vue.config.keyCodes.xxx = 112`。
+
+`@keyup.xxx` 这样使用。
+
+`@keyup.keyCodes` 直接点按键编码也行。
+
+****
+
+系统修饰符：可以用如下修饰符来实现仅在按下相应按键时才触发鼠标或键盘事件的监听器。
+
+`.ctrl`、`.alt`、`.shift`、`.meta`、`.exact(修饰符允许你控制由精确的系统修饰符组合触发的事件)`
+
+`@click.ctrl.exact` 只有 ctrl 被按下的时候才触发。
+
+`@click.exact` 没有任何系统修饰符被按下的时候才触发。
+
+****
+
+鼠标按钮修饰符：`.left`、`.right`、`.middle`。
+
+这些修饰符会限制处理函数仅响应特定的鼠标按钮。
+
+****
+
+`.native` 修饰符：监听组件根元素的原生事件。
+
+主要给自定义的组件添加原生事件。
+
+```html
+<temp @click.native="foo"></temp>
+```
+
+将自定义事件和原生的 click 事件区分开来，不加 .native 就是自定义事件，加了就作用于组件根元素上。
