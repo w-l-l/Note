@@ -314,3 +314,22 @@ event.preventDefault()
 ```
 
 将自定义事件和原生的 click 事件区分开来，不加 .native 就是自定义事件，加了就作用于组件根元素上。
+
+## 表单输入绑定
+
+通过 v-model 指令在表单元素上创建双向数据绑定，它会根据控件类型自动选取正确的方法来更新元素。
+
+`v-model` 相关的修饰符。
+
+- `.lazy`：将 input 事件同步转为 chang 事件同步。
+
+- `.number`：将值转换为数值类型。
+
+- `.trim`：自动过滤用户输入的首尾空白字符。
+
+复选框：
+
+```html
+<!-- 勾选时 msg 值为 yes，取消勾选时值为 no -->
+<input type="checkbox" v-model="msg" true-value="yes" false-value="no" />
+```
