@@ -371,3 +371,33 @@ Vue.delete(vm.obj, prop)
 ```
 
 `vm.$delete` 跟 `Vue.delete` 的操作是一样的。
+
+## Vue.nextTick 获取更新的 DOM
+
+在下次 DOM 更新循环结束之后执行延迟回调。
+
+- 即：数据更新，DOM 渲染完成，自动执行该函数。
+
+```html
+<div ref="div" style="width: 100px;height: 100px;" v-if="show"></div>
+<button @click="update">更新</button>
+```
+
+```js
+export default {
+  data() {
+    return {
+      show: false
+    }
+  },
+  methods: {
+    update() {
+      this.show = true
+      // console.log(this.$refs.div.offsetWidth) // 报错
+      this.$nextTick(_ => {
+        console.log(this.$refs.div.offsetWidth) // 100
+      })
+    }
+  }
+}
+```
