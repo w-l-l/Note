@@ -128,3 +128,57 @@ vm.$watch(_ => vm['xxx-xxx'], function(newValue, oldValue) {
   ...
 })
 ```
+
+## class 与 style 绑定
+
+在应用界面中，某些元素的样式是变化的，`class`、`style` 绑定就是专门用来实现动态样式效果的技术。
+
+### class 绑定
+
+- 字符串类型：直接写 class 相关的类名。
+
+```html
+<div :class="msg"></div>
+```
+
+- 对象类型：属性名是 class 类名，属性值为 boolean 值，true 使用，false 不使用。
+
+```html
+<div :class="{ className: true }"></div>
+```
+
+- 数组类型：元素为 class 类名或对象。
+
+```html
+<div :class="['className1', { className2: true }]"></div>
+```
+
+### style 绑定
+
+- 字符串类型：直接写 style 样式的字符串，分号隔开。
+
+```html
+<div :style="'color: red; font-size: 14px'"></div>
+```
+
+- 对象类型：属性名是样式属性名，属性值是样式属性值。
+
+```html
+<div :style="{ color: 'red', fontSize: '14px' }"></div>
+```
+
+还支持 `多重值`：属性值是一个数组，常用于提供多个带前缀的值。
+
+```html
+<div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+```
+
+只会渲染数组中最后一个被浏览器支持的值。
+
+- 数组类型：元素为样式对象。
+
+```html
+<div :style="[{ color: 'red' }, { fontSize: '14px' }]"></div>
+```
+
+**补充：当样式属性名需要添加前缀时，vue 会自动侦测并添加相应的前缀**。
