@@ -182,3 +182,44 @@ vm.$watch(_ => vm['xxx-xxx'], function(newValue, oldValue) {
 ```
 
 **补充：当样式属性名需要添加前缀时，vue 会自动侦测并添加相应的前缀**。
+
+## 条件渲染
+
+if 指令：`v-if`、`v-else-if`、`v-else`。
+
+**注意：v-else 和 v-else-if 必须紧跟在带 v-if 或 v-else-if 的元素之后**。
+
+vue 会尽可能高效地渲染元素，通常会复用元素而不是从头开始渲染。这样做除了使 vue 更快之外，还有一些好处。
+
+例如：如果你允许用户在不同的登录方式之间切换，两个文本框通过 v-if 切换显示的时候文本框之间的内容不会清空。
+
+可以通过 key 属性使当前元素具有唯一标识，切换时清空文本。
+
+```html
+<div v-if="show">
+  <input type="text" key="1" />
+</div>
+<div v-else>
+  <input type="text" key="2" />
+</div>
+```
+
+show 指令：`v-show`，只是简单地切换元素的 display 样式。
+
+```html
+<div v-show="show"></div>
+```
+
+**注意：v-show 不支持 template 元素，也不支持 v-else**。
+
+`v-if` 对比 `v-show`：
+
+- v-if 有更高的切换开销。
+
+- v-show 有更高的初始化渲染开销（不管 v-show 为何值，元素始终会渲染）。
+
+- 因此需要非常频繁地切换，使用 v-show。
+
+- 如果在运行时条件很少改变，则使用 v-if。
+
+**注意：不推荐同时使用 v-if 和 v-for，v-for 具有比 v-if 更高的优先级**。
