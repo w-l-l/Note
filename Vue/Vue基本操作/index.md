@@ -333,3 +333,41 @@ event.preventDefault()
 <!-- 勾选时 msg 值为 yes，取消勾选时值为 no -->
 <input type="checkbox" v-model="msg" true-value="yes" false-value="no" />
 ```
+
+## 更新视图
+
+### Vue.set 更新视图
+
+手动给 vue 实例对象 data 中的数组或者对象添加元素是没有数据绑定响应式效果的。
+
+例：`vm.$data.arr[0] = xxx` 或者 `vm.$data.obj.prop = xxx`。
+
+使用 `Vue.set` 或者 `vm.$set` 进行属性添加，具有响应式效果，触发视图更新。
+
+`Vue.set(target, prop/index, value)`：
+
+- `target`：对象或者数组。
+
+- `prop/index`：对象属性名或者数组索引。
+
+- `value`：值。
+
+```js
+Vue.set(vm.arr, 0, 'xxx')
+Vue.set(vm.obj, 'prop', 'xxx')
+```
+
+`vm.$set` 方法跟 `Vue.set` 方法的使用步骤是一样的。
+
+### Vue.delete 删除时更新视图
+
+删除对象的 property，如果对象是响应式的，确保删除能触发更新视图。
+
+`Vue.delete(target, prop/index)`。
+
+```js
+Vue.delete(vm.arr, 0)
+Vue.delete(vm.obj, prop)
+```
+
+`vm.$delete` 跟 `Vue.delete` 的操作是一样的。
