@@ -223,3 +223,34 @@ show 指令：`v-show`，只是简单地切换元素的 display 样式。
 - 如果在运行时条件很少改变，则使用 v-if。
 
 **注意：不推荐同时使用 v-if 和 v-for，v-for 具有比 v-if 更高的优先级**。
+
+## 循环渲染
+
+使用 `v-for` 可以根据数组（对象）循环生成元素。
+
+```html
+<ul>
+  <li v-for="(item, key, index) in/of arr/obj" :key="item.id">{{ item.name }}</li>
+</ul>
+```
+
+`key`：为了给 vue 一个提示，以便它能够跟踪每个节点的身份，需要为每一项提供一个唯一的 `:key`。
+
+不推荐使用 index 为 key 的值，最好使用静态的 key。
+
+也可以理解为：
+
+- 无 key：状态默认绑定的是位置。
+
+- 有 key：状态根据 key 的属性值绑定到了相应的数组元素，这样设计也是为了性能考虑（高效的更新虚拟 DOM）。
+
+数组更新检测：vue 将被侦听的数组的变更方法进行了包裹，所以它们会触发视图更新，被包裹的方法有：`push`、`pop`、`shift`、`unshift`、`splice`、`sort`、`reverse`。
+
+其他操作改变数组不会引发视图更新（如：`arr[i] = 'xxx'`）。
+
+循环数值：
+
+```html
+<!-- item 是从 1 循环到 10，不是从 0 循环到 9 -->
+<p v-for="item in 10">{{ item }}</p>
+```
