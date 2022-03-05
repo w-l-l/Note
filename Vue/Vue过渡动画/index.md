@@ -174,3 +174,51 @@ vue 会给目标元素添加或移除特定的 class 类名。
   <component :is="componentName"></component>
 </transition>
 ```
+
+## 列表过渡
+
+列表过渡的元素需要使用 `transition-group` 标签。
+
+不同于 `transition`，它会以一个真实元素呈现（默认是 span），可以使用 `tag` 属性更换为其他元素。
+
+```html
+<transition tag="div">
+  ...
+</transition>
+```
+
+**注意：**
+
+- 过渡模式 `mode` 不可用，因为我们不再相互切换特有的元素。
+
+- 内部元素总是需要提供唯一的 `key` 值。
+
+- css 过渡类将会应用在内部元素中，而不是这个容器（`transition-group`）本身。
+
+```html
+<transition-group name="xxx" tag="ul">
+  <li v-for="item in arr" :key="item.id">{{ item.name }}</li>
+</transition-group>
+```
+
+### 列表排序过渡
+
+`transition-group` 组件还有一个特殊之处，不仅可以进入和离开动画，还可以改变定位 `v-move`。
+
+它会在元素的改变定位的过程中应用（通常结合 `.v-leave-active { position: absolute }`）。
+
+像之前的类名一样，可以通过 `name` 来定义前缀，也可以通过 `move-class` 手动设置。
+
+```html
+<style>
+  .flip-move {
+    transition: all 1s;
+  }
+</style>
+
+<transition-group name="flip"></transition-group>
+```
+
+**注意：使用 FLIP 过渡的元素不能设置为 display: inline，代替方案，可以设置 display: inline-block，或者放置于 flex 容器中**。
+
+`v-move` 在 vue 2.5.0 版本中有问题。
