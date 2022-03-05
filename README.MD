@@ -70,3 +70,4 @@
 - [Vue介绍](./Vue/Vue介绍/index.md)
 - [Vue基本操作](./Vue/Vue基本操作/index.md)
 - [Vue生命周期](./Vue/Vue生命周期/index.md)
+- [Vue过渡动画](./Vue/Vue过渡动画/index.md)
