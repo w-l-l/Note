@@ -66,3 +66,42 @@ vue 会给目标元素添加或移除特定的 class 类名。
 ```
 
 **注意：duration 设置的过渡时长超过原来的过渡时长无效，只能设置小于原本过渡时长的时间**。
+
+## 过渡钩子函数
+
+入场动画：
+
+- `@before-enter="callback"`
+
+- `@enter="callback"`
+
+- `@after-enter="callback"`
+
+- `@enter-cancelled="callback"`
+
+出场动画：
+
+- `@before-leave="callback"`
+
+- `@leave="callback"`
+
+- `@after-leave="callback"`
+
+- `@leave-cancelled="callback"`
+
+**注意：每个构造函数的第一个参数都是当前元素，enter 和 leave 钩子函数的第二个参数是 done，在 enter 和 leave 中必须使用 done 进行回调，否则它们将被同步调用，过渡会立即完成。**
+
+在 `enter` 和 `leave` 钩子函数中，需要写 `el.offsetWidth`（其他 offset 也行）。这句话没有实际的作用，但是不写，出不来动画效果。可以认为 `el.offsetWidth` 会强制动画刷新。
+
+使用钩子函数过渡的元素添加 `:css="false"`，vue 会跳过 css 的检测，可以避免过渡过程中 css 的影响。
+
+```html
+<transition
+  v-on:before-enter="beforeEnter"
+  v-on:enter="enter"
+  v-on:leave="leave"
+  v-bind:css="false"
+>
+  <p v-if="show">Demo</p>
+</transition>
+```
