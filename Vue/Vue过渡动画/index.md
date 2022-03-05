@@ -105,3 +105,72 @@ vue 会给目标元素添加或移除特定的 class 类名。
   <p v-if="show">Demo</p>
 </transition>
 ```
+
+## 过渡的其他操作
+
+### 初始渲染过渡
+
+```html
+<transition appear></transition>
+```
+
+`appear` 可以在页面刚加载的时候出现过渡动画。
+
+同时也支持自定义 class 类名。
+
+- `appear-class`。
+
+- `appear-to-class`。
+
+- `appear-active-class`。
+
+也支持钩子函数。
+
+- `@before-appear="callback"`
+
+- `@appear="callback"`
+
+- `@after-appear="callback"`
+
+- `@appear-cancelled="callback"`
+
+### 多个元素过渡
+
+当有相同标签的元素切换时，需要通过 `key` 设置唯一的值来标记，让 vue 区分它们，否则 vue 为了效率只会替换相同标签内部的内容。
+
+```html
+<transition>
+  <h1 v-if="msg" key="1">显示</h1>
+  <h1 v-else key="2"></h1>
+</transition>
+```
+
+也可以这样：
+
+```html
+<transition>
+  <h1 :key="msg">{{ msg ? '显示' : '隐藏' }}</h1>
+</transition>
+```
+
+### 过渡模式
+
+`transition` 标签的默认行为是进入和离开同时发生。
+
+有时候我们需要先离开再进入，或者先进入后离开，所以 vue 提供了过渡模式 `mode`：
+
+- `in-out`：新元素先进行过渡，完成之后当前元素过渡离开。
+
+- `out-in`：当前元素先进行过渡，完成之后新元素过渡进入。
+
+```html
+<transition mode="out-in"></transition>
+```
+
+### 多个组件过渡
+
+```html
+<transition>
+  <component :is="componentName"></component>
+</transition>
+```
