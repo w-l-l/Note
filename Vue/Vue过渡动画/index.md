@@ -52,3 +52,17 @@ vue 会给目标元素添加或移除特定的 class 类名。
 ```html
 <transition name="xxx" enter-active-class="className" leave-active-class="className"></transition>
 ```
+
+## 显性的过渡持续时间
+
+```html
+<transition :duration="1000"></transition>
+```
+
+`duration` 设置的时间是毫秒级别的，也可以定制进入和移出的持续时间。
+
+```html
+<transition :duration="{ enter: 500, leave: 800 }"></transition>
+```
+
+**注意：duration 设置的过渡时长超过原来的过渡时长无效，只能设置小于原本过渡时长的时间**。
