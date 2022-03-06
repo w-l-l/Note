@@ -21,3 +21,19 @@
 `documentFragment`：内存中保存 n 个 element 的容器对象（不与界面联系），如果更新 fragment 中的某个 element，界面是不更新的。全部更新完再一次渲染到页面，提高性能。
 
 - `obj.hasOwnProperty(propName)`：判断 propName 是否是 obj 自身的属性。
+
+## 数据代理
+
+通过一个对象代理对另一个对象中属性的操作（读 / 写）。
+
+通过 `vm` 对象来代理 data 对象中所有属性的操作。
+
+好处：更方便的操作 data 中的数据。
+
+基本实现流程：
+
+- 通过 `Obejct.defineProperty()` 给 vm 添加与 data 对象的属性对应的属性描述符。
+
+- 所有添加的属性都包含了 `get` 和 `set`。
+
+- 在 `get` 和 `set` 内部去操作 data 中对应的属性数据。
