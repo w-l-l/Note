@@ -40,3 +40,86 @@
 - `v-pre`：显示原始信息跳过编译过程，一些静态的内容不需要编译时，加这个指令可以加快渲染。
 
 - `v-once`：执行一次性的插值，当数据改变时，插值处的数据不会继续更新。
+
+## 自定义指令
+
+全局注册：
+
+```js
+Vue.directive('directiveName', function(el, binding) {
+  ...
+})
+```
+
+局部注册：
+
+```js
+export default {
+  directives: {
+    directiveName(el, binding) {
+      ...
+    }
+  }
+}
+```
+
+使用方法：
+
+```html
+<div v-directiveName></div>
+<div v-directiveName="msg"></div>
+<div v-directiveName:arg="msg"></div>
+<!-- 相关参数 binding 对象中都能获取到 -->
+```
+
+### 指令钩子函数
+
+- `bind`：只调用一次，初始化设置。
+
+- `inserted`：被绑定元素插入父节点时调用（仅保证父节点存在，但不一定已被插入文档中）。
+
+- `update`：所在组件的 `VNode` 更新时调用。
+
+- `componentUpdated`：指令所在组件的 `VNode` 及其子 `VNode` 全部更新后调用。
+
+- `unbind`：只调用一次，指令与元素解绑时调用。
+
+```js
+Vue.directive('directiveName', {
+  bind(el, binding) {
+    ...
+  },
+  inserted(el, binding) {
+    ...
+  },
+  update(el, binding) {
+    ...
+  },
+  componentUpdated(el, binding) {
+    ...
+  },
+  unbind(el, binding) {
+    ...
+  }
+})
+```
+
+简写形式：只在 `bind` 和 `update` 时触发回调。
+
+```js
+Vue.directive('directiveName', function(el, binding) {
+  ...
+})
+```
+
+### 钩子函数相关参数
+
+- `el`：指令所绑定的元素。
+
+- `binding`：一个对象，包含指令相关的信息。
+
+- `VNode`：vue 编译生成的虚拟节点。
+
+- `oldVNode`：上一个虚拟节点，仅在 `update` 和 `componentUpdated` 钩子中使用。
+
+**注意：除了 el 参数之外，其他参数都是只读的，切勿进行修改，如果需要在钩子函数直接共享数据，建议通过元素的 dataset 来进行**。
