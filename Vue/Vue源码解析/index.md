@@ -105,3 +105,90 @@ elementNode.addEventListener(eventName, callback.bind(vm), false)
 将得到的表达式的值设置到对应的属性上。
 
 移除元素的指令属性。
+
+## 通过数据劫持实现数据绑定
+
+`数据绑定(model --> view)`：一旦更新了 data 中的某个属性数据，所有页面上直接使用或间接使用了此属性的节点都会更新。
+
+`数据劫持`：数据劫持是 vue 中用来实现数据绑定的一种技术。
+
+- 基本思想：通过 `Object.defineProperty()` 来监视 data 中所有属性（任意层次）数据的变化，一旦变化就去更新界面。
+
+**四个重要对象：**
+
+`Observer(观察者)`：
+
+- 用来对 data 所有属性数据进行劫持的构造函数。
+
+- 给 data 中所有属性重新定义属性描述，设置 `get` 和 `set`。
+
+- 为 data 中的每个属性创建对应的 dep 对象。
+
+`Dep(Depend依赖)`：
+
+- data 中的每个属性（所有层次）都对应一个 dep 对象。
+
+- 创建的时机：在初始化重新定义 data 中各个属性时创建对应的 dep 对象，或者在 data 中的某个属性值被设置为新的对象时。  
+对象的结构：`{ id, subs }`。  
+&emsp;id：每个 dep 都有一个唯一的 id。  
+&emsp;subs：包含 n 个对应 Watcher 的数组（subscribes 的简写，订阅）。
+
+- subs 属性说明：  
+当一个 Watcher 被创建时，内部会将当前 Watcher 对象添加到对应的 dep 对象的 subs 中。  
+当 data 属性的值发生改变时，所有 subs 中的 Watcher 都会收到更新的通知，从而最终更新对应的界面。
+
+`Compile(编译)`：
+
+- 用来解析模板页面的对象的构造函数（一个实例）。
+
+- 利用 `compile` 对象解析模板页面。
+
+- 每解析一个表达式（非事件指令）都会创建一个对应的 Watcher 对象，并建立 Watch 与 dep 的关系。
+
+- compile 与 watcher 的关系：一对多的关系。
+
+`Watcher(监视)`：
+
+- 模板中每个非事件指令或表达式都对应一个 Watcher 对象。
+
+- 监视当前表达式数据的变化。
+
+- 创建的时机：在初始化编译模板时。
+
+- 对象的组成：`{ vm, exp, cb, value, depIds }`。  
+vm：vue 实例对象。  
+exp：对应指令的表达式。  
+cb：当表达式所对应的数据发生改变的回调函数。  
+value：表达式当前的值。  
+depIds：表达式中各级属性所对应的 dep 对象的集合对象。主要是为了防止 Watcher 和 Dep 重复建立联系。这个对象的属性名是 dep 的 id，属性值是 dep。
+
+**总结：**
+
+- dep 与 watcher 的关系：多对多。
+
+- 一个 data 中的每个属性都对应一个 dep，一个 dep 中的 subs 可能包含多个 watcher（模板中有几个表达式使用到了属性）。
+
+- 模板中一个非事件表达式对应一个 watcher，一个 watcher 中的 depIds 可能包含多个 dep（表达式中包含了几个 data 属性，比如 a.b.c）。
+
+- 数据绑定使用到两个核心技术：`Object.defineProperty()` 和 `消息订阅与发布`。
+
+- dep 与 data 中的属性一一对应。
+
+- watcher 与模板中一般指令和大括号表达式一一对应。
+
+**问题：**
+
+- 什么时候一个 dep 中关联多个 watcher？  
+多个指令或表达式用到了当前同一个属性。
+
+```html
+<div>{{ name }}</div>
+<div>{{ name }}</div>
+```
+
+- 什么时候一个 watcher 中关联多个 dep？  
+多层表达式的 watcher 对应多个 dep。
+
+```html
+<div>{{ a.b.c }}</div>
+```
