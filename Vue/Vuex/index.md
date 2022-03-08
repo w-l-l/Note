@@ -175,3 +175,40 @@ export default {
 import store from './store'
 new Vue({ store })
 ```
+
+## 将 Vuex 引入到项目中
+
+下载 `Vuex`。
+
+```js
+npm install vuex --save
+```
+
+使用 `Vuex`：
+
+store.js
+
+```js
+import Vue from 'vue'
+import Vuex from 'vuex'
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  state,
+  mutations,
+  actions,
+  getters,
+  modules // 特别复杂的项目才用这个
+})
+```
+
+main.js
+
+```js
+import Vue from 'vue'
+import store from './store'
+
+new Vue({ store })
+```
+
+![vuex](./img/vuex.png)
