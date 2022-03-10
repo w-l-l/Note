@@ -98,3 +98,153 @@ const router = new VueRouter({
   base: '/vue' // 应用的基路径
 })
 ```
+
+## 向路由组件传递数据
+
+**params 传参：**
+
+配置路由：
+
+```js
+import VueRouter from 'vue-router'
+import home from 'views/home'
+
+const router = new VueRouter({
+  routes: [
+    {
+      name: 'home',
+      path: '/home/:id',
+      component: home
+    }
+  ]
+})
+```
+
+路由路径：
+
+```html
+<router-link :to="'/home/' + id"></router-link>
+<!-- 或者 -->
+<router-link :to="{ name: 'home', params: { id } }"></router-link>
+```
+
+等同于：
+
+```js
+this.$router.push(`/home/${id}`)
+this.$router.push({
+  name: 'home',
+  params: { id }
+})
+```
+
+**注意：params 只能通过 name 来引入路由，使用 path 会 undefined。**
+
+路由组件中读取 `params` 参数：`this.$route.params.id`。
+
+**query 传参：**
+
+配置路由：
+
+```js
+import VueRouter from 'vue-router'
+import home from 'views/home'
+
+const router = new VueRouter({
+  routes: [
+    {
+      name: 'home',
+      path: '/home',
+      component: home
+    }
+  ]
+})
+```
+
+路由路径：
+
+```html
+<router-link to="/home?id=1"></router-link>
+<router-link :to="{ path: '/home', query: { id } }"></router-link>
+<router-link :to="{ name: 'home', query: { id } }"></router-link>
+```
+
+等同于：
+
+```js
+this.$router.push('/home?id=1')
+this.$router.push({
+  path: '/home',
+  query: { id }
+})
+this.$router.push({
+  name: 'home',
+  query: { id }
+})
+```
+
+`query` 传参可以通过 name 或 path 来引入路由。
+
+路由组件中读取 `query` 参数：`this.$route.query.id`
+
+**props 参数：**
+
+`router-view` 携带数据。
+
+```html
+<router-view :msg="msg"></router-view>
+```
+
+- `props` 的值为布尔类型，设置为 `true` 时，`route.params` 将被设置为组件的 `props`。
+
+```js
+{
+  path: '/home/:id',
+  component: home,
+  props: true
+}
+
+const home = {
+  props: ['id'], // 使用 props 接收路由参数
+  template: '<div>用户ID: {{ id }}</div>' // 使用路由参数
+}
+```
+
+- `props` 的值为对象类型，它将原样设置为组件的 `props`，当 `props` 是静态的时候很有用。
+
+```js
+{
+  path: '/home/:id',
+  component: home,
+  props: {
+    name: 'xxx',
+    age: 18
+  }
+}
+
+const home = {
+  props: ['name', 'age', 'id'], // 这种方式 id 不存在，因为 props 对象中没有 id 属性
+  template: '<div>用户信息: {{ name }} --- {{ age }}</div>'
+}
+```
+
+- `props` 的值为函数类型，这允许你将参数转换为其他类型，将静态值与基于路由的值相结合等等。
+
+```js
+{
+  path: '/home/:id',
+  component: home,
+  props: route => {
+    return {
+      name: 'xxx',
+      age: 18,
+      id: route.params.id
+    }
+  }
+}
+
+const home = {
+  props: ['name', 'age', 'id'],
+  template: '<div>用户信息: {{ name }} --- {{ age }} --- {{ id }}</div>'
+}
+```
