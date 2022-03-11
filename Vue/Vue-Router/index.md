@@ -248,3 +248,51 @@ const home = {
   template: '<div>用户信息: {{ name }} --- {{ age }} --- {{ id }}</div>'
 }
 ```
+
+## 缓存路由组件
+
+默认情况下，被切换的路由组件对象会死亡释放，再次回来时是重新创建的。
+
+如果可以缓存路由组件对象，可以提高用户体验。
+
+实现方式：`keep-alive`。
+
+```html
+<keep-alive>
+  <router-view></router-view>
+</keep-alive>
+```
+
+属性：
+
+- `include`：支持字符串、数组、正则表达式，只有名称匹配的组件会被缓存。
+
+```html
+<keep-alive include="home,about"></keep-alive>
+<keep-alive :include="['home', 'about']"></keep-alive>
+<keep-alive :include="/home|about/"></keep-alive>
+```
+
+- `exclude`：支持字符串、数组、正则表达式，任何名称匹配的组件都不会缓存。
+
+```html
+<keep-alive exclude="home,about"></keep-alive>
+<keep-alive :exclude="['home', 'about']"></keep-alive>
+<keep-alive :exclude="/home|about/"></keep-alive>
+```
+
+- `max`：数值类型，最多可以缓存多少个路由组件实例。
+
+```html
+<keep-alive :max="10"></keep-alive>
+```
+
+**注意：匹配首先检查组件自身的 name 选项，如果 name 选项不可用，则匹配它的局部注册名称（父组件 component 选项的键值），匿名组件不能被匹配。**
+
+当组件在 `keep-alive` 内被切换时，它的 `activated` 和 `deactivated` 这两个生命周期钩子函数将会被对应执行。
+
+- `activated`：被 `keep-alive` 缓存的组件激活时调用。
+
+- `deactivated`：被 `keep-alive` 缓存的组件停用时调用。
+
+**注意：这两个钩子函数在服务器端渲染期间是不被调用的。**
