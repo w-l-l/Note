@@ -188,3 +188,17 @@ this.eventHub.$off('eventName')
 ```js
 this.eventHub.$emit('eventName', params)
 ```
+
+## this.$refs
+
+获取元素或者组件。
+
+```html
+<div ref="divRef"></div>
+<temp ref="tempRef"></temp>
+```
+
+```js
+this.$refs.divRef // dom 对象
+this.$refs.tempRef // 组件实例
+```
