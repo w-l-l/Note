@@ -296,3 +296,17 @@ const home = {
 - `deactivated`：被 `keep-alive` 缓存的组件停用时调用。
 
 **注意：这两个钩子函数在服务器端渲染期间是不被调用的。**
+
+## 路由编程式导航
+
+- `this.$router.push(path)`：相当于点击路由链接，可以返回到当前路由界面。
+
+- `this.$router.replace(path)`：用新路由替换当前路由，不可以返回到当前路由界面。
+
+- `this.$router.back()`：请求上一个路由记录。
+
+- `this.$router.forward()`：请求下一个路由记录。
+
+- `this.$router.go(number)`  
+`number = -1`：请求上一个路由记录。  
+`number = 1`：请求下一个路由记录。
