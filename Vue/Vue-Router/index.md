@@ -396,3 +396,71 @@ beforeRouteLeave(to, from, next) {
   answer ? next() : next(false)
 }
 ```
+
+## 其他路由相关
+
+**优化路由配置：**
+
+点击路由会自动添加 `router-link-active` 这个 `class` 类。
+
+我们可以在配置中修改它。
+
+```js
+const router = new VueRouter({
+  linkActiveClass: '你需要自定义的类名'
+})
+```
+
+**命名视图：**
+
+```html
+<router-view></router-view>
+<router-view name="right"></router-view>
+<router-view name="left"></router-view>
+```
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/',
+      components: {
+        default: Default, // 默认
+        right: Right,
+        left: Left
+      }
+    }
+  ]
+})
+```
+
+**命名路由：**
+
+通过 `name` 属性设置别名。
+
+```js
+{
+  name: 'home',
+  path: '/home/:id',
+  component: Home
+}
+```
+
+使用方法：
+
+- 界面路由：
+
+```html
+<router-view :to="{ name: 'home', params: { id } }"></router-view>
+```
+
+- 编程式路由：
+
+```js
+this.$router.push({
+  name: 'home',
+  params: {
+    id
+  }
+})
+```
