@@ -77,3 +77,114 @@ new Vue({
 ```
 
 `component` 是一个占位符，`is` 属性可以用来指定要展示的组件的名称。
+
+## 组件通信方式
+
+### 父组件向子组件传值（props）
+
+在引用子组件的时候，通过属性绑定 `v-bind` 的形式，传递给子组件内部，供子组件使用。
+
+把父组件传递过来的属性，先在 `props` 中定义一下，才能使用这个数据。
+
+```html
+<temp :msg="msg"></temp>
+```
+
+```js
+new Vue({
+  data: {
+    msg: 'xxx'
+  },
+  components: {
+    temp: {
+      tempalte: '<h1>{{ msg }}</h1>',
+      // props: ['msg']
+      props: {
+        msg: {
+          type: String,
+          required: true,
+          default: ''
+          // default: _ => [] 对象或者数组默认值必须从一个工厂函数获取
+        }
+      }
+    }
+  }
+})
+```
+
+**注意：组件中 props 中的数据，都是通过父组件传递给子组件的，props 中的数据都是只读的，无法重新赋值。**
+
+### 子组件向父组件传值（$emit / props）
+
+父组件向子组件传递自定义事件，使用的事件绑定机制 `v-on`，当我们自定义一个事件属性之后，那么子组件就能够通过 `$emit` 来调用这个方法了。
+
+父组件将事件的引用，传递到子组件内部，子组件在内部调用父组件传递过来的方法，同时把要发送给父组件的数据，在调用方法的时候当作参数传递进去。
+
+```html
+<temp @fn="add" :propFn="addd"></temp>
+```
+
+```js
+new Vue({
+  data: {
+    msg: ''
+  },
+  methods: {
+    add(v) {
+      this.msg = v
+    }
+  },
+  components: {
+    temp: {
+      template: `<div>
+        <button @click="add">$emit添加</button>
+        <button @click="propFn(msg)">props添加</button>
+      </div>`,
+      data() {
+        return {
+          msg: '子组件'
+        }
+      },
+      methods: {
+        add() {
+          this.$emit('fn', this.msg)
+        }
+      },
+      props: ['propFn'] // props 也可以子组件向父组件传值
+    }
+  }
+})
+```
+
+### 兄弟组件传值（eventHub）
+
+单独的事件中心管理组件间的通信。
+
+```js
+new Vue({
+  el: '#app',
+  created() {
+    Vue.prototype.eventHub = this
+  }
+})
+```
+
+监听事件：组件挂载页面的时候，可以给中心管理绑定一个事件，让其他组件调用并传值。
+
+```js
+this.eventHub.$on('eventName', function() {
+  console.log(arguments)
+})
+```
+
+销毁事件。
+
+```js
+this.eventHub.$off('eventName')
+```
+
+触发事件。
+
+```js
+this.eventHub.$emit('eventName', params)
+```
