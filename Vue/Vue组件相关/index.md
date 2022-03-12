@@ -7,3 +7,57 @@
 - `模块化`：是从代码逻辑的角度进行划分的，方便代码分层开发，保证每个功能模块的职能单一。
 
 - `组件化`：是从 UI 界面的角度进行划分的，前端的组件化，方便 UI 组件的复用。
+
+## 组件定义方式
+
+### 全局组件
+
+1. 使用 `Vue.extend` 配合 `Vue.component` 方法。
+
+```js
+Vue.component('componentName', Vue.extend({
+  tempalte: 'xxx'
+}))
+```
+
+2. 直接使用 `Vue.component` 方法。
+
+```js
+Vue.component('componentName', {
+  template: 'xxx'
+})
+```
+
+3. 模板组件。
+
+```html
+<template id="temp"></template>
+```
+
+```js
+Vue.component('componentName', {
+  template: '#temp'
+})
+```
+
+### 内部私有组件
+
+```js
+new Vue({
+  components: {
+    temp1: {
+      template: 'xxx'
+    },
+    temp2: {
+      template: '#id'
+    },
+    temp3: Vue.extend({
+      template: 'xxx' // 或者 '#id'
+    })
+  }
+})
+```
+
+**注意：组件名有大写字母，使用的时候，大写字母变小写，前面加上短杠（'tEmp' --> `<t-emp></t-emp>`）。**
+
+**组件只能存在一个根元素，多个元素需要使用标签包裹起来。**
