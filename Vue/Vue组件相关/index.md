@@ -202,3 +202,112 @@ this.eventHub.$emit('eventName', params)
 this.$refs.divRef // dom 对象
 this.$refs.tempRef // 组件实例
 ```
+
+## 组件插槽
+
+### 默认插槽
+
+```js
+Vue.component('temp', {
+  template: '<div>提示：<slot>默认信息</slot></div>'
+})
+```
+
+页面使用。
+
+```html
+<temp>成功</temp>
+<!-- <div>提示：成功</div> -->
+```
+
+### 具名插槽
+
+```js
+Vue.component('temp', {
+  template: `<div>
+    <header>
+      <slot name="header"></slot>
+    </header>
+    <main>
+      <slot></slot>
+    </main>
+    <footer>
+      <slot name="footer"></slot>
+    </footer>
+  </div>`
+})
+```
+
+页面使用。
+
+```html
+<temp>
+  <h1 slot="header">头部</h1>
+  <h1 slot="footer">低部</h1>
+  <h1>默认内容</h1>
+</temp>
+
+<temp>
+  <template slot="header">
+    <h1>头部1</h1>
+    <h1>头部2</h1>
+  </template>
+  <template slot="footer">
+    <h1>底部1</h1>
+    <h1>底部2</h1>
+  </template>
+  <h1>默认内容1</h1>
+  <h1>默认内容2</h1>
+</temp>
+```
+
+### 作用域插槽（slot-scope）
+
+```js
+Vue.component('temp', {
+  props: ['list'],
+  template: `<ul>
+    <li v-for="item in list" :key="item.id">
+      <slot :info="item">{{ item.name }}</slot> // 传递数据
+    </li>
+  </ul>`
+})
+```
+
+页面使用。
+
+```html
+<temp :list="list">
+  <template slot-scope="aa">
+    <h1 v-if="aa.info.id === 3">{{ aa.info.name }}</h1>
+  </template>
+</temp>
+```
+
+### 新版 v-slot
+
+`v-slot` 的出现是为了代替原有的 `slot` 和 `slot-scope`，简化了一些复杂的语法。
+
+一句话概括就是 `v-slot` `:` 后边是插槽名称，`=` 后边是组件内部绑定作用域值的映射。
+
+```js
+Vue.component('temp', {
+  props: ['list'],
+  template: `<ul>
+    <li>
+      <slot name="msg" :name="name" :age="age"></slot>
+    </li>
+  </ul>`
+})
+```
+
+页面使用。
+
+```html
+<temp>
+  <template v-slot:msg="{ name, age }">
+    <div>{{ name }}</div>
+    <div>{{ age }}</div>
+  </template>
+</temp>
+```
