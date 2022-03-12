@@ -310,3 +310,89 @@ const home = {
 - `this.$router.go(number)`  
 `number = -1`：请求上一个路由记录。  
 `number = 1`：请求下一个路由记录。
+
+## 路由导航守卫
+
+**全局导航守卫：**
+
+`router.beforeEach((to, from, next) => { ... })`：前置钩子。
+
+`router.afterEach((to, from) => { ... })`：后置钩子。
+
+回调参数：
+
+- `to`：即将进入的目标路由对象。
+
+- `from`：当前导航正要离开的路由对象。
+
+- `next`：Function。  
+`next()`：进入管道中的下一个钩子。  
+`next(false)`：中断当前的导航，重置到 from 路由对应的地址。  
+`next(path)`：跳转到 path 地址。  
+`next(error)`：传递一个 `Error` 实例，则导航会被终止且该错误会被传递给 `router.onError()` 注册过的回调。
+
+例如：判断当前用户是否登陆。
+
+```js
+router.beforeEach((to, from, next) => {
+  const isLogin = window.sessionStorage.getItem('token')
+  isLogin ? next() : next('/login')
+})
+```
+
+**路由独享守卫：**
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/home',
+      component: Home,
+      beforeEnter: (to, from, next) => { ... }
+    }
+  ]
+})
+```
+
+路由独享守卫的使用方法跟全局前置守卫的使用方法一样。
+
+**组件内的守卫：**
+
+- `beforeRouteEnter(to, from, next) { ... }`  
+在渲染该组件的对应路由被 confirm 前调用。  
+不能获取组件的实例 this。  
+因为当守卫执行前，组件实例还没被创建。  
+不过你可以传递一个回调 `next` 来访问组件实例，在导航被确认的时候执行回调，并且把组件实例作为回调方法的参数。
+
+```js
+beforeRouteEnter(to, from, next) {
+  next(vm => {
+    // 通过 vm 访问组件实例
+  })
+}
+```
+
+- `beforeRouteUpdate(to, from, next) { ... }`  
+在当前路由改变，但是该组件被复用时调用。  
+举例来讲，对于一个带有动态参数的路径 `/foo/:id`，在 `/foo/1` 和 `/foo/2` 之间跳转的时候。  
+由于会渲染同样的 Foo 组件，因此组件实例会被复用，而这个钩子就会在这个情况下被调用。  
+可以访问组件实例 this。
+
+```js
+beforeRouteUpdate(to, from, next) {
+  this.name = to.params.name
+  next()
+}
+```
+
+- `beforeRouteLeave(to, from, next) { ... }`  
+导航离开该组件的对应路由时调用。  
+可以访问组件实例 this。  
+离开当前页面可以进行提示。
+
+```js
+beforeRouteLeave(to, from, next) {
+  const answer = window.confirm('你确定要离开当前页面吗？')
+  answer ? next() : next(false)
+}
+```
