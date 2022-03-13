@@ -43,3 +43,29 @@ module.exports = {
 - `clear`：删除默认的打包入口。
 
 - `add`：添加新的打包入口。
+
+## 通过 externals 加载外部 CDN 资源
+
+默认情况下，通过 `import` 语法导入的第三方依赖包，最终会被打包合并到同一个文件中，从而导致打包成功后，单文件体积过大。
+
+可以通过 `webpack` 的 `externals` 节点，来配置并加载外部的 `CDN` 资源，凡是声明在 `externals` 中的第三方依赖，都不会进行打包。
+
+```js
+// vue.config.js 配置
+module.exports = {
+  chainWebpack: config => {
+    config.when(process.env.NODE_ENV === 'production', config => {
+      config.entry('app').clear().add('./scr/main-pro.js')
+      config.set('externals', {
+        vue: 'Vue',
+        'vue-router': 'VueRouter',
+        vuex: 'Vuex',
+        axios: 'axios'
+        ...
+      })
+    })
+  }
+}
+```
+
+最后在 `index.html` 文件的头部，添加相关的 `CDN` 资源引用。
