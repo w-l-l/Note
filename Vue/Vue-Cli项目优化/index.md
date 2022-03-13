@@ -69,3 +69,52 @@ module.exports = {
 ```
 
 最后在 `index.html` 文件的头部，添加相关的 `CDN` 资源引用。
+
+## 首页内容定制
+
+不同的打包环境下，首页内容可能会有所不同，我们可以通过插件的方式进行定制，配置如下。
+
+```js
+// vue.config.js 配置
+module.exports = {
+  chainWebpack: config => {
+    config.when(peocess.env.NODE_ENV === 'production', config => {
+      config.plugin('html').tap(args => {
+        args[0].isPro = true
+        return args
+      })
+    })
+    config.when(peocess.env.NODE_ENV === 'development', config => {
+      config.plugin('html').tap(args => {
+        args[0].isPro = false
+        return args
+      })
+    })
+  }
+}
+```
+
+在 `index.html` 首页中，可以根据 `isPro` 的值，来决定如何渲染页面结构。
+
+使用 `<%%>` 脚本片段包裹。
+
+- `<%...%>`：写服务器代码。
+
+- `<%=...%>`：写后台的变量值。
+
+按需渲染页面标题。
+
+```html
+<title>
+  <%= htmlWebpackPlugin.options.isPro ? '生产环境' : '开发环境' %>
+  系统名
+</title>
+```
+
+按需加载外部的 `CDN` 资源。
+
+```html
+<% if(htmlWebpackPlugin.options.isPro) { %>
+  <!-- CDN 资源 -->
+<% } %>
+```
