@@ -247,3 +247,34 @@ pm2 start app.js/* 脚本 */ --name/* 自定义名称 */
 - 停止项目：`pm2 stop name`。
 
 - 删除项目：`pm2 delete name`。
+
+## 配置别名以及路径问题
+
+在 `vue.config.js` 中添加配置。
+
+```js
+module.exports = {
+  configureWebpack: {
+    resolve: {
+      alias: {
+        'assets': '@/assets',
+        'components': '@/components'
+      }
+    }
+  }
+}
+```
+
+图片路径问题。
+
+正常使用。
+
+```html
+<img src="~assets/img/xxx.png">
+```
+
+属性绑定使用。
+
+```html
+<img :src="require('@/assets/img/xxx.png')">
+```
