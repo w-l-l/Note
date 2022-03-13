@@ -118,3 +118,39 @@ module.exports = {
   <!-- CDN 资源 -->
 <% } %>
 ```
+
+## 路由懒加载
+
+安装 `@babel/plugin-syntax-dynamic-import` 插件。
+
+```js
+npm i @babel/plugin-syntax-dynamic-import -D
+```
+
+配置 `babel.config.js`。
+
+```js
+module.exports = {
+  plugins: ['@babel/plugin-syntax-dynamic-import']
+}
+```
+
+将路由更改为按需加载的形式，修改路由配置文件。
+
+```js
+const Home = _ => import(/* webpackChunkName: 'chunk1' */, './Home.vue')
+const User = _ => import(/* webpackChunkName: 'chunk1' */, './User.vue')
+const About = _ => import(/* webpackChunkName: 'chunk2' */, './About.vue')
+const Login = _ => import(/* webpackChunkName: 'chunk2' */, './Login.vue')
+
+new VueRouter({
+  routes: [
+    { path: '/home', component: Home },
+    { path: '/user', component: User },
+    { path: '/about', component: About },
+    { path: '/login', component: Login }
+  ]
+})
+```
+
+`webpack` 会将任何一个异步模块与相同的块名称组合到相同的异步块中。
