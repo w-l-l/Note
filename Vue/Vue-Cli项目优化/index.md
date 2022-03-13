@@ -154,3 +154,96 @@ new VueRouter({
 ```
 
 `webpack` 会将任何一个异步模块与相同的块名称组合到相同的异步块中。
+
+## 通过 node 创建 web 服务器
+
+通过 `express` 快速创建 `web` 服务器，将 `vue-cli` 打包生成的 `dist` 文件夹托管为静态资源即可。
+
+```js
+// app.js
+const express = require('express')
+const app = express()
+app.use(express.static('./dist'))
+app.listen(80, _ => console.log('服务器启动成功...'))
+```
+
+### 开启 gzip 压缩配置
+
+使用 `gzip` 可以减少文件体积，使传输速度更快。
+
+安装 `compression`。
+
+```js
+npm i compression -S
+```
+
+`app.js` 文件配置中间件。
+
+```js
+const express = require('express')
+const compression = require('compression')
+const app = express()
+app.use(compression())
+app.use(express.static('./dist'))
+app.listen(80, _ => console.log('服务器启动成功...'))
+```
+
+**注意：开启 gzip 压缩，一定要写到 dist 静态资源托管之前。**
+
+### 配置 https 服务
+
+首先[申请 SSL 证书](https://freessl.org)。
+
+- 进入网站，输入要申请的域名并选择品牌。
+
+- 输入自己的邮箱并选择相关选项。
+
+- 验证 `DNS`（在域名管理后台添加 `TXT` 记录）。
+
+- 验证通过之后，下载 `SSL` 证书。  
+`full_chain.pem`：公钥。  
+`private.key`：私钥。
+
+在 `app.js` 中导入证书。
+
+```js
+const express = require('express')
+const compression = require('compression')
+const https = require('https')
+const fs = require('fs')
+
+const app = express()
+// 创建配置对象设置公钥和私钥
+const options = {
+  cert: fs.readFileSync('./full_chain.pem'),
+  key: fs.readFileSync('./private.key')
+}
+app.use(compression())
+app.use(express.static('./dist'))
+// 启动 https 服务
+https.createServer(options, app).listen(443)
+```
+
+### 使用 pm2 管理应用
+
+在服务器中安装 `pm2`。
+
+```js
+npm i pm2 -g
+```
+
+启动项目。
+
+```js
+pm2 start app.js/* 脚本 */ --name/* 自定义名称 */
+```
+
+其他命令。
+
+- 查看所有项目：`pm2 ls`。
+
+- 重启项目：`pm2 restart name`。
+
+- 停止项目：`pm2 stop name`。
+
+- 删除项目：`pm2 delete name`。
