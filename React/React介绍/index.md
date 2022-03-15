@@ -52,3 +52,33 @@ ReactDOM.render(vnode, document.getElementById('容器id'))
 - 虚拟 `DOM` 比较轻，真实 `DOM` 比较重，因为虚拟 `DOM` 是 `React` 内部在用，无需真实 `DOM` 上那么多的属性。
 
 - 虚拟 `DOM` 最终会被 `React` 转化为真实 `DOM`，呈现在页面上。
+
+## JSX 语法规则
+
+`JSX` 全称：`JavaScript XML`。
+
+`React` 定义的一种类似于 `XML` 的 `js` 扩展语法（本质：`js + XML`）。
+
+`React.createElement(component, props, ...children)` 方法的语法糖。
+
+- 定义虚拟 `DOM` 时，不要写引号。
+
+- 标签中混入 `js` 表达式时要用 `{}` 包裹。
+
+- 样式的类名指定不要用 `class`，要用 `className`。
+
+- 内联样式，要用 `style={{ key: value }}` 的形式去写。
+
+- 只有一个根标签。
+
+- 标签必须闭合。
+
+- 标签首字母。  
+若小写字母开头，则将该标签转化为 `html` 中同名元素，若 `html` 中无该标签对应的同名元素，则报错。  
+若大写字母开头，`React` 就去渲染对应的组件，若组件没有定义，则报错。
+
+`babel.js` 的作用：
+
+1. 浏览器不能直接解析 `JSX` 代码，需要 `babel` 转译为纯 `js` 的代码才能运行。
+
+2. 只要使用了 `JSX`，`script` 标签都要加上 `type="text/babel"`，声明需要 `babel` 来处理。
