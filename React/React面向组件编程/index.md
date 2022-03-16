@@ -87,3 +87,13 @@ ReactDOM.render(<MyComponent />, document.getElementById('容器id'))
 ```
 
 **注意：on 后面拼接的事件名首字母要大写，函数表达式不要调用，否则绑定的事件为函数的返回值。**
+
+## 组件标签中的内容
+
+```html
+<Componeent>...</Componeent>
+```
+
+组件标签中的内容会通过 `children` 属性传递给 `props`。
+
+在组件中我们可以通过 `this.props.children` 的方式获取到组件标签中填写的内容。
