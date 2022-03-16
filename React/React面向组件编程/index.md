@@ -31,3 +31,43 @@
 - 实现动态组件：  
 动态显示初始化数据（数据类型、数据名称、保存在哪个组件）。  
 交互（从绑定事件监听开始）。
+
+## 函数式组件与类式组件
+
+函数式组件：
+
+```js
+function MyComponent() {
+  console.log(this) // 此处的 this 是 undefined，因为 babel 编译后开启了严格模式
+  return <h1>函数式组件</h1>
+}
+
+ReacrDOM.render(<MyComponent />, document.getElementById('容器id'))
+```
+
+`react` 解析组件标签，找到 `MyComponent` 组件，发现组件是使用函数定义的，随后调用函数，将返回的虚拟 DOM 转化为真实 DOM，随后呈现在页面中。
+
+类式组件：
+
+```js
+class MyComponent extends React.Component {
+  render() {
+    console.log(this) // 此处的 this 是 MyComponent 类的组件实例对象
+    return <h1>类式组件</h1>
+  }
+}
+
+ReactDOM.render(<MyComponent />, document.getElementById('容器id'))
+```
+
+`react` 解析组件标签，找到 `MyComponent` 组件，发现组件是使用类定义的，随后 `react` 内部 `new` 出来该类的实例，并通过该实例调用原型上的 `render` 方法。
+
+将 `render` 方法返回的虚拟 DOM 转化为真实 DOM，随后呈现在页面上。
+
+**注意：**
+
+- 组件名首字母必须大写。
+
+- 虚拟 DOM 元素只能有一个根标签。
+
+- 虚拟 DOM 元素必须有结束标签（`<Label></Label>` 或 `<Label />`）。
