@@ -72,3 +72,126 @@ class Component extends React.Component {
 
 ReactDOM.render(<Component />, document.getElementById('容器id'))
 ```
+
+## props 传值
+
+每个组件对象都会有 `props` 属性（`properties` 的简写）。
+
+组件标签的所有属性都保存在 `props` 中。
+
+通过标签属性从组件外向组件内传递变化的数据。
+
+**注意：props 中的数据是只读的，不要进行修改，否则会报错。**
+
+内部读取某个属性值。
+
+```js
+this.props.xxx
+```
+
+`props` 传递：
+
+- 单独传递。
+
+```html
+<Component name="xxx" />
+```
+
+- 批量传递。
+
+```html
+<Component {...props} />
+```
+
+- 覆盖之前的属性值。
+
+```html
+<Component {...props} name="xxx" />
+```
+
+### 对 props 中的属性进行类型限制和必要性限制
+
+第一种方式：`react` v15.5 版本之前（v15.5版本之后已废弃）。
+
+```js
+Component.propTypes = {
+  name: React.PropTypes.string.isRequired, // 必须传值，并且是字符串类型
+  age: React.PropTypes.number // 必须是数值类型
+}
+```
+
+第二种方式：使用 `prop-types` 库进行限制（需要引入 `prop-types` 库）。
+
+```js
+Component.propTypes = {
+  name: PropTypes.string.isRequired, // 必须传值，并且是字符串类型
+  age: PropTypes.number // 必须是数值类型
+}
+```
+
+**注意：PropTypes 对类型进行了重写，原生首字母都是大写，也有个别特殊的，如下：**
+
+```js
+PropTypes.func // 函数类型
+PropTypes.bool // 布尔类型
+```
+
+### 设置默认值
+
+```js
+Component.defaultProps = {
+  name: 'xxx',
+  age: 18
+}
+```
+
+### 使用方式
+
+- 函数式组件使用。
+
+```js
+function Component(props) {
+  return <h1>{ props.name }</h1>
+}
+
+Component.propTypes = { ... }
+Component.defaultProps = { ... }
+```
+
+- 类式组件使用。
+
+```js
+class Component extends React.Component {
+  static propTypes = { ... }
+  static defaultProps = { ... }
+  render() {
+    return <h1>{ this.props.name }</h1>
+  }
+}
+```
+
+### 组件类的构造函数
+
+情况一：
+
+```js
+class Component extends React.Component {
+  constructor(props) {
+    super(props)
+    console.log(this.props) // 传递进来的属性
+  }
+}
+```
+
+情况二：
+
+```js
+class Component extends React.Component {
+  constructor(props) {
+    super()
+    console.log(this.props) // undefined
+  }
+}
+```
+
+**注意：构造器是否接收 props，是否传递给 super，取决于：是否希望在构造器中通过 this 访问 props。**
