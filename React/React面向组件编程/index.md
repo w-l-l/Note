@@ -71,3 +71,19 @@ ReactDOM.render(<MyComponent />, document.getElementById('容器id'))
 - 虚拟 DOM 元素只能有一个根标签。
 
 - 虚拟 DOM 元素必须有结束标签（`<Label></Label>` 或 `<Label />`）。
+
+## React 中的事件绑定
+
+传统事件绑定：
+
+```html
+<div onclick="func()"></div>
+```
+
+`react` 中的事件绑定：
+
+```html
+<div onClick={func}></div>
+```
+
+**注意：on 后面拼接的事件名首字母要大写，函数表达式不要调用，否则绑定的事件为函数的返回值。**
