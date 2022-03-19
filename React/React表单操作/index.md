@@ -78,3 +78,54 @@ ReactDOM.render(<Component />, document.getElementById('容器id'))
 - 若 A 函数，调用的返回值依然是一个函数，那么 A 就可以称之为高阶函数。
 
 常用的高阶函数：`Promise`、`setTimeout`、`arr.map()` 等等。
+
+## 函数柯里化
+
+通过函数调用继续返回函数的方式，实现多次接收参数最后同一处理的函数编码形式。
+
+### 函数柯里化提交数据
+
+```js
+class Component extends React.Component {
+  state = {
+    name: '',
+    password: ''
+  }
+  submit = event => { ... }
+  saveFormData = flag => event => this.setState({ [flag]: event.target.value })
+  render() {
+    return (
+      <form onSubmit={ this.submit }>
+        <input type="text" onChange={ this.saveFormData('name') } />
+        <input type="password" onChange={ this.saveFormData('password') } />
+        <button>登录</button>
+      </form>
+    )
+  }
+}
+
+ReactDOM.render(<Component />, document.getElementById('容器id'))
+```
+
+### 不使用函数柯里化提交数据
+
+```js
+class Component extends React.Component {
+  state = {
+    name: '',
+    password: ''
+  }
+  submit = event => { ... }
+  saveFormData = (flag, event) => this.setState({ [flag]: event.target.value })
+  render() {
+    return (
+      <form onSubmit={ this.submit }>
+        <input type="text" onChange={ event => this.saveFormData('name', event) } />
+        <input type="password" onChange={ event => this.saveFormData('password', event) } />
+      </form>
+    )
+  }
+}
+
+ReactDOM.render(<Component />, document.getElementById('容器id'))
+```
