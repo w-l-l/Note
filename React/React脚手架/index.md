@@ -125,3 +125,25 @@ module.exports = {
   color: red;
 }
 ```
+
+## 严格模式
+
+需要进行严格模式检查的组件使用 `<React.StrictMode></React.StrictMode>` 标签包裹。
+
+```html
+<React.StrictMode>
+  <App />
+</React.StrictMode>
+```
+
+`React.StrictMode` 标签的作用：
+
+- 识别具有不安全生命周期的组件。
+
+- 有关旧式字符串 ref 用法的警告。
+
+- 关于已弃用的 `React.findDOMNode` 用法的警告。
+
+- 检查意外的副作用。
+
+- 检测遗留 `context API`。
