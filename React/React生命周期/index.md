@@ -43,3 +43,35 @@
 
 - `componentWillUnmount()`：组件将要卸载（常用）。  
 一般在这个钩子中做一些收尾的事，例如：关闭定时器，取消订阅消息等。
+
+## 新生命周期
+
+![新生命周期流程图](./img/lifecycle_new.png)
+
+**初始化阶段：** 由 `ReactDOM.render()` 触发，初次渲染。
+
+- `constructor(props)`。
+
+- `static getDerivedStateFromProps(props, state)`：它应该返回一个对象来更新 `state` （将 `props` 中的参数映射到 `state` 中去），如果返回 `null` 则不更新任何内容。  
+**注意：必须返回一个对象或者 null。**
+
+- `render()`。
+
+- `componentDidMount()`。
+
+**更新阶段：** 由组件内部 `this.setState()` 或组件重新 `render()` 触发。
+
+- `static getDerivedStateFromProps(props, state)`。
+
+- `shouldComponentUpdate(nextProps, nextState)`。
+
+- `render()`。
+
+- `getSnapshotBeforeUpdate(prevProps, prevState)`：此钩子在最近一次渲染输出（提交到 `DOM` 节点）之前调用。它使得组件能在发生更改之前从 `DOM` 中捕获一些信息（例如：滚动位置）。此生命周期的任何返回值将作为参数传递给 `componentDidUpdate()`。  
+**注意：该钩子应返回 snapshot 的值或 null。**
+
+- `componentDidUpdate(prevProps, prevState, snapshot)`
+
+**卸载组件：** 由 `ReactDOM.unmountComponentAtNode(容器)` 触发。
+
+- `componentWillUnmount()`。
