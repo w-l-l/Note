@@ -51,3 +51,77 @@ npm i create-react-app -g
 ```
 
 如果浏览器不支持 `js` 将展示 `noscript` 标签中的内容。
+
+## 样式模块化
+
+模块引入：
+
+```js
+import style from './index.module.css'
+
+<div className={ style.color }></div>
+```
+
+`webpack` 配置：
+
+```js
+// 在 webpack.config.js 中添加 modules 参数，启用 css 的模块化
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: ['style-loader', {
+          loader: 'css-loader',
+          options: {
+            modules: {
+              localIdentName: '[path][name]-[local]-[hash:5]'
+            }
+          }
+        }, 'sass-loader']
+      }
+    ]
+  }
+}
+```
+
+`localIdentName` 参数：
+
+- `[path]`：表示样式表（相对于项目根目录）所在路径。
+
+- `[name]`：表示样式表文件名称。
+
+- `[local]`：表示样式表的类名定义名称。
+
+- `[hash:length]`：表示 32 位的 hash 值。
+
+还有一种写法：
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader?modules&localIdentName=[path]',
+          'sass-loader'
+        ]
+      }
+    ]
+  }
+}
+```
+
+但是新版本 `css-loader3.x` 不再支持这种方式的写法了。
+
+**注意：一般我们使用的第三次 UI 组件，它们的样式表都是 .css 结尾的，所以我们最好不要为 .css 结尾的文件启用模块化。我们可以手写 scss 或 less 样式文件，只需要为 scss 或 less 文件启用模块化就行了。**
+
+如果想要设置某个类不被模块化，可以为其设置 `:global` 方法来阻止其被模块化，使其全局生效。
+
+```css
+:global(.className) {
+  color: red;
+}
+```
