@@ -75,3 +75,29 @@
 **卸载组件：** 由 `ReactDOM.unmountComponentAtNode(容器)` 触发。
 
 - `componentWillUnmount()`。
+
+## 生命周期总结
+
+最重要的生命周期钩子：
+
+- `render`：初始化渲染或更新渲染调用。
+
+- `componentDidMount`：开启监听，发送网络请求。
+
+- `componentWillUnmount`：做一些收尾工作，如清理定时器。
+
+即将废弃的生命周期钩子：
+
+- `componentWillMount`。
+
+- `componentWillReceiveProps`。
+
+- `componentWillUpdate`。
+
+在 react v17 版本中使用这 3 个钩子会出现警告，需要加上 `UNSAFE_` 前缀才能使用，以后可能会被彻底废弃，不建议使用。
+
+**注意：这里的 UNSAFE 不是指安全性，而是表示使用这些生命周期的代码在 react 的未来版本中更有可能出现 bug，尤其是在启用“异步渲染”之后。**
+
+在新版 `react` 中 `static getDerivedStateFromProps()` 和 `getSnapshotBeforeUpdate()` 这两个新钩子不能和要废弃的 3 个钩子同时使用（加上 `UNSAFE_` 前缀也不行），否则会报错。
+
+使用 `getSnapshotBeforeUpdate()` 钩子必须定义 `componentDidUpdate()` 钩子，否则会报错。
