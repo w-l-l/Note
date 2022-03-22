@@ -27,3 +27,27 @@ router.get(path, function(request, response) { ... })
 ```
 
 工作流程：当浏览器的 path 变为 /home 时，当前路由组件就会变为 Home 组件。
+
+## 路由的基本使用
+
+安装 `react-router-dom`。
+
+```js
+npm i react-router-dom -S
+```
+
+明确好界面中的导航区、展示区。
+
+导航区啊 `a` 标签改为 `Link` 标签。
+
+```html
+<Link to="/xxx">Demo</Link>
+```
+
+展示区写 `Route` 标签进行路径匹配。
+
+```html
+<Route path="/xxx" component={ Demo } />
+```
+
+`<App />` 组件的最外侧包裹一个 `<BrowserRouter />` 或 `<HashRouter />`
