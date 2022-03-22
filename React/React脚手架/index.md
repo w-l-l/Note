@@ -147,3 +147,52 @@ module.exports = {
 - 检查意外的副作用。
 
 - 检测遗留 `context API`。
+
+## 配置代理
+
+方法一：在 `package.json` 中追加：`"proxy": "http://localhost:5000"`。
+
+- 优点：配置简单，前端请求资源时可以不加任何前缀。
+
+- 缺点：不能配置多个代理。
+
+- 工作方式：上述方式配置代理，当请求当前服务器不存在的资源时，就会将请求转发给 5000 服务器（优先匹配前端资源）。
+
+方法二：在 `src` 目录下创建配置文件：`src/setupProxy.js`。
+
+```js
+// setupProxy.js
+const proxy = require('http-proxy-middleware')
+module.exports = function(app) {
+  app.use(
+    proxy('/api1', {
+      target: 'http://localhost:5000',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api1': ''
+      }
+    }),
+    proxy('/api2', {
+      target: 'http://localhost:5001',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api2': ''
+      }
+    })
+  )
+}
+```
+
+proxy 的第一个参数，表示需要转发的请求，所有带有第一个参数前缀的请求都会转发给对应的 `target`。
+
+- `target`：配置转发目标地址，能返回数据的服务器地址。
+
+- `changeOrigin`：默认值为 false，通常都会设置为 true。  
+true：服务器收到请求头中 `host` 为当前 `target` 的配置地址。  
+false：服务器收到请求头中 `host` 为代理前的地址。
+
+- `pathRewrite`：去除请求前缀，保证交给后台服务器的是正常请求地址（必须配置）。
+
+- 优点：可以配置多个代理，可以灵活的控制请求是否走代理。
+
+- 缺点：配置繁琐，前端请求资源时必须加前缀。
