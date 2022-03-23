@@ -51,3 +51,49 @@ npm i react-router-dom -S
 ```
 
 `<App />` 组件的最外侧包裹一个 `<BrowserRouter />` 或 `<HashRouter />`
+
+## react-router-dom 相关组件
+
+- `<BrowserRouter />`：history 模式。
+
+- `<HashRouter />`：hash 模式。
+
+- `<Route />`：注册路由。
+
+```html
+<Route path="/home" exact component={ Home } />
+<!-- exact：开启严格匹配 -->
+```
+
+- `<Redirect />`：路由重定向。
+
+```html
+<Redirect to="/home" />
+<Redirect from="/xxx" to="/xxx" />
+<!-- 访问 from 的地址，重定向到 to 的地址 -->
+```
+
+- `<Link />`：路由链接。
+
+```html
+<Link to="/home" replace>Home</Link>
+```
+
+- `<NavLink />`：实现路由链接高亮。
+
+```html
+<NavLink activeClassName="active" replace to="/home">Home</NavLink>
+<!-- activeClassName：路由激活时添加的类名 -->
+<!-- replace：路由记录替换 -->
+```
+
+- `<Switch />`：通常情况下，`path` 和 `component` 是一一对应的关系。  
+`Switch` 可以提高路由匹配效率（单一匹配），匹配成功一个就不会向下匹配了。
+
+```html
+<Switch>
+  <Route path="/home" component={ Home } />
+  <Route path="/about" component={ About } />
+  <Redirct to="/home" />
+</Switch>
+```
