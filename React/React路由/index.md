@@ -188,3 +188,15 @@ Home 路由组件：
 如上这种情况，如果 `/home` 开启严格匹配，当我们跳转 `/home/a` 时，`react` 会从注册路由的顺序开始匹配，`/home` 和 `/about` 都不匹配，就会重定向到 `/about`，导致跳转二级路由失败。
 
 如果没有开启严格匹配，`/home` 就会匹配 `/home/a`，渲染 `Home` 组件，不再向下匹配。在 `Home` 组件中再依次匹配路由，匹配到 `/home/a`，成功展示 `A` 路由组件。
+
+## 重定向
+
+一般写在所有路由注册的最下方，当所有路由都无法匹配时，跳转到 `Redirect` 指定的路由。
+
+```html
+<Switch>
+  <Route path="/home" component={ Home } />
+  <Route path="/about" component={ About } />
+  <Redirect to="/about" />
+</Switch>
+```
