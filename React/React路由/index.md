@@ -200,3 +200,19 @@ Home 路由组件：
   <Redirect to="/about" />
 </Switch>
 ```
+
+## 嵌套路由
+
+注册子路由时要写上父路由的 `path` 值。
+
+路由的匹配是按照注册路由的顺序进行的。
+
+```html
+<NavLink to="/home/a">home-a</NavLink>
+<NavLink to="/home/b">home-b</NavLink>
+
+<Switch>
+  <Route path="/home/a" component={ A } />
+  <Route path="/home/b" component={ B } />
+</Switch>
+```
