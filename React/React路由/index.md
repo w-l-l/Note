@@ -150,3 +150,41 @@ npm i react-router-dom -S
 使用 `<HashRouter />` 模式发送资源请求时，# 号后面的内容会全部忽略。
 
 **注意：在 react 脚手架中，访问路径不存在，会默认返回 public/index.html 页面。**
+
+## 路由的严格匹配和模糊匹配
+
+默认使用的是模糊匹配，输入路径必须包含匹配的路径，且顺序要一致。
+
+```html
+<NavLink to="/home/a/b">home</NavLink>
+<Route path="/home" component={ Home } />
+<!-- 这样也能匹配上的 -->
+```
+
+开启严格匹配（`exact`）。
+
+```html
+<Route exact path="/home" component={ Home } />
+```
+
+**注意：严格模式不要随便开启，需要的时候再开启，有些时候开启会导致无法继续匹配二级路由。**
+
+App 组件：
+
+```html
+<Route exact path="/home" component={ Home } />
+<Route path="/about" component={ About } />
+<Redirect to="/about" />
+```
+
+Home 路由组件：
+
+```html
+<Route path="/home/a" component={ A } />
+<Route path="/home/b" component={ B } />
+<Redirect to="/home/b" />
+```
+
+如上这种情况，如果 `/home` 开启严格匹配，当我们跳转 `/home/a` 时，`react` 会从注册路由的顺序开始匹配，`/home` 和 `/about` 都不匹配，就会重定向到 `/about`，导致跳转二级路由失败。
+
+如果没有开启严格匹配，`/home` 就会匹配 `/home/a`，渲染 `Home` 组件，不再向下匹配。在 `Home` 组件中再依次匹配路由，匹配到 `/home/a`，成功展示 `A` 路由组件。
