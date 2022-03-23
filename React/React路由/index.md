@@ -97,3 +97,29 @@ npm i react-router-dom -S
   <Redirct to="/home" />
 </Switch>
 ```
+
+## 路由组件与一般组件
+
+写法不同：
+
+```html
+<!-- 一般组件 -->
+<Demo />
+```
+
+```html
+<!-- 路由组件 -->
+<Route path="/demo" component={ Demo } />
+```
+
+存放位置不同：
+
+- 一般组件：放在 `components` 目录下。
+
+- 路由组件：放在 `pages` 目录下。
+
+接收到的 `props` 不同：
+
+- 一般组件：写组件标签传递什么，`props` 就能收到什么。
+
+- 路由组件：接收到 3 个固定属性 `history`、`location`、`match`。
