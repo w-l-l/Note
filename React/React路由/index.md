@@ -123,3 +123,30 @@ npm i react-router-dom -S
 - 一般组件：写组件标签传递什么，`props` 就能收到什么。
 
 - 路由组件：接收到 3 个固定属性 `history`、`location`、`match`。
+
+## 解决多路径刷新页面样式丢失的问题
+
+`public/index.html` 中引入第三方资源的时候，开头路径写 `/` 不写 `./` （常用）。
+
+- `./`：相对路径查找。
+
+- `/`：相当于网站根目录查找。
+
+```html
+<!-- 资源引入 -->
+<link rel="stylesheet" href="/css/xxx.css">
+```
+
+网址：`localhost:3000/app/home`。
+
+资源请求：
+
+- `./`：`localhost:3000/app/css/xxx.css`（错误）。
+
+- `/`：`localhost:3000/css/xxx.css`（正确）。
+
+`public/index.html` 中引入第三方资源的时候，开头路径写 `%PUBLIC_URL%` 不写 `./`（常用）。
+
+使用 `<HashRouter />` 模式发送资源请求时，# 号后面的内容会全部忽略。
+
+**注意：在 react 脚手架中，访问路径不存在，会默认返回 public/index.html 页面。**
