@@ -216,3 +216,65 @@ Home 路由组件：
   <Route path="/home/b" component={ B } />
 </Switch>
 ```
+
+## 向路由组件传递参数
+
+**params 参数：**
+
+路由链接（携带参数）：
+
+```html
+<Link to="/demo/name/18">详情</Link>
+```
+
+注册路由（声明参数）：
+
+```html
+<Route path="/demo/:name/:age" component={ Demo } />
+<!-- 参数可选，添加问号 -->
+<Route path="/demo/:name?/:age?" component={ Demo } />
+```
+
+接收参数：`this.props.match.params`。
+
+****
+
+**search 参数：**
+
+路由链接（携带参数）：
+
+```html
+<Link to="/demo?name=name&age=18">详情</Link>
+```
+
+注册路由（无需声明，正常注册即可）：
+
+```html
+<Route path="/demo" component={ Demo } />
+```
+
+接收参数：`this.props.location.search`。
+
+**注意：这种方式获取到的 search 是 urlencoded 编码字符串，需要借助 querystring 解析。**
+
+****
+
+**state 参数**
+
+该方式传递参数不适应于 `HashRouter`，`HashRouter` 刷新页面，传递过来的 `state` 数据会丢失。
+
+路由链接（携带参数）：
+
+```html
+<Link to={{ pathname: '/dmeo', state: { name: 'name', age: 18 } }}>详情</Link>
+```
+
+注册路由（无需声明，正常注册即可）：
+
+```html
+<Route path="/demo" component={ Demo } />
+```
+
+接收参数：`this.props.location.state`。
+
+**提醒：地址栏虽然没有参数，但是刷新也可以保留参数。**
