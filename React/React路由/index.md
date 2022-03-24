@@ -278,3 +278,41 @@ Home 路由组件：
 接收参数：`this.props.location.state`。
 
 **提醒：地址栏虽然没有参数，但是刷新也可以保留参数。**
+
+## 编程式路由导航
+
+借助 `this.props.history` 对象上的 API，可以操作路由的跳转、前进、后退。
+
+- 切换路由：`this.props.history.push(pathname, state)`。
+
+- 替换路由：`this.props.history.replace(pathname, state)`。
+
+- 后退：`this.props.history.goBack()`。
+
+- 前进：`this.props.history.goForward()`。
+
+- 前进或者后退几步：`this.props.history.go(n)`。
+
+在 `BrowserRouter` 路由中 `push` 和 `replace` 方法可以简写：
+
+```js
+this.props.history.push(pathname, state)
+this.props.history.replace(pathname, state)
+```
+
+在 `HashRouter` 路由中 `push` 和 `replace` 不能简写，而且刷新页面接收的 `state` 数据会丢失。
+
+```js
+this.props.history.push({ pathname, state })
+this.props.history.replace({ pathname, state })
+```
+
+一般组件中进行编程式路由导航，因为一般组件的 `props` 上没有 `history` 对象，我们可以借助 `react-router-dom` 提供的 `withRouter()` 方法，让一般组件具备路由组件特有的 API。
+
+该方法返回一个新的路由组件。
+
+```js
+class MyRouter extends React.component { ... }
+
+export default withRouter(MyRouter)
+```
