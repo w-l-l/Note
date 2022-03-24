@@ -316,3 +316,38 @@ class MyRouter extends React.component { ... }
 
 export default withRouter(MyRouter)
 ```
+
+## BrowserRouter 与 HashRouter 的区别
+
+底层原理不一样：
+
+- `BrowserRouter` 使用的是 H5 提供的 `history API`，不兼容 IE9 及以下版本。
+
+- `HashRouter` 使用的是 URL 的哈希值。
+
+`path` 表现形式不一样：
+
+- `BrowserRouter` 的路径中没有 `#`：`localhost:3000/home`。
+
+- `HashRouter` 的路径中包含 `#`：`localhost:3000/#/home`。
+
+刷新后对路由 `state` 参数的影响。
+
+- `BrowserRouter` 没有任何影响，因为 `state` 保存在 `history` 对象中。
+
+- `HashRouter` 刷新后会导致路由 `state` 参数的丢失。
+
+**备注：HashRouter 可以用于解决一切路径错误相关的问题，发送资源请求时，# 号后面的内容全部忽略。**
+
+参数：
+
+- `basename`：基准 `url`，如果你的应用程序是从服务器上的子目录中提供的，你需要将其设置为一个子目录，一个正确格式化的 `basename` 应该有一个开头斜杠，但没有结尾斜杠。
+
+```html
+<BrowserRouter basename="/react">
+  <Link to="/home" />
+  <!-- renders <a href="/react/home"></a> -->
+  <Link to="/about" />
+  <!-- renders <a href="/react/about"></a> -->
+</BrowserRouter>
+```
