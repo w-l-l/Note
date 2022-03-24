@@ -351,3 +351,18 @@ export default withRouter(MyRouter)
   <!-- renders <a href="/react/about"></a> -->
 </BrowserRouter>
 ```
+
+## 向路由组件传递更多的属性
+
+传统路由组件：
+
+```html
+<Route path="/home" component={ Home } />
+<!-- 不能传递其他的 props -->
+```
+
+向路由组件传递 `props`：
+
+```html
+<Route path="/home" render={ props => <Home { ...props } name="xxx" age="xxx" /> } />
+```
