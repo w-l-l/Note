@@ -56,3 +56,66 @@ module.exports = override(
 ```
 
 备注：不用在组件里亲自引入样式了，删除 `import 'antd/dist/antd.css'`。
+
+## 新版 antd 按需加载和自定义主题
+
+**安装插件**
+
+```js
+npm i @craco/craco craco-less babel-plugin-import
+```
+
+- `@craco/craco`：对 `create-react-app` 的默认配置进行自定义。
+
+- `craco-less`：自定义主题需要。
+
+- `babel-plugin-import`：按需加载需要。
+
+**修改package.json**
+
+```json
+"script": {
+  "start": "craco start",
+  "build": "craco build",
+  "test": "craco test",
+  "eject": "react-scripts eject"
+}
+```
+
+**根目录创建 craco.config.js**
+
+```js
+const CracoLessPlugin = require('craco-less')
+
+module.exports = {
+  // 按需加载
+  babel: {
+    plugins: [
+      [
+        'import',
+        {
+          libraryName: 'antd',
+          libraryDirectory: 'es',
+          style: true
+        }
+      ]
+    ]
+  },
+  // 自定义主题
+  plugins: [
+    {
+      plugin: CracoLessPlugin,
+      options: {
+        lessLoaderOptions: {
+          lessOptions: {
+            modifyVars: {
+              '@primary-color': 'green'
+            },
+            javascriptEnabled: true
+          }
+        }
+      }
+    }
+  ]
+}
+```
