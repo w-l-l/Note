@@ -114,3 +114,39 @@ const reducer = combineReducers({
 
 export default createStore(reducer, applyMiddleware(thunk))
 ```
+
+## Redux 异步编程
+
+明确：延迟的动作不想交给组件自身，想交给 `action`。
+
+异步 `action` 使用场景：想要对状态进行操作，但是具体的数据靠异步任务返回。
+
+`Redux` 默认是不能进行异步处理的，但是某些场景中需要在 `Redux` 中执行异步任务（ajax，定时任务）。
+
+使用异步中间件：
+
+```js
+npm i redux-thunk -S
+```
+
+```js
+import thunk from 'redux-thunk'
+import { createStore, applyMiddleware } from 'redux'
+import reducer from './reducers/xxx'
+export default createStore(reducer, applyMiddleware(thunk))
+```
+
+**注意：异步 action 不再返回一个对象，而是一个函数，该函数中写异步任务。**
+
+```js
+import { action } from './actions/xxx'
+export const asyncIncrement = data => {
+  return dispatch => {
+    setTimeout(_ => dispatch(action))
+  }
+}
+```
+
+异步任务有结果后，分发一个同步的 `action` 去真正操作数据。
+
+异步 `action` 不是必须要写的，完全可以自己等待异步任务的结果，再去分发同步 `action`。
