@@ -66,3 +66,51 @@ export const store = createStore(reducer)
 `Redux` 只负责管理状态，至于状态的改变驱动着页面的展示，要靠我们自己写。
 
 通常我们都在 `index.js` 中检测 `store` 中 `state` 的改变，一旦发生改变就重新渲染 `<APP />`（不用担心渲染问题，`react` 的 `Diff` 算法会帮助我们，不会出现大量的重排和重绘）。
+
+## Redux 的核心 API
+
+`createStore()`：创建包含指定 `reducer` 的 `store` 对象。
+
+```js
+import { createStore } from 'redux'
+import reducer from './reducers/xxx'
+export default createStore(reducer)
+```
+
+`store` 对象：`Redux` 库最核心的管理对象，它内部维护着：`state`、`reducer`。
+
+核心方法：
+
+- `store.getState()`。
+
+- `store.dispatch(action)`。
+
+- `store.subscribe(listener)`。
+
+暴露 `store` 对象：`createStore(reducer)`。
+
+`applyMiddleware`：应用上基于 `Redux` 的中间件（插件库）。
+
+暴露支持异步的 `store` 对象：
+
+```js
+import { applyMiddleware } from 'redux'
+import { thunk } from 'redux-thunk'
+import reducer from './reducers/xxx'
+export default createStore(reducer, applyMiddleware(thunk))
+```
+
+`combineReducers()`：合并多个 `reducer` 函数。
+
+```js
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { thunk } from 'redux-thunk'
+import reducer1 from './reducers/xxx'
+import reducer2 from './reducers/xxx'
+const reducer = combineReducers({
+  reducer1,
+  reducer2
+})
+
+export default createStore(reducer, applyMiddleware(thunk))
+```
