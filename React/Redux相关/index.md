@@ -150,3 +150,86 @@ export const asyncIncrement = data => {
 异步任务有结果后，分发一个同步的 `action` 去真正操作数据。
 
 异步 `action` 不是必须要写的，完全可以自己等待异步任务的结果，再去分发同步 `action`。
+
+## 具体代码
+
+**目录结构：**
+
+```js
+|src
+|--components
+|--|--Count
+|--|--|--index.js
+|--redux
+|--|--action.js
+|--|--const.js
+|--|--reducer.js
+|--|--store.js
+|--App.jsx
+|--index.js
+```
+
+**创建 store（redux 目录下）**
+
+```js
+// const.js
+export const INCREMENT = 'increment'
+```
+
+```js
+// action.js
+import { INCREMENT } from './const'
+export const increment = data => ({ type: INCREMENT, data })
+```
+
+```js
+// reducer.js
+import { INCREMENT } from './const'
+const initValue = 0
+export default function reducer(prevState = initValue, action) {
+  const { type, data } = action
+  switch(type) {
+    case INCREMENT:
+      return prevState + data
+    default:
+      return prevState
+  }
+}
+```
+
+```js
+// store.js
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import reducer from './reducer'
+export default createStore(reducer, applyMiddleware(thunk))
+```
+
+`index.js` 文件中订阅状态监听：
+
+```js
+import store from './redux/store'
+store.subscribe(_ => {
+  ReactDOM.render(<APP />, document.getElementById('root'))
+})
+```
+
+`components` 目录下组件使用：
+
+```js
+import React from 'react'
+import store from '../../redux/store'
+import { increment } from '../../redux/action'
+
+export default class Count extends React.Component {
+  render() {
+    const count = store.getState()
+    return (
+      <>
+        <h1>{ count }</h1>
+        <button onClick={ _ => store.dispatch(increment(1)) }>+1</button>
+      </>
+    )
+  }
+}
+```
