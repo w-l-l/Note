@@ -25,3 +25,57 @@
 - 一般保存在 `containers` 文件夹下。
 
 ![React-Redux工作流程](./img/react_redux_process.png)
+
+## React-Redux 相关 API
+
+`Provider`：让所有组件都可以得到 `state` 数据。
+
+```js
+import { Provider } from 'react-redux'
+import store from './redux/store'
+
+<Provider store={ store }>
+  <App />
+</Provider>
+```
+
+`connect`：用于包装 `UI` 组件生成新的容器组件。
+
+容器组件中的 `store` 是靠 `<Provider store={ store }></Provider>` 传进来的，而不是在容器组件中引用的。
+
+```js
+import { connect } from 'react-redux'
+
+export default connect(mapStateToProps, mapDispatchToProps)('UI组件')
+```
+
+- `mapStateToProps`：将外部的数据（即 `state` 对象）转换为 `UI` 组件的标签属性（必须函数返回一个对象）。
+
+```js
+const mapStateToProps = function(state) {
+  return {
+    value: state
+  }
+}
+```
+
+- `mapDispatchToProps`：将分发 `action` 的函数转换为 `UI` 组件的标签属性（设置为函数返回一个对象或者设置为一个对象）。
+
+```js
+const mapDispatchToProps = function(dispatch) {
+  return {
+    funcName: data => dispatch({
+      type: 'xxx',
+      data
+    })
+  }
+}
+
+/*
+  简写
+  react-redux 内部会自动进行 dispatch 分发，不需要指明
+*/
+const mapDispatchToProps = {
+  funcName: data => ({ type: 'xxx', data })
+}
+```
