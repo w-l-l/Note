@@ -79,3 +79,34 @@ const mapDispatchToProps = {
   funcName: data => ({ type: 'xxx', data })
 }
 ```
+
+## React-Redux 总结
+
+容器组件和 UI 组件整合到一个文件中。
+
+无需自己给容器组件传递 `store`，给 `<App />` 包裹一个 `<Provider store={ store }></Provider>` 即可。
+
+使用 `react-redux` 后不用自己再检测 `Redux` 中状态的改变了，容器组件可以自动完成这个工作。
+
+```js
+store.subscribe(_ => { /* 更新页面操作 */ }) // 这句监听可以去掉了
+```
+
+`mapDispatchToProps` 可以简写成一个简单对象。
+
+一个组件要和 `Redux` 打交道要经过哪几步：
+
+- 定义好 `UI` 组件不暴露。
+
+- 引入 `connect` 生成一个容器组件，并暴露。
+
+```js
+import { connect } from 'react-redux'
+
+export default connect(
+  state => ({ key: value }), // 映射状态
+  { funcKey: xxxAction } // 映射操作状态的 action 方法
+)('UI组件')
+```
+
+- 在 `UI` 组件中通过 `this.props.xxx` 的方式读取 `store` 中的状态或者操作状态。
