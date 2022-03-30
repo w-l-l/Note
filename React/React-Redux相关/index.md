@@ -110,3 +110,22 @@ export default connect(
 ```
 
 - 在 `UI` 组件中通过 `this.props.xxx` 的方式读取 `store` 中的状态或者操作状态。
+
+## React-Redux 开发工具的使用
+
+安装插件：
+
+```js
+npm i redux-devtools-extension
+```
+
+`store` 中进行配置：
+
+```js
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import { composeWithDevtools } from 'redux-devtools-extension'
+import reducer from './reducer'
+
+export default createStore(reducer, composeWithDevtools(applyMiddleware(thunk)))
+```
