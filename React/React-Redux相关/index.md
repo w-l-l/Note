@@ -149,3 +149,154 @@ export default createStore(reducer, composeWithDevtools(applyMiddleware(thunk)))
 - 常见的高阶函数：`setTimeout`、`setInterval`、`数组的方法`、`Promise`、`react-redux` 中的 `connect` 函数等。
 
 - 作用：能实现更加动态，更加可扩展的功能。
+
+## 代码实现
+
+**目录结构**
+
+```js
+|--src
+|--|--containers
+|--|--|--Count
+|--|--|--|--index.jsx
+|--|--|--Person
+|--|--|--|--index.jsx
+|--|--redux
+|--|--|--actions
+|--|--|--|--count_action.js
+|--|--|--|--person_action.js
+|--|--|--reducers
+|--|--|--|--index.js
+|--|--|--|--count_reducer.js
+|--|--|--|--person_reducer.js
+|--|--|--const.js
+|--|--|--store.js
+|--|--App.jsx
+|--|--index.js
+```
+
+**创建 store（redux 目录下）**
+
+```js
+// const.js
+export const INCREMENT = 'increment'
+export const ADD_PERSON = 'add_person'
+```
+
+```js
+// count_action.js
+import { INCREMENT } from '../const'
+export const increment = data => ({ type: INCREMENT, data })
+```
+
+```js
+// person_action.js
+import { ADD_PERSON } from '../const'
+export const addPerson = data => ({ type: ADD_PERSON, data })
+```
+
+```js
+// count_reducer.js
+import { INCREMENT } from '../const'
+const initValue = 0
+export default function(prevState = initValue, action) {
+  const { type, data } = action
+  switch(type) {
+    case INCREMENT:
+      return prevState + data
+    default:
+      return prevState
+  }
+}
+```
+
+```js
+// person_reducer.js
+import { ADD_PERSON } from '../const'
+const initPersons = []
+export default function(prevState = initPersons, action) {
+  const { type, data } = action
+  switch(type) {
+    case ADD_PERSON:
+      return [data, ...prevState]
+    default:
+      return prevState
+  }
+}
+```
+
+```js
+// reducers 下的 index.js
+import { combineReducers } from 'redux'
+import count from './count_reducer'
+import person from './person_reducer'
+export default combineReducers({
+  count,
+  person
+})
+```
+
+```js
+// store.js
+import { createStore, applyMiddleware } from 'redux'
+import { composeWithDevtools } from 'redux-devtools-extension'
+import reducer from './reducers'
+import thunk from 'redux-thunk'
+export default createStore(reducer, composeWithDevtools(applyMiddleware(thunk)))
+```
+
+**index.js 文件中传入 store**
+
+```js
+import { Provider } from 'react-redux'
+import store from './redux/stores'
+
+ReactDOM.render(
+  <Provider store={ store }>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
+```
+
+**容器组件**
+
+```js
+// Count
+import React from 'react'
+import { connect } from 'react-redux'
+import { increment } from '../../redux/actions/count_action'
+
+class CountUI extends React.Component { ... }
+
+export default connect(
+  state => ({
+    count: state.count,
+    personNum: state.person.length
+  }),
+  { increment }
+)(CountUI)
+```
+
+```js
+// Person
+import React from 'react'
+import { connect } from 'react-redux'
+import { addPerson } from '../../redux/actions/person_action'
+
+class PersonUI extends React.Component { ... }
+
+export default connect(
+  state => ({
+    persons: state.person,
+    count: state.count
+  }),
+  { addPerson }
+)(PersonUI)
+```
+
+`UI` 组件中直接通过 `props` 的方式获取状态，操作状态就行了。
+
+**App.jsx**
+
+直接引入容器组件挂载页面就行了。
