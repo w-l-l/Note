@@ -129,3 +129,23 @@ import reducer from './reducer'
 
 export default createStore(reducer, composeWithDevtools(applyMiddleware(thunk)))
 ```
+
+## 纯函数和高阶函数
+
+`纯函数`：一类特别的函数，只要是同样的输入（实参），必定得到同样的输出（返回）。
+
+必须遵守以下一些约束：
+
+- 不得修改参数数据。
+
+- 不会产生任何副作用，例如：网络请求、输入和输出设备。
+
+- 不能调用 `Date.now()` 或者 `Math.random()` 等不纯的方法。
+
+`Redux` 中的 `reducer` 函数必须是一个纯函数。
+
+`高阶函数`：特别的函数，参数是函数，返回值是函数。
+
+- 常见的高阶函数：`setTimeout`、`setInterval`、`数组的方法`、`Promise`、`react-redux` 中的 `connect` 函数等。
+
+- 作用：能实现更加动态，更加可扩展的功能。
