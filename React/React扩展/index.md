@@ -33,3 +33,25 @@
 `setState` 处在同步的逻辑中，异步更新状态，异步更新真实 DOM。
 
 `setState` 处在异步的逻辑中，同步更新状态，同步更新真实 DOM。
+
+## 路由组件的 lazyLoad
+
+通过 `React` 中的 `lazy` 函数，配合 `import()` 函数动态加载路由组件（路由组件代码会被分开打包）。
+
+```js
+import { lazy } from 'react'
+const Login = lazy(_ => import('@/pages/Login'))
+```
+
+通过 `<Suspense />` 指定在加载得到路由打包文件前显示一个自定义 `loading` 界面。
+
+```js
+import { Suspense } from 'react'
+
+<Suspense fallback={ <h1>loading...</h1> }>
+  <Switch>
+    <Route path="/xxx" component={ xxx } />
+    <Redirect to="/login">
+  </Switch>
+</Suspense>
+```
