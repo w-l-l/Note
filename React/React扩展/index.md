@@ -306,3 +306,74 @@ this.state.data.map(item => (
   </Fragment>
 ))
 ```
+
+## createContext
+
+一种组件间通信方式，常用于【祖组件】和【后代组件】通信。
+
+创建 `Context` 容器对象。
+
+```js
+import { createContext } from 'react'
+
+const myContext = createContext()
+```
+
+渲染子组件时，外面包裹 `myContext.Provider`，通过 `value` 属性给后代传递数据。
+
+```js
+<myContext.Provider value={data}>
+  {/* 子组件 */}
+</myContext.Provider>
+```
+
+后代组件读取 `Context` 数据。
+
+- 第一种方式：仅适用于类组件。
+
+```js
+import React from 'react'
+
+export default class App extends React.Component {
+  static contextType = myContext // 声明接收 context
+  render() {
+    return <div>{this.context}</div> // 读取 context 中的 value 数据
+  }
+}
+```
+
+- 第二种方式：仅适用于函数组件。
+
+```js
+import { useContext } from 'react'
+
+export default function App() {
+  const context = useContext(myContext)
+  return <div>{context}</div>
+}
+```
+
+- 第三种方式：函数组件和类组件都适用。
+
+```js
+<myContext.Consumer>
+  {
+    value => (/* 要显示的内容，value 就是 context 中的 value 数据 */)
+  }
+</myContext.Consumer>
+```
+
+**注意：在应用开发中一般不用 context，一般都是用它来封装 react 插件。**
+
+传递多个上下文对象。
+
+```js
+const OneContext = React.createContext()
+const TwoContext = React.createContext()
+
+<OneContext.Provider value={oneData}>
+  <TwoContext.Provider value={twoData}>
+    {/* 后代组件两个上下文对象都能使用 */}
+  </TwoContext.Provider>
+</OneContext.Provider>
+```
