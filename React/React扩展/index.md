@@ -153,6 +153,7 @@ useEffect(_ => {
   return _ => {
     /*
       卸载组件时执行的回调
+      当 useEffect 第二个参数不传，或传一个依赖项数组时，状态发生改变，该卸载回调函数也会执行，先执行卸载回调，再执行 useEffect 的第一个参数回调
     */
   }
 }, [])
@@ -162,6 +163,8 @@ useEffect(_ => {
 
 `useRef` 可以在函数组件中存储 / 查找组件内的标签或任意其他数据。
 
+- 获取 DOM 元素。
+
 ```js
 import { useRef } from 'react'
 
@@ -170,6 +173,44 @@ export default function Home() {
   return <h1 ref={h}>Home</h1>
 }
 // h.current --> h1
+```
+
+- 保存引用值
+
+```js
+import { useRef, useState } from 'react'
+
+export default function Home() {
+  const [count, setCount] = useState(0)
+  const ref = useRef(0)
+  return (
+    <>
+      <h1>{count}---{ref.current}</h1> {/* 每次组件更新时 ref.current 的值都是最新的 */}
+      <button onClick={_ => {
+        setCount(count + 1)
+        ref.current++
+      }}>+1</button>
+    </>
+  )
+}
+```
+
+```js
+import { useState } from 'react'
+
+export default function Home() {
+  const [count, setCount] = useState(0)
+  let ref = 0
+  return (
+    <>
+      <h1>{count}---{ref}</h1> {/* 每次组件更新时 ref 的值都是 0 */}
+      <button onClick={_ => {
+        setCount(count + 1)
+        ref++
+      }}>+1</button>
+    </>
+  )
+}
 ```
 
 ### React.forwardRef
