@@ -264,3 +264,45 @@ export default forwardRef((props, ref) => {
   )
 })
 ```
+
+## Fragment
+
+作用：可以不用必须有一个真实的 DOM 根标签。
+
+```js
+import { Fragment } from 'react'
+
+export default function App() {
+  return (
+    <Fragment>
+      <h1>App</h1>
+      <h1>App</h1>
+    </Fragment>
+  )
+}
+```
+
+**注意：Fragment 标签只能写 key 和 children 这两个标签属性。**
+
+**<></> 不能写任何标签属性。**
+
+```js
+import { Fragment } from 'react'
+
+export default function App(props) {
+  return (
+    <Fragment key={'app'} children={props.children}></Fragment>
+  )
+}
+```
+
+所以在遍历的时候，只能使用 `Fragment` 标签来遍历。
+
+```js
+this.state.data.map(item => (
+  <Fragment key={item.id}>
+    <div>{item.name}</div>
+    <div>{item.phone}</div>
+  </Fragment>
+))
+```
