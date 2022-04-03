@@ -247,3 +247,30 @@ export default forwardRef((props, ref) => {
   )
 })
 ```
+
+## React.useCallback
+
+`useCallback` 记忆函数，防止因为组件重新渲染，导致方法被重新创建，起到缓存作用。
+
+```js
+import { useCallback, useState } from 'react'
+
+export default function App() {
+  const [count, setCount] = useState(0)
+  const callback = _ => console.log(count)
+  const handleCallback = useCallback(callback, [count])
+  /*
+    只有 count 改变后，这个函数才会重新声明一次，此时 callback === handleCallback 为 true
+    如果传入空数组，那么就是第一次创建后就被缓存了，如果 count 后期改变了，拿到的还是老的 count，此时 callback === handleCallback 为 false
+    如果不传第二个参数，每次都会重新声明一次，拿到的就是最新的 count，此时 callback === handleCallback 为 true
+  */
+  console.log(callback === handleCallback)
+  return (
+    <>
+      <h1>{count}</h1>
+      <button onClick={_ => setCount(count + 1)}>+1</button>
+      <button onClick={handleCallback}>useCallback</button>
+    </>
+  )
+}
+```
