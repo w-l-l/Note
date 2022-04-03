@@ -274,3 +274,72 @@ export default function App() {
   )
 }
 ```
+
+## React.useMemo
+
+`useMemo` 记忆组件，`useCallback` 的功能完全可以由 `useMemo` 所取代，如果你想通过 `useMemo` 返回一个记忆函数也是完全可以的。
+
+```js
+useCallback(fn, deps) === useMemo(_ => fn, deps)
+```
+
+唯一的区别是：`useCallback` 不会执行第一个参数函数，而是将它返回给你，而 `useMemo` 会执行第一个函数并且将函数执行结果返回给你。
+
+所以 `useCallback` 常用记忆事件函数，生成记忆后的事件函数并传递给组件使用。
+
+而 `useMemo` 更适合经过函数计算得到一个确定的值，比如记忆组件。
+
+**记忆值**
+
+```js
+import { useMemo, useState } from 'react'
+
+export default function App() {
+  const [count, setCount] = useState(0)
+  const memo = useMemo(_ => {
+    console.log('useMemo')
+    let n = count
+    for(let i = 0; i < 1000000000; i++) {
+      n++
+    }
+    return n
+  }, []) // 因为传的空数组，组件每次更新的时候，不会触发重新计算
+  return (
+    <>
+      <h1>{count}--{memo}</h1>
+      <button onClick={_ => setCount(count + 1)}>+1</button>
+    </>
+  )
+}
+```
+
+**记忆组件**
+
+```js
+// 父组件
+import { useMemo, useState } from 'react'
+import Child from './Child'
+
+export default function App() {
+  const [count, setCount] = useState(0)
+  const ChildMemo = useMemo(_ => {
+    console.log('useMemo')
+    return <Child count={count} />
+  }, []) // // 因为传的空数组，父组件每次更新的时候，Child 组件不会触发 render() 重新渲染
+  return (
+    <>
+      {ChildMemo}
+      <h1>{count}</h1>
+      <button onClick={_ => setCount(count + 1)}>+1</button>
+    </>
+  )
+}
+```
+
+```js
+// Child 组件
+export default function Child(props) {
+  console.log('Child组件更新了')
+  return <h1>Child组件--{props.count}</h1>
+}
+```
