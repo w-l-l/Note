@@ -418,3 +418,62 @@ const TwoContext = React.createContext()
   </TwoContext.Provider>
 </OneContext.Provider>
 ```
+
+## 组件优化
+
+`React.Component` 存在的两个问题：
+
+- 只要执行了 `setState()`，即使不改变状态数据，组件也会重新 `render()`，效率低。
+
+- 只当前组件重新 `render()`，就会自动重新 `render()` 子组件，即使子组件没有用到父组件的任何数据，效率低。
+
+产生问题的原因：`React.Component` 中的 `shouldComponentUpdate()` 默认总是返回 `true`。
+
+提高效率的做法：只有当组件的 `state` 或 `props` 数据发生改变时才更新 `render()`。
+
+**解决方法：**
+
+- 重写 `shouldComponentUpdate()` 方法，比较新旧 `state` 或 `props` 数据，如果有变化才返回 `true`，没变化就返回 `false`。
+
+- 使用 `React.PureComponent`。  
+`PureComponent` 重写了 `shouldComponentUpdate()`，只有 `state` 或 `props` 数据发生改变才会返回 `true`。  
+项目中一般使用 `PureComponent` 来优化。
+
+**注意：PureComponent 只是进行了 state 和 props 数据的浅比较，如果只是数据对象内部数据变了，shouldComponentUpdate 返回 false，不执行 render()。**
+
+```js
+import React from 'react'
+
+export default class App extends React.Component {
+  state = {}
+  render() {
+    console.log('render')
+    return <button onClick={_ => this.setState({})}>更新</button>
+  }
+}
+```
+
+以上每次点更新按钮都会触发 `render()` 调用。
+
+```js
+import React from 'react'
+
+export default class App extends React.PureComponent {
+  state = {}
+  render() {
+    console.log('render')
+    return <button onClick={_ => this.setState({})}>更新</button>
+  }
+}
+```
+
+使用 `PureComponent` 后，点击更新按钮，状态没发生改变，不会触发 `render()` 调用。
+
+**注意：不要直接修改 state 数据，而是要产生新数据。**
+
+```js
+state.push(xxx)
+this.setState(state) // 错误的
+
+this.setState({ ...this.state, ...newData }) // 正确的
+```
