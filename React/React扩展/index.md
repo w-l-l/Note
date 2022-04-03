@@ -636,3 +636,17 @@ redux、dva 等等。
 - 兄弟组件：消息订阅-发布、集中式管理。
 
 - 祖孙组件：消息订阅-发布、集中式管理、context（开发用的少，封装插件用的多）。
+
+## dangerouslySetInnerHTML
+
+`dangerouslySetInnerHTML` 是 `React` 为浏览器 DOM 提供 `innerHTML` 的代替方案。
+
+通常来讲，使用代码直接设置 `HTML` 存在风险，因为很容易无意中使用户暴露与 `XSS`（跨站脚本） 的攻击。
+
+因此，你可以直接在 `React` 中设置 `HTML`，但当你想设置 `dangerouslySetInnerHTML` 时，需要向其传递 `key` 为 `__html` 的对象，以此来警示你。
+
+```js
+export default function App() {
+  return <div dangerouslySetInnerHTML={{ __html: '<h1>App</h1>' }}></div>
+}
+```
