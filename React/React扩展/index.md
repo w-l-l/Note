@@ -477,3 +477,91 @@ this.setState(state) // 错误的
 
 this.setState({ ...this.state, ...newData }) // 正确的
 ```
+
+## render props
+
+如何向组件内部动态传入带标签的结构（标签）？
+
+- `Vue` 中：使用 `slot` 插槽技术，也就是通过组件标签体传入结构（`<A><B /></A>`）。
+
+- `React` 中：  
+使用 `children props`，通过组件标签体传入结构。  
+使用 `render props`，通过组件标签属性出传入结构，而且可以携带数据，一般用 `render` 函数属性。
+
+**children props：**
+
+```js
+// 父组件
+import A from './components/A'
+import B from './components/B'
+
+export default function App() {
+  return (
+    <A>
+      <B />
+    </A>
+  )
+}
+```
+
+```js
+// A 组件
+export default function A(props) {
+  return (
+    <>
+      <h1>我是A组件</h1>
+      <div>{props.children}</div>{/* 这里将渲染 B 组件的内容 */}
+    </>
+  )
+}
+```
+
+```js
+// B 组件
+export default function B() {
+  return <h1>我是B组件</h1>
+}
+```
+
+A 组件中：`{ props.children }`。
+
+缺点：B 组件不能使用 A 组件中的数据。
+
+**render props：**
+
+```js
+// 父组件
+import A from './components/A'
+import B from './components/B'
+
+export default function App() {
+  return <A render={data => <B {...data} />} />
+}
+```
+
+```js
+// A 组件
+import { useState } from 'react'
+
+export default function A(props) {
+  const [count, setCount] = useState(0)
+  return (
+    <>
+      <h1>我是A组件--{count}</h1>
+      <button onClick={_ => setCount(count + 1)}>+1</button>
+      <div>{props.render({ count })}</div>{/* 这里将渲染 B 组件的内容，并将数据传递给 B 组件 */}
+    </>
+  )
+}
+```
+
+```js
+// B 组件
+export default function B(props) {
+  return <h1>我是B组件，接收到A组件传递过来的值--{props.count}</h1>
+}
+```
+
+A 组件中：`{ props.render(内部数据) }`。
+
+B 组件中：读取 A 组件传入的数据显示 `{ props.data }`
