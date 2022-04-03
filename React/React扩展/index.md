@@ -565,3 +565,42 @@ export default function B(props) {
 A 组件中：`{ props.render(内部数据) }`。
 
 B 组件中：读取 A 组件传入的数据显示 `{ props.data }`
+
+## 错误边界
+
+错误边界（`Error boundary`）：用来捕获后代组件错误，渲染出备用页面。
+
+特点：只能捕获后代组件生命周期产生的错误，不能捕获自己组件产生的错误和其他组件在合成事件、定时器中产生的错误。
+
+使用方式：`getDerivedStateFromError` 配合 `componentDidCatch`。
+
+```js
+import React from 'react'
+
+export default class App extends React.Component {
+  state = {
+    isError: false
+  }
+  // 生命周期函数，一旦后代组件报错，就会触发
+  static getDerivedStateFromError(error) {
+    conosle.log(error)
+    // 在 render 之前触发，返回新的 state
+    return {
+      isError: true
+    }
+  }
+  componentDidCatch(error, info) {
+    // 统计页面的错误，发送请求给后台
+    console.log(error, info)
+    /*
+      error：抛出的错误
+      info：带有 componentStack key 的对象，其中包含有关组件引发错误的栈信息
+    */
+  }
+  render() {
+    return <div>{this.state.isError ? '网络繁忙，请稍后再试' : this.props.children}</div>
+  }
+}
+```
+
+**注意：错误边界是用于可能报错组件的父组件的，生产环境下才有效果。**
