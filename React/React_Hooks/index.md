@@ -343,3 +343,79 @@ export default function Child(props) {
   return <h1>Child组件--{props.count}</h1>
 }
 ```
+
+## React.useReducer
+
+`useReducer` 是 `useState` 的代替方案。它接收一个形如 `(state, action) => newState` 的 `reducer`，并返回当前的 `state` 以及与其配套的 `dispatch` 方法。
+
+```js
+import { useReducer } from 'react'
+
+const initValue = 0
+
+function reducer(prevState, action) {
+  switch(action.type) {
+    case 'increment':
+      return prevState + 1
+    case 'decrement':
+      return prevState - 1
+    default:
+      return prevState
+  }
+}
+
+export default function App() {
+  const [count, dispatch] = useReducer(reducer, initValue)
+  return (
+    <>
+      <h1>{count}</h1>
+      <button onClick={_ => dispatch({ type: 'increment' })}>+1</button>
+      <button onClick={_ => dispatch({ type: 'decrement' })}>-1</button>
+    </>
+  )
+}
+```
+
+通常我们会配合 `context` 一起使用，达到 `redux` 的效果。
+
+```js
+import { useReducer, createContext, useContext } from 'react'
+
+const initValue = 0
+
+function reducer(prevState, action) {
+  switch(action.type) {
+    case 'increment':
+      return prevState + 1
+    case 'decrement':
+      return prevState - 1
+    default:
+      return prevState
+  }
+}
+
+const Context = createContext()
+
+function Increment() {
+  const { dispatch } = useContext(Context)
+  return <button onClick={_ => dispatch({ type: 'increment' })}>+1</button>
+}
+
+function Decrement() {
+  const { dispatch } = useContext(Context)
+  return <button onClick={_ => dispatch({ type: 'decrement' })}>-1</button>
+}
+
+export default function App() {
+  const [count, dispatch] = useReducer(reducer, initValue)
+  return (
+    <Context.Provider value={{dispatch}}>
+      <h1>{count}</h1>
+      <Increment />
+      <Decrement />
+    </Context.Provider>
+  )
+}
+```
+
+**注意：useReducer 不支持异步。**
