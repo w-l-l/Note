@@ -78,3 +78,41 @@ a.get('filter') === b.get('filter') // true
 ```
 
 如果上述 select 属性给一个组件使用，因为值改变了，`shouldComponentUpdate()` 应该返回 true，而 filter 属性给另一个组件使用，通过判断并无变化，`shouldComponentUpdate` 应该返回 false，此组件就避免了重复进行 `diff` 对比。
+
+## List 对象
+
+`immutable.List()`：创建一个类似于 js 中数组的 List 对象。
+
+```js
+import { List } from 'immutable'
+
+const list = List([1, 2, 3])
+
+console.log(list) // List [1, 2, 3]
+```
+
+- 增加。
+
+```js
+list.push(4) // List [1, 2, 3, 4]
+list.splice(3, 0, 4) // List [1, 2, 3, 4]
+```
+
+- 删除。
+
+```js
+list.splice(1, 1) // List [1, 3]
+```
+
+- 修改。
+
+```js
+list.splice(1, 1, 5) // List [1, 5, 3]
+```
+
+- 查询。
+
+```js
+list.get(0) // 1
+list.getIn([0, 0]) // 二维数组可以使用 getIn，获取第一个数组中的第一个元素
+```
