@@ -101,6 +101,50 @@ useEffect(_ => {
 }, [])
 ```
 
+## React.useLayoutEffect
+
+`useLayoutEffect` 的使用方式与 `useEffect` 相同，但它会在所有的 DOM 变更之后同步调用。可以使用它来读取 DOM 布局并同步触发重渲染。在浏览器执行绘制之前，`useLayoutEffect` 内部的更新计划将被同步刷新。
+
+`useEffect` 和 `useLayoutEffect` 的区别：简单来说是调用时机不同，`useLayoutEffect` 和原来 `componentDidMount` & `componentDidUpdate` 一致，在 `react` 完成 DOM 更新后马上同步调用代码，会阻塞页面阻塞。而 `useEffect` 是会在整个页面渲染完才会调用的代码。
+
+官网建议优先使用 `useEffect`。
+
+在实际使用时如果想避免**页面抖动**（在 `useEffect` 里修改 DOM 很有可能出现）的话，可以把需要操作 DOM 的代码放在 `useLayoutEffect` 里。在这里做点 DOM 操作，这些 DOM 修改会和 `react` 做出的更改一起被一次性渲染到屏幕上，只有一次回流、重绘的代价。
+
+```js
+import { useEffect } from 'react'
+
+export default function App() {
+  useEffect(_ => {
+    const box = document.getElementById('box')
+    box.style.marginLeft = '500px'
+    // 页面绘制完成之后，将元素又移动了，页面又会重新绘制一次，前后两次绘制，就会出现闪屏现象
+  }, [])
+  return <div id='box' style={{
+    width: 100,
+    height: 100,
+    background: 'red'
+  }}>box</div>
+}
+```
+
+```js
+import { useLayoutEffect } from 'react'
+
+export default function App() {
+  useLayoutEffect(_ => {
+    const box = document.getElementById('box')
+    box.style.marginLeft = '500px'
+    // 使用 useLayoutEffect 会在 DOM 加载完成，浏览器绘制之前执行，前后就一次绘制操作，所以不会出现闪屏现象
+  }, [])
+  return <div id='box' style={{
+    width: 100,
+    height: 100,
+    background: 'red'
+  }}>box</div>
+}
+```
+
 ## React.useRef()
 
 `useRef` 可以在函数组件中存储 / 查找组件内的标签或任意其他数据。
