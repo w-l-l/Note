@@ -21,3 +21,74 @@
 优点：学习成本小，面向对象编程，而且对 `TS` 友好。
 
 缺点：过于自由（`Mobx` 提供的约定及模板代码很少，代码编写很自由，如果不做一些约定，比较容易导致团队代码风格不统一），相关的中间件很少，逻辑层业务整合是问题。
+
+## Mobx 的使用
+
+`observable` 和 `autorun`。
+
+```js
+import { observable, autorun } from 'mobx'
+
+const value = observable.box(0)
+const number = observable.box(100)
+
+autorun(_ => {
+  console.log(value.get())
+})
+
+value.set(1)
+value.set(2)
+number.set(101)
+// 打印 0 1 2 autorun 使用到才能被执行
+// 只能是同步，异步需要处理
+
+// 观察对象，通过 map
+const map = observable.map({ key: 'value' })
+map.get('key') // 获取属性值
+map.set('key', 'new value') // 修改属性
+
+// 观察对象，不通过 map
+const map = observable({ key: 'value' })
+map.key // 获取属性值
+map.key = 'new value' // 修改属性
+
+// 观察数组
+const list = observable([1, 2, 3])
+list[2] = 3
+```
+
+`action`、`runInAction` 和严格模式。
+
+```js
+import { observable, action, configure, runInAction } from 'mobx'
+configure({
+  enforceActions: 'always'
+})
+/*
+  严格模式，必须写 action
+  如果是 never，可以不写 action
+  最好设置 always，防止任意地方修改值，降低不确定性
+*/
+class Store {
+  @observable number = 0
+  @observable name = '孙悟空'
+  @action add = _ => this.number++
+  // action 只能影响正在运行的函数，而无法影响当前函数调用的异步操作
+  @action load = async _ => {
+    const data = await getData()
+    runInAction(_ => {
+      this.name = data.name
+    })
+    // runInAction 解决异步问题
+  }
+}
+const newStore = new Store()
+newStore.add()
+
+// 如果在组件监听
+componentDidMount() {
+  autorun(_ => {
+    console.log(newStore.number)
+  })
+}
+```
