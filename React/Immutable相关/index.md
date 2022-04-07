@@ -116,3 +116,15 @@ list.splice(1, 1, 5) // List [1, 5, 3]
 list.get(0) // 1
 list.getIn([0, 0]) // 二维数组可以使用 getIn，获取第一个数组中的第一个元素
 ```
+
+## 其他 API
+
+- `map.merge()`：合并 map 对象。
+
+- `map.toObject()`：immutable 的 map 对象转换为 js 对象（浅转换，只转换最外层）。
+
+- `list.toArray()`：immutable 的 list 对象转 js 数组（浅转换，只转换最外层）。
+
+- `fromJS()`：js 对象或 js 数组，转换为 immutable。
+
+- `toJS`：immutable 的 map 对象或 list 对象转换为 js 对象或 js 数组。
