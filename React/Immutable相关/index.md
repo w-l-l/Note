@@ -128,3 +128,79 @@ list.getIn([0, 0]) // 二维数组可以使用 getIn，获取第一个数组中�
 - `fromJS()`：js 对象或 js 数组，转换为 immutable。
 
 - `toJS`：immutable 的 map 对象或 list 对象转换为 js 对象或 js 数组。
+
+## Immutable + Redux 的开发方式
+
+```js
+// reducer.js
+import { fromJS } from 'immutable'
+
+const initState = fromJS({
+  name: '孙悟空',
+  age: 18
+})
+
+export default function reducer(prevState = initState, action = {}) {
+  const { type, data } = action
+  switch(type) {
+    case 'SET_NAME':
+      return prevState.set('name', data)
+    case 'SER_AGE':
+      return prevState.set('age', data)
+    default:
+      return prevState
+  }
+}
+```
+
+```js
+// store.js
+import { createStore } from 'redux'
+import reducer from './reducer'
+
+export default createStore(reducer)
+```
+
+```js
+// App.jsx
+import { connect } from 'react-redux'
+function App(props) {
+  return (
+    <>
+      <h1>{props.name}</h1>
+      <h1>{props.age}</h1>
+      <button onClick={_ => props.setName('猪八戒')}>修改姓名</button>
+      <button onClick={_ => props.setAge(props.age + 1)}>修改年龄</button>
+    </>
+  )
+}
+
+export default connect(
+  state => ({
+    name: state.get('name'),
+    age: state.get('age')
+  }),
+  {
+    setName: data => ({ type: 'SET_NAME', data }),
+    setAge: data => ({ type: 'SER_AGE', data })
+  }
+)(App)
+```
+
+```js
+// index.js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import store from './store'
+import App from './App'
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById('root')
+)
+````
