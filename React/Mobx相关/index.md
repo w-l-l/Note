@@ -92,3 +92,146 @@ componentDidMount() {
   })
 }
 ```
+
+## Mobx-React 的使用
+
+`react` 组件里使用 `@observer`。
+
+`observer` 函数 / 装饰器可以用来将 `react` 组件转变成响应式组件。
+
+可以观察的局部组件状态：`@observable` 装饰器在 `react` 组件上引入可观察属性。而不需要通过 `react` 的冗长和强制性的 `setState` 机制来管理。
+
+```js
+import { observer } from 'mobx-react'
+import { observable } from 'mobx'
+
+@observer class Timer extends React.Component {
+  @observable secondsPassed = 0
+
+  componnetWillMount() {
+    setInterval(_ => this.secondsPassed++, 1000)
+  } // 如果是严格模式需要加上 @action 和 runInAction
+
+  componentWillReact() {
+    /*
+      一个新的生命周期钩子函数
+      当组件因为它观察的数据发生了改变，它会安排重新渲染
+      这个时候 componentWillReact 会被触发
+    */
+    console.log('I will re-render, since the todo has changed!')
+  }
+
+  render() {
+    return <span>Seconds passed: { this.secondsPassed }</span>
+  }
+}
+```
+
+`Provider` 组件：它使用了 `react` 的上下文 `context` 机制，可以用来向下传递 `stores`。要连接到这些 `stores`，需要传递一个 `stores` 名称的列表给 `inject`，这使得 `stores` 可以作为组件的 `props` 使用。
+
+```js
+class Store {
+  @observable number = 0
+  @action add = _ => this.number++
+}
+
+export default new Store() // 导出 Store 实例
+
+@inject('myStore')
+@observer // 需要转换为响应式组件
+class Child extends Component {
+  render() {
+    return <div>Child--{this.props.myStore.number}</div>
+  }
+}
+
+@inject('myStore')
+class Middle extends Component {
+  render() {
+    return (
+      <>
+        Middle-<button onClick={
+          this.props.myStore.add()
+        }>test</button>
+        <Child />
+      </>
+    )
+  }
+}
+
+// 通过 Provider 传 store 进去
+<Provider myStore={store}>
+  <Middle />
+</Provider>
+```
+
+### 支持装饰器
+
+安装插件。
+
+```js
+npm i @babel/core @babel/plugin-proposal-decorators @babel/preset-env
+```
+
+创建 `.babelrc`。
+
+```json
+{
+  "presets": [
+    "@babel/preset-env"
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ]
+  ]
+}
+```
+
+创建 `config-overrides.js`。
+
+```js
+const path = rquire('path')
+const { override, addDecoratorsLegacy } = require('customize-cra')
+
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
+
+const customize = _ => (config, env) => {
+  config.resolve.alias['@'] = resolve('src')
+  if(env === 'production') {
+    config.externals = {
+      'react': 'React',
+      'react-dom': 'ReactDOM'
+    }
+  }
+  return config
+}
+
+module.exports = override(addDecoratorsLegacy(), customize())
+```
+
+安装依赖。
+
+```js
+npm i customize-cra react-app-rewired
+```
+
+修改 `package.json`。
+
+```json
+{
+  ...
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
+  }
+  ...
+}
+```
