@@ -8,7 +8,13 @@
 npm i create-react-app -g
 ```
 
-切换到想创建项目的目录，使用命令：`create-react-app projectName`。
+切换到想创建项目的目录，使用命令：
+
+```js
+npx create-react-app projectName
+// ts 项目
+npx create-react-app projectName --template typescript
+```
 
 进入项目文件夹：`cd projectName`。
 
