@@ -365,4 +365,6 @@ export default withRouter(MyRouter)
 
 ```html
 <Route path="/home" render={ props => <Home { ...props } name="xxx" age="xxx" /> } />
+<!-- 也可以进行路由拦截 -->
+<Route path="/home" render={ _ => isAuth() ? <Home/> : <Redirect to="/login" /> } />
 ```
