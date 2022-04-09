@@ -86,3 +86,40 @@ export default function App() {
   )
 }
 ```
+
+## 样式化组件
+
+对同一组件设置不同的样式。
+
+```js
+import styled from 'styled-components'
+
+interface Props {
+  className?: string
+}
+
+function Div(props: Props) {
+  return <div className={props.className}></div>
+}
+
+const StyledDiv1 = styled(Div)({
+  backgroundColor: 'red',
+  width: 100,
+  height: 100
+})
+
+const StyledDiv2 = styled(Div)({
+  backgroundColor: 'blue',
+  width: 200,
+  height: 200
+})
+
+export default function Child() {
+  return (
+    <>
+      <StyledDiv1 />
+      <StyledDiv2 />
+    </>
+  )
+}
+```
