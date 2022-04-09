@@ -155,3 +155,34 @@ export default function Child() {
   )
 }
 ```
+
+## 实现动画效果
+
+`styled-components` 提供的 `keyframes` 可以让我们定义自己的关键帧动画名称，实现 css 的动画效果。
+
+```js
+import styled, { keyframes } from 'styled-components'
+
+const rotate = keyframes({
+  '0%': {
+    transform: 'rotate(0deg)'
+  },
+  '50%': {
+    transform: 'rotate(270deg)'
+  },
+  '100%': {
+    transform: 'rotate(360deg)'
+  }
+})
+
+const StyledDiv = styled.div`
+  width: 100px;
+  height: 100px;
+  background: red;
+  animation: ${rotate} 1s linear infinite;
+`
+
+export default function Child() {
+  return <StyledDiv />
+}
+```
