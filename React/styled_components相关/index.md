@@ -56,3 +56,33 @@ export default function App() {
   return <StyledInput type='text' placeholder='请输入' />
 }
 ```
+
+## 基于 props 做样式判断
+
+根据自定义属性，设置不同的样式。
+
+```js
+import styled from 'styled-components'
+
+interface Props {
+  bg?: string
+}
+
+// const StyledButton = styled.button<Props>`
+//   background-color: ${ props => props.bg || 'blue' }
+// `
+
+const StyledButton = styled.button<Props>(props => ({
+  backgroundColor: props.bg || 'blue'
+}))
+
+export default function App() {
+  return (
+    <>
+      <StyledButton>blue-button</StyledButton>
+      <StyledButton bg='red'>red-button</StyledButton>
+      <StyledButton bg='yellow'>yellow-button</StyledButton>
+    </>
+  )
+}
+```
