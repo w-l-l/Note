@@ -99,7 +99,7 @@ interface Props {
 }
 
 function Div(props: Props) {
-  return <div className={props.className}></div>
+  return <div className={props.className}></div> // 这里必须要写 className 才能生效
 }
 
 const StyledDiv1 = styled(Div)({
@@ -119,6 +119,38 @@ export default function Child() {
     <>
       <StyledDiv1 />
       <StyledDiv2 />
+    </>
+  )
+}
+```
+
+## 样式继承
+
+类似于 js 中的继承，`styled-components` 也支持样式继承。
+
+```js
+import styled from 'styled-components'
+
+const DefaultButton = styled.button({
+  backgroundColor: 'blue',
+  color: 'white',
+  fontSize: 20
+})
+
+const SmallButton = styled(DefaultButton)({
+  fontSize: 12
+})
+
+const BigButton = styled(DefaultButton)({
+  fontSize: 30
+})
+
+export default function Child() {
+  return (
+    <>
+      <DefaultButton>default-button</DefaultButton>
+      <SmallButton>small-button</SmallButton>
+      <BigButton>big-button</BigButton>
     </>
   )
 }
