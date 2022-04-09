@@ -39,3 +39,20 @@ export default function App() {
   return <StyledDiv />
 }
 ```
+
+## 透传 props
+
+对标签设置样式，同时支持原生属性传递。
+
+```js
+import styled from 'styled-components'
+
+const StyledInput = styled.input({
+  color: 'red',
+  borderRadius: 8
+})
+
+export default function App() {
+  return <StyledInput type='text' placeholder='请输入' />
+}
+```
