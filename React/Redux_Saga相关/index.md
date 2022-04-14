@@ -161,3 +161,132 @@ store.subscribe(render)
 ```
 
 **注意：在组件中触发 saga 函数执行的时候，action.type 的关键字不要和 reducer 中的关键字一致，因为每次 dispatch 的时候会先经过 reducer 函数，如果匹配上可能会产生一些错误。随后再去 saga 中匹配，执行异步函数，让 put 传递 action 通知 reducer 更新 state。**
+
+## 合并多个 saga
+
+如果有多个 `saga` 操作，需要使用 `all` 进行合并。
+
+目录结构。
+
+```js
+|src
+|--redux
+|--|--sagas
+|--|--|--saga1.js
+|--|--|--saga2.js
+|--|--reducer.js
+|--|--saga.js
+|--|--store.js
+|--App.tsx
+|--index.tsx
+```
+
+```js
+// sagas/saga1.js
+import { take, fork, call, put } from 'redux-saga/effects'
+
+function *watchSaga1() {
+  while(true) {
+    yield take('get-list1')
+    yield fork(getList)
+  }
+}
+
+function *getList() {
+  const res = yield call(getListAction)
+  yield put({
+    type: 'change-list1',
+    payload: res
+  })
+}
+
+function getListAction() {
+  return new Promise(resolve => setTimeout(resolve, 2000, [111, 222, 333]))
+}
+
+export default watchSaga1
+```
+
+```js
+// sagas/saga2.js
+import { take, fork, call, put } from 'redux-saga/effects'
+
+function *watchSaga2() {
+  while(true) {
+    yield take('get-list2')
+    yield fork(getList)
+  }
+}
+
+function *getList() {
+  const res = yield call(getListAction)
+  yield put({
+    type: 'change-list2',
+    payload: res
+  })
+}
+
+function getListAction() {
+  return new Promise(resolve => setTimeout(resolve, 2000, [444, 555, 666]))
+}
+
+export default watchSaga2
+```
+
+```js
+// reducer.js
+const initState = {
+  list: []
+}
+
+export default function reducer(prevState = initState, action) {
+  const { type, payload } = action
+  const state = { ...prevState }
+  switch(type) {
+    case 'change-list1':
+      state.list = payload
+      return state
+    case 'change-list2':
+      state.list = payload
+      return state
+    default:
+      return prevState
+  }
+}
+```
+
+```js
+// saga.js
+import { all } from 'redux-saga/effects'
+import watchSaga1 from './sagas/saga1'
+import watchSaga2 from './sagas/saga2'
+
+function *watchSaga() {
+  yield all([watchSaga1(), watchSaga2()])
+}
+
+export default watchSaga
+```
+
+```js
+// App.tsx
+import store from './redux/store'
+
+export default function App() {
+  return (
+    <>
+      <ul>
+        {store.getState().list.map(item => <li key={item}>{item}</li>)}
+      </ul>
+      <button onClick={_ => {
+        store.dispatch({ type: 'get-list1' })
+      }}>获取数据1</button>
+      <button onClick={_ => {
+        store.dispatch({ type: 'get-list2' })
+      }}>获取数据2</button>
+    </>
+  )
+}
+```
+
+`store.js` 和 `index.tsx` 文件不做修改。
