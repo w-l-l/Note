@@ -290,3 +290,75 @@ export default function App() {
 ```
 
 `store.js` 和 `index.tsx` 文件不做修改。
+
+## saga 简写
+
+使用 `takeEvery` 可以对 `saga` 进行简写。
+
+目录结构。
+
+```js
+|--redux
+|--|--sagas
+|--|--|--saga1.js
+|--|--|--saga2.js
+|--|--reducer.js
+|--|--saga.js
+|--|--store.js
+|--App.tsx
+|--index.tsx
+```
+
+```js
+// sagas/saga1.js
+import { call, put } from 'redux-saga/effects'
+
+function *getList1() {
+  const res = yield call(getListAction)
+  yield put({
+    type: 'change-list1',
+    payload: res
+  })
+}
+
+function getListAction() {
+  return new Promise(resolve => setTimeout(resolve, 2000, [111, 222, 333]))
+}
+
+export default getList1
+```
+
+```js
+// sagas/saga2.js
+import { call, put } from 'redux-saga/effects'
+
+function *getList2() {
+  const res = yield call(getListAction)
+  yield put({
+    type: 'change-list2',
+    payload: res
+  })
+}
+
+function getListAction() {
+  return new Promise(resolve => setTimeout(resolve, 2000, [444, 555, 666]))
+}
+
+export default getList2
+```
+
+```js
+// saga.js
+import { takeEvery } from 'redux-saga/effects'
+import getList1 from './sagas/saga1'
+import getList2 from './sagas/saga2'
+
+function *watchSaga() {
+  yield takeEvery('get-list1', getList1)
+  yield takeEvery('get-list2', getList2)
+}
+
+export default watchSaga
+```
+
+其他文件保持不变。
