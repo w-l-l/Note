@@ -463,3 +463,54 @@ export default function App() {
 ```
 
 **注意：useReducer 不支持异步。**
+
+## React.memo
+
+`memo` 使得组件仅在 `props` 发生改变的时候进行重新渲染。通常来说，在组件树中 `react` 组件，只要有变化就会走一遍渲染流程。但是 `memo`，我们可以仅仅让某些组件进行渲染。
+
+`PureComponent` 只能用于 `class` 组件，`memo` 用于函数式组件。
+
+`memo` 仅检查 `props` 变更。如果函数组件被 `memo` 包裹，且其实现中拥有 `useState`、`useReducer` 或 `useContext` 的 Hook，当 `state` 或 `context` 发生变化时，它仍会重新渲染。
+
+```js
+// App.tsx
+import { useState } from 'react'
+import Children from './Children'
+
+export default function App() {
+  console.log('App')
+  const [count, setCount] = useState(0)
+  return (
+    <>
+      <Children />
+      <h1>{count}</h1>
+      <button onClick={_ => setCount(count + 1)}>+1</button>
+    </>
+  )
+}
+```
+
+```js
+// Children.tsx
+import { memo } from 'react'
+
+function Children() {
+  console.log('Children')
+  return <h1>Children</h1>
+}
+
+export default memo(Children)
+```
+
+Children 组件不使用 `memo` 包裹的时候，App 组件中的状态发生改变，Children 函数就会重新执行。当 Children 组件使用 `memo` 包裹时，因为 `props` 一直没变，所以不会频繁调用。
+
+默认情况下只会对复杂对象做浅层对比，如果你想要控制对比过程，那么请将自定义的比较函数通过第二个参数传入来实现。
+
+```js
+export default React.memo(MyComponent, (prevProps, nextProps) => {
+  ...
+  return booldean
+})
+```
+
+**注意：与 class 组件中 shouldComponentUpdate() 方法不同的是，如果 props 相等，memo 第二个参数会返回 true；如果 props 不相等，则返回 false。这与 shouldComponentUpdate() 方法的返回值相反。**
