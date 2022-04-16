@@ -400,3 +400,95 @@ export default function App() {
   return <div dangerouslySetInnerHTML={{ __html: '<h1>App</h1>' }}></div>
 }
 ```
+
+## Portal
+
+`Portal` 提供了一个最好的在父组件包含的 DOM 结构层级外的 DOM 节点渲染组件的方法。
+
+```js
+React.createPortal(child, container)
+```
+
+第一个参数 child 是可渲染的 `react` 子项，比如元素、字符串或者片段等。第二个参数 container 是一个 DOM 元素。
+
+```js
+// App.tsx
+import PortalDialog from './PortalDialog'
+
+export default function App() {
+  return (
+    <div>
+      <PortalDialog>
+        <h1>PortalDialog</h1>
+      </PortalDialog>
+      <h1>App</h1>
+    </div>
+  )
+}
+```
+
+```js
+// PortalDialog.tsx
+import { createPortal } from 'react-dom'
+
+interface Props {
+  children?: any
+}
+
+export default function PortalDialog(props: Props) {
+  const portal = createPortal(
+    <div className='portal'>
+      {props.children}
+    </div>,
+    document.body
+  )
+  return portal
+}
+```
+
+PortalDialog 组件并没有挂载在 App 组件内部，而是挂载到了 `body` 标签中的最后。
+
+虽然通过 `portal` 渲染的元素在父组件的盒子之外，但是渲染的 DOM 节点仍在 `react` 的元素树上，在 DOM 元素上的点击事件仍然能在 DOM 树中监听到。
+
+```js
+// App.tsx
+import PortalDialog from './PortalDialog'
+
+export default function App() {
+  return (
+    <div onClick={_ => console.log('App身上的监听事件')}>
+      <PortalDialog>
+        <h1>PortalDialog</h1>
+      </PortalDialog>
+      <h1>App</h1>
+      <button onClick={_ => console.log('App-button')}>App-button</button>
+    </div>
+  )
+}
+```
+
+```js
+// PortalDialog.tsx
+import { createPortal } from 'react-dom'
+
+interface Props {
+  children: any
+}
+
+export default function PortalDialog(props: Props) {
+  const portal = createPortal(
+    <div className='portal'>
+      {props.children}
+      <button onClick={_ => console.log('PortalDialog-button')}>PortalDialog-button</button>
+    </div>,
+    document.body
+  )
+  return portal
+}
+```
+
+当我们点击 App-button 这个按钮时，App 最外层的点击监听会触发，因为事件冒泡的原因。
+
+PortalDialog 组件虽然没挂载到 App 组件内，但是点击 PortalDialog-button 这个按钮时，App 最外层的点击监听也会触发。
+
+在父组件里捕获一个来自 `portal` 冒泡上来的事件，使之能够在开发时具有不完全依赖于 `portal` 的更为灵活的抽象。无论是否采用 `portal` 实现，父组件都能够捕获其事件。
