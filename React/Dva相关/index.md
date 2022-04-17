@@ -88,3 +88,129 @@ const app = dva({
   // history: require('history').createHashHistory() // hahs 模式
 });
 ```
+
+## Dva models
+
+同步操作，实现 tabbar 的显示和隐藏。
+
+```js
+// models/tabbar.js
+export default {
+  namespace: 'tabbar',
+  state: {
+    isShow: true
+  },
+  reducers: {
+    hide(state, action) {
+      return { ...state, isShow: false }
+    },
+    show(state, action) {
+      return { ...state, isShow: true }
+    }
+  }
+}
+```
+
+```js
+// index.js 注入
+app.model(require('./models/tabbar').default)
+```
+
+```js
+// routes/Home.jsx
+import { connect } from 'dva'
+
+function Home(props) {
+  return (
+    <>
+      <h1>Home</h1>
+      <button onClick={props.hide}>隐藏tabbar</button>
+      <button onClick={props.show}>显示tabbar</button>
+    </>
+  )
+}
+
+export default connect(
+  null,
+  {
+    hide: _ => ({ type: 'tabbar/hide' }),
+    show: _ => ({ type: 'tabbar/show' })
+  }
+)(Home)
+```
+
+异步操作，获取信息列表。
+
+```js
+// models/person.js
+import { getPersonList } from '../services/getPersonList'
+
+export default {
+  namespace: 'person',
+  state: {
+    list: []
+  },
+  reducers: {
+    setPersonList(state, action) {
+      return { ...state, list: action.payload }
+    }
+  },
+  effects: {
+    *getPersonList(action, { call, put }) {
+      const list = yield call(getPersonList)
+      yield put({
+        type: 'setPersonList',
+        payload: list
+      })
+    }
+  }
+}
+```
+
+```js
+// services/getPersonList.js
+export function getPersonList() {
+  return new Promise(resolve => setTimeout(resolve, 2000, [
+    { id: 1, name: '孙悟空' },
+    { id: 2, name: '猪八戒' },
+    { id: 3, name: '沙和尚' }
+  ]))
+}
+```
+
+```js
+// index.js 注入
+app.model(require('./models/person').default)
+```
+
+```js
+// routes/Home.jsx
+import { connect } from 'dva'
+
+function Home(props) {
+  return (
+    <>
+      <h1>Home</h1>
+      <ul>
+        { props.list.map(item => <li key={item.id} onClick={_ => {
+          props.history.push(`/detail/${item.id}`)
+        }}>{item.name}</li>) }
+      </ul>
+      <button onClick={props.hide}>隐藏tabbar</button>
+      <button onClick={props.show}>显示tabbar</button>
+      <button onClick={props.getPersonList}>获取person-list</button>
+    </>
+  )
+}
+
+export default connect(
+  state => ({
+    list: state.person.list
+  }), 
+  {
+    hide: _ => ({ type: 'tabbar/hide' }),
+    show: _ => ({ type: 'tabbar/show' }),
+    getPersonList: _ => ({ type: 'person/getPersonList' })
+  }
+)(Home)
+```
