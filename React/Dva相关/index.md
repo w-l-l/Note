@@ -27,3 +27,64 @@ src 目录结构。
 |--|--index.js // 入口文件
 |--|--router.js // 路由配置文件
 ```
+
+## Dva 路由
+
+路由相关的组件都在 `dva/router` 文件下。
+
+```js
+// router.js
+import React from 'react'
+import { Router, Route, Switch, Redirect } from 'dva/router'
+import App from './routes/App'
+import Home from './routes/Home'
+import About from './routes/About'
+import Detail from './routes/Detail'
+import Login from './routes/Login'
+
+function RouterConfig({ history }) {
+  return (
+    <Router history={history}>
+      <Switch>
+        <Route path='/login' component={Login}></Route>
+        <Route path='/' render={props => (
+          <App {...props}>
+            <Switch>
+              <Route path='/home' component={Home}></Route>
+              <Route path='/about' render={_ => localStorage.getItem('token') ? <About /> : <Redirect to='/login' />}></Route>
+              <Route path='/detail/:id' component={Detail}></Route>
+              <Redirect from='/' to='home'></Redirect>
+            </Switch>
+          </App>
+        )} />
+      </Switch>
+    </Router>
+  )
+}
+
+export default RouterConfig
+```
+
+```js
+// routes/App.jsx
+import Tabbar from '../components/Tabbar'
+
+export default function App(props) {
+  return (
+    <div>
+      {props.children}
+      <Tabbar />
+    </div>
+  )
+}
+```
+
+设置路由模式。
+
+```js
+// index.js
+const app = dva({
+  history: require('history').createBrowserHistory() // history 模式
+  // history: require('history').createHashHistory() // hahs 模式
+});
+```
