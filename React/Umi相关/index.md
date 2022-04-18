@@ -232,8 +232,31 @@ export default defineConfig({
   proxy: {
     '/api': {
       target: 'https://xxx.com',
+      pathRewrite: { '^/api': '' },
       changeOrigin: true
     }
   }
 })
 ```
+
+## Dva 集成
+
+- 按目录约定注册 `model`，无需手动 `app.model`。
+
+- 文件名即 `namespace`，可以省去 `model` 导出的 `namespace key`。
+
+- 无需手写 `router.js`，交给 `umi` 处理，支持 `model` 和 `component` 的按需加载。
+
+- 内置 `query-string` 处理，无需再手动解码和编码。
+
+- 内置 `dva-loading` 和 `dva-immer`，其中 `dva-immer` 需通过配置开启（简化 `reducer` 编写）。
+
+**约定式的 model 阻止方式。**
+
+符合以下规则的文件会被认为是 `model` 文件。
+
+- `src/models` 下的文件。
+
+- `src/pages` 下，子目录中 `models` 目录下的文件。
+
+- `src/pages` 下，所有 `model.ts` 文件（不区分任何字母大小写）。
