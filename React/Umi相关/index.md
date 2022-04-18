@@ -219,3 +219,21 @@ export default defineConfig({
   fastRefresh: {}
 })
 ```
+
+## 反向代理
+
+在 `.umirc.ts` 中新增 `proxy` 配置。
+
+```js
+// .umirc.ts
+import { defineConfig } from 'umi'
+
+export default defineConfig({
+  proxy: {
+    '/api': {
+      target: 'https://xxx.com',
+      changeOrigin: true
+    }
+  }
+})
+```
