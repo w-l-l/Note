@@ -37,3 +37,185 @@
 临时文件是 `umi` 框架中非常重要的一部分，框架或插件会根据你的代码生成临时文件，这些原来需要放在项目里的脏乱差的部分都被藏在了这里。
 
 你可以在这里调试代码，但不要在 `.git` 仓库里提交它，因为它的临时性，每次启动 `umi` 时都会被删除并重新生成。
+
+## Umi 路由
+
+`umi` 会根据 `pages` 目录自动生成路由配置。**需要注释.umirc.ts，routes 相关，否则自动配置不生效。**
+
+```js
+// .umirc.ts
+import { defineConfig } from 'umi'
+
+export default defineConfig({
+  nodeModulesTransform: {
+    type: 'none'
+  },
+  // routes: [
+  //   { path: '/', component: '@/pages/index' }
+  // ],
+  fastRefresh: {}
+})
+```
+
+**全局 Layout。**
+
+约定 `src/layouts/index.tsx` 为全局路由。然后一个 `react` 组件，并通过 `props.children` 渲染子组件。
+
+目录结构。
+
+```js
+|--src
+|--|--layouts
+|--|--|--index.tsx
+```
+
+```js
+import Tabbar from '../components/Tabbar'
+
+export default function Layouts(props: any) {
+  const { location: { pathname } } = props
+  return (
+    <div>
+      {props.children}
+      {pathname === '/login' || <Tabbar />}
+    </div>
+  )
+}
+```
+
+**基础路由。**
+
+如果没有 `routes` 配置，`umi` 会进入约定式路由模式，然后分析 `src/pages` 目录拿到路由配置。
+
+目录结构。
+
+```js
+|--pages
+|--|--Home.tsx
+|--|--About.tsx
+```
+
+页面上访问地址 `/home` 或者 `/about` 都会渲染对应的路由组件。
+
+**重定向。**
+
+目录结构。
+
+```js
+|--pages
+|--|--index.tsx
+|--|--Home.tsx
+|--|--About.tsx
+```
+
+```js
+// pages/index.tsx
+import { Redirect } from 'umi'
+
+export default function Index() {
+  return <Redirect to='home' />
+}
+```
+
+**嵌套路由。**
+
+`umi` 里约定目录下有 `_layout.tsx` 时会生成嵌套路由，以 `_layout.tsx` 为该目录的 layout，layout 文件需要返回一个 `react` 组件，并通过 `props.children` 渲染子组件。
+
+目录结构。
+
+```js
+|--pages
+|--|--about
+|--|--|--_layout.tsx
+|--|--|--List.tsx
+|--|--|--Detail.tsx
+```
+
+```js
+// pages/about/_layout.tsx
+export default function AboutLayout(props: any) {
+  return (
+    <>
+      <h1>AboutLayout</h1>
+      {props.children}
+    </>
+  )
+}
+```
+
+**动态路由。**
+
+约定 `[]` 包裹的文件或文件夹为动态路由。
+
+目录结构。
+
+```js
+|--pages
+|--|--about
+|--|--|--_layout.tsx
+|--|--|--List.tsx
+|--|--|--detail
+|--|--|--|--[id].tsx
+```
+
+```js
+// pages/about/detail/[id].tsx
+export default function Detail(props: any) {
+  return <h1>Detail--{props.match.params.id}</h1>
+}
+```
+
+**路由拦截。**
+
+通过指定高阶组件 `wrappers` 达成效果。
+
+```js
+// pages/Home.tsx
+function Home() {
+  return <h1>Home</h1>
+}
+
+Home.wrappers = ['@/wrappers/Auth']
+```
+
+```js
+// wrappers/Auth.tsx
+import { Redirect } from 'umi'
+
+export default function Auth(props: any) {
+  return isAuth ? <div>{props.children}</div> : <Redirect to='/login' />
+}
+```
+
+这样，访问 `/home`，就会进行权限验证，验证通过就渲染 `src/pages/Home.tsx`，否则就会跳转到 `/login`，由 `src/pages/login` 进行渲染。
+
+**404 路由。**
+
+约定 `src/pages/404.tsx` 为 404 页面，需返回 `react` 组件。
+
+```js
+// src/pages/404.tsx
+export default function NotFount() {
+  return <h1>404</h1>
+}
+```
+
+**路由模式。**
+
+在 `.umirc.ts` 中配置 `history` 模式。
+
+```js
+// .umirc.ts
+import { defineConfig } from 'umi';
+
+export default defineConfig({
+  nodeModulesTransform: {
+    type: 'none'
+  },
+  history: {
+    type: 'hash', // hash 模式
+    type: 'browser' // history 模式 默认
+  },
+  fastRefresh: {}
+})
+```
