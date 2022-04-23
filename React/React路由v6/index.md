@@ -25,3 +25,89 @@
 - 移除了 `NavLink` 中的 `activeClassName` 和 `activeStyle`。
 
 - 钩子 `useRoutes` 代替 `react-router-config`。
+
+## 路由操作
+
+**一级路由**
+
+```js
+import { Routes, Route } from 'react-router-dom'
+
+<Routes>
+  <Route index element={<Home />}>
+  <Route path='/home' element={<Home />} />
+  <Route path='/about' element={<About />} />
+</Routes>
+```
+
+`index` 用于嵌套路由，仅匹配父路径时，设置渲染的组件。
+
+解决当嵌套路由有多个子路由但本身无法确认默认渲染哪个子路由的时候，可以增加 `index` 属性来指定默认路由。`index` 路由和其他路由不同的地方是它没有 `path` 属性，它和父路由共享同一个路径。
+
+**路由重定向**
+
+官方推荐方案①：使用 `Navigate` 组件代替。
+
+```js
+import { Routes, Route, Navigate } from 'react-router-dom'
+
+<Routes>
+  <Route path='/home' element={<Home />} />
+  <Route path='/about' element={<About />} />
+  <Route path='/' element={<Navigate to='/home' />}>
+</Routes>
+```
+
+官网推荐②：自定义 `Redirect` 组件。
+
+```js
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+export default function Redirect({ to }) {
+  const navigate = useNavigate()
+  useEffect(_ => {
+    navigate(to, { replace: true })
+  }, [to])
+  return null
+}
+```
+
+```js
+// 使用
+<Route path='/' element={<Redirect to='/home' />}></Route>
+```
+
+**404**
+
+```js
+// 写在路由规则最后
+<Route path='*' element={<NotFound />}></Route>
+```
+
+**嵌套路由**
+
+使用 `Outlet` 为路由组件留位置。
+
+```js
+<Route path='/about' element={<About />}>
+  {/* <Route index element={<List />}></Route> */}
+  <Route index element={<Navigate to='list' />}></Route>
+  <Route path='list' element={<List />}></Route>
+  <Route path='detail' element={<Detail />}></Route>
+</Route>
+```
+
+```js
+// About 路由组件
+import { Outlet } from 'react-router-dom'
+
+export default function About() {
+  return (
+    <>
+      <h1>About</h1>
+      <Outlet></Outlet>
+    </>
+  )
+}
+```
