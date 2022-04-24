@@ -111,3 +111,54 @@ export default function About() {
   )
 }
 ```
+
+## 声明式导航与编程式导航
+
+声明式导航。
+
+```js
+import { NavLink } from 'react-router-dom'
+
+<div className='tabbar'>
+  <NavLink to='/home' className={({ isActive }) => isActive ? 'my-class' : ''}>home</NavLink>
+  <NavLink to='/about' className={({ isActive }) => isActive ? 'my-class' : ''}>about</NavLink>
+</div>
+```
+
+编程式导航。
+
+```js
+// query 参数
+const navigate = useNavigate()
+navigate('/about/detail?id=100')
+
+// 获取 query 参数
+const [searchParams, setSearchParams] = useSearchParams()
+searchParams.get('id') // 100
+
+// 同时页面也可以用 set 方法来改变路由，路由组件将重新执行
+setSearchParams({ id: 200 })
+```
+
+```js
+// params 参数
+const navigate = useNavigate()
+navigate('/about/detail/100')
+
+// 配置动态路由
+<Route path='/about/detail/:id' element={<Detail />} />
+
+// 获取 params 参数
+const { id } = useParams() // 100
+```
+
+```js
+// state 参数
+const navigate = useNavigate()
+navigate('/about/detail', {
+  state: { id: item.id }
+})
+
+// 获取 state 参数
+const { state: { id } } = useLocation() // 100
+```
