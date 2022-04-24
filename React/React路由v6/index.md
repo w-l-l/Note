@@ -162,3 +162,23 @@ navigate('/about/detail', {
 // 获取 state 参数
 const { state: { id } } = useLocation() // 100
 ```
+
+## 路由拦截
+
+```js
+// 路由拦截组件封装
+import { Navigate } from 'react-router-dom'
+function AuthComponent({ children }) {
+  const isLogin = localStorage.getItem('token')
+  return isLogin ? children : <Navigate to='/login' />
+}
+```
+
+```js
+// 使用
+<Route path='/home' element={
+  <AuthComponent>
+    <Home />
+  </AuthComponent>
+}></Route>
+```
