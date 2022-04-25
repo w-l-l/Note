@@ -182,3 +182,18 @@ function AuthComponent({ children }) {
   </AuthComponent>
 }></Route>
 ```
+
+## 实现 withRouter 类组件跳转方法
+
+```js
+import { useNavigate, useLocation, useMatch } from 'react-router-dom'
+
+export default function withRouter(Component) {
+  return props => {
+    const push = useNavigate()
+    const location = useLocation()
+    const match = useMatch(location.pathname)
+    return <Component {...props} history={{push}} location={location} match={match} />
+  }
+}
+```
