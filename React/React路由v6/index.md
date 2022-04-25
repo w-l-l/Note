@@ -220,3 +220,25 @@ const LazyLoad = path => {
   <Route path='/about' element={LazyLoad('About')}></Route>
 </Routes>
 ```
+
+## useRoutes 钩子配置路由
+
+```js
+export default function MyRouter() {
+  return useRoutes([
+    { path: '/login', element: <Login/> },
+    { path: '/home', element: LazyLoad('Home') },
+    { path: '/about', element: LazyLoad('about'), children: [
+      { index: true, element: <Navigate to='list' /> },
+      { path: 'list', element: <List /> },
+      { path: 'detail', element: (
+        <AuthComponent>
+          <Detail />
+        </AuthComponent>
+      ) }
+    ] },
+    { path: '/', element: <Navigate to='home' /> },
+    { path: '*', element: <NotFound /> }
+  ])
+}
+```
