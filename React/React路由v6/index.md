@@ -197,3 +197,26 @@ export default function withRouter(Component) {
   }
 }
 ```
+
+## 路由懒加载
+
+```js
+// 封装函数
+import { lazy, Suspense } from 'react'
+const LazyLoad = path => {
+  const Component = lazy(_ => import(`../views/${path}`))
+  return (
+    <Suspense fallback={<h1>加载中...</h1>}>
+      <Component />
+    </Suspense>
+  )
+}
+```
+
+```js
+// 使用
+<Routes>
+  <Route path='/home' element={LazyLoad('Home')}></Route>
+  <Route path='/about' element={LazyLoad('About')}></Route>
+</Routes>
+```
