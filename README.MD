@@ -78,6 +78,7 @@
 - [Vue-Router](./Vue/Vue-Router/index.md)
 - [Vue组件相关](./Vue/Vue组件相关/index.md)
 - [Vue-Cli项目优化](./Vue/Vue-Cli项目优化/index.md)
+- [Vue组件二次封装](./Vue/Vue组件二次封装/index.md)
 
 ## React
 

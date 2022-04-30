@@ -86,3 +86,56 @@ export default {
 这里我们使用了 `model` 配置项，允许一个自定义组件使用 `v-model` 时定制 `prop` 和 `event`。
 
 默认情况下，一个组件上的 `v-model` 会把 `value` 用作 `prop`，把 `input` 事件用作 `event`，但是一些输入类型比如单选框和复选框按钮可能想使用 `value` prop 来达到不同的目的。使用 `model` 选项可以回避这些情况产生的冲突。
+
+## 组件二次封装总结
+
+**封装**
+
+```html
+<template>
+  <el-input v-model="value" v-bind="$attrs" v-on="$listeners" @input="handleInput">
+    <template v-for="(index, name) in $slots" :slot="name">
+      <slot :name="name" />
+    </template>
+  </el-input>
+</template>
+```
+
+```js
+export default {
+  name: 'myInput',
+  props: {
+    newValue: {
+      type: String,
+      default: ''
+    }
+  },
+  model: {
+    prop: 'newValue',
+    event: 'input-change'
+  },
+  data () {
+    return {
+      value: this.newValue
+    }
+  },
+  watch: {
+    newValue(v) {
+      this.value = v
+    }
+  },
+  methods: {
+    handleInput(v) {
+      this.$emit('input-change', v)
+    }
+  }
+}
+```
+
+**使用**
+
+```html
+<my-input v-model="xxx" placeholder='请选择' clearable @input="xxx">
+  <template slot="prepend">前缀</template>
+</my-input>
+```
