@@ -43,3 +43,34 @@ Vue3.0 中一个新的配置项，值为一个函数。
 `setup` 不能是一个 `async` 函数，因为返回值不再是 `return` 的对象，而是 `promise`，模板看不到 `return` 对象中的属性。（后期可以返回一个 `promise` 实例，但需要 `Suspense` 和异步组件的配合）
 
 `setup` 在 `beforeCreate` 之前执行一次，`this` 是 `undefined`。
+
+## ref 函数
+
+作用：定义一个响应式函数。
+
+```js
+// 语法
+const xxx = ref(initValue)
+```
+
+创建一个包含响应式数据的引用对象。（reference 对象，简称 ref 对象）
+
+```js
+// js中操作数据
+const n = ref(0)
+n.value // 0
+```
+
+js 中操作数据需要 `.value`，模板中读取数据不需要 `.value`。
+
+```html
+<div>{{ n }}</div>
+```
+
+备注：
+
+- 接收的数据可以是基本类型，也可以是对象类型。
+
+- 基本类型的数据：响应式依然依靠 `Object.defineProperty()` 的 `get` 与 `set` 完成的。
+
+- 对象类型的数据：内部使用了 Vue3.0 中的一个新函数，`reactive` 函数。
