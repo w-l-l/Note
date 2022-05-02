@@ -74,3 +74,20 @@ js 中操作数据需要 `.value`，模板中读取数据不需要 `.value`。
 - 基本类型的数据：响应式依然依靠 `Object.defineProperty()` 的 `get` 与 `set` 完成的。
 
 - 对象类型的数据：内部使用了 Vue3.0 中的一个新函数，`reactive` 函数。
+
+## reactive 函数
+
+作用：定义一个对象类型的响应式数据。（基本类型不要用它，要用 `ref` 函数）
+
+```js
+// 语法
+const proxyData = reactive(obj)
+/*
+  接收一个对象或数组，返回一个代理对象
+  Proxy 的实例对象，简称 proxy 对象
+*/
+```
+
+`reactive` 函数定义的响应式数据是“深层次的”。
+
+内部基于 ES6 的 `Proxy` 实现，通过代理对象操作源对象，对内部数据进行操作。
