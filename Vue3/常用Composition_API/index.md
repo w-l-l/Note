@@ -91,3 +91,25 @@ const proxyData = reactive(obj)
 `reactive` 函数定义的响应式数据是“深层次的”。
 
 内部基于 ES6 的 `Proxy` 实现，通过代理对象操作源对象，对内部数据进行操作。
+
+## reactive 对比 ref
+
+**从定义数据角度对比：**
+
+- `ref` 用来定义：基本数据类型。
+
+- `reactive` 用来定义：对象数据类型。
+
+- 备注：`ref` 也可以用来定义对象数据类型，它内部会自动通过 `reactive` 转为代理对象。
+
+**从原理角度对比：**
+
+- `ref` 通过 `Object.defineProperty()` 的 `get` 和 `set` 来实现响应式。（数据劫持）
+
+- `reactive` 通过 `Proxy` 来实现响应式（数据劫持），并通过 `Reflect` 操作源对象内部的数据。
+
+**从使用角度对比：**
+
+- `ref` 定义的数据：操作数据需要 `.value`，模板中直接读取数据不需要 `.value`。
+
+- `reactive` 定义的数据：操作与读取数据，均不需要 `.value`
