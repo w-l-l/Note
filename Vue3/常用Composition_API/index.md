@@ -143,3 +143,60 @@ export default {
   }
 }
 ```
+
+## watch 函数
+
+与 Vue2.x 中 `watch` 配置功能一致。
+
+两个小坑：
+
+- 监视 `reactive` 定义的响应式数据时：oldValue 无法正常获取、强制开启了深度监视。（`deep` 配置失效，因为 newValue 和 oldValue 指向同一对象）
+
+- 监视 `reactive` 定义的响应式数据中某个属性（引用类型）时：`deep` 配置有效。
+
+`watch` 监视有以下几种情况：
+
+**情况一：监视 ref 定义的响应式数据**
+
+```js
+watch(ref, (newValue, oldValue) => {
+  console.log('ref变化了', newValue, oldValue)
+}, { immediate: true }) // 如果 ref 定义的数据是引用类型，则 deep 配置有效
+```
+
+**情况二：监视多个 ref 定义的响应式数据**
+
+```js
+watch([ref1, ref2], (newValue, oldValue) => {
+  console.log('ref1或ref2变化了', newValue, oldValue)
+  // 此时 newValue 和 oldValue 的值对应 [ref1, ref2]，数组类型
+})
+```
+
+**情况三：监视 reactive 定义的响应式数据**
+
+若 `watch` 监视的是 `reactive` 定义的响应式数据，则无法正确获取 oldValue，因为 newValue 和 oldValue 指向同一对象。
+
+若 `watch` 监视的是 `reactive` 定义的响应式数据，则强制开启了深度监视。
+
+```js
+watch(reactive, (newValue, oldValue) => {
+  console.log('reactive变化了', newValue, oldValue)
+}, { immediate: true, deep: false }) // 此处的 deep 配置不再奏效
+```
+
+**情况四：监视 reactive 定义的响应式数据中的某个属性**
+
+```js
+watch(_ => reactive.obj, (newValue, oldValue) => {
+  console.log('reactive.obj变化了', newValue, oldValue)
+}, { immediate: true, deep: true }) // 若 reactive.obj 是引用类型，此处的 deep 配置是有效的
+```
+
+**情况五：监视 reactive 定义的响应式数据中的某些属性**
+
+```js
+watch([_ => reactive.obj1, _ => reactive.obj2], (newValue, oldValue) => {
+  console.log('reactive中的obj1或obj2变化了', newValue, oldValue)
+}, { immediate: true, deep: true })
+```
