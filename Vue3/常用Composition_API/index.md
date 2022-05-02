@@ -113,3 +113,33 @@ const proxyData = reactive(obj)
 - `ref` 定义的数据：操作数据需要 `.value`，模板中直接读取数据不需要 `.value`。
 
 - `reactive` 定义的数据：操作与读取数据，均不需要 `.value`
+
+## 计算属性
+
+`computed` 函数：与 Vue2.x 中 `computed` 配置功能一致。
+
+```js
+import { computed } from 'vue'
+
+export default {
+  setup() {
+    // 计算属性--简写
+    let com = computed(_ => {
+      return '...'
+    })
+
+    // 计算属性--完整
+    let com = computed({
+      get() {
+        return '...'
+      },
+      set(value) {
+        xxx.xxx = value
+      }
+    })
+    return {
+      com
+    }
+  }
+}
+```
