@@ -234,3 +234,42 @@ watchEffect(_ => {
   console.log('watchEffect配置的回调执行了')
 })
 ```
+
+## toRef 和 toRefs
+
+作用：创建一个 `ref` 对象，其 `value` 值指向另一个响应式对象中的某个属性。
+
+```js
+import { reactive, toRef } from 'vue'
+export default {
+  setup() {
+    const person = reactive({
+      name: '孙悟空',
+      age: 18
+    })
+    return {
+      name: toRef(person, 'name'),
+      age: toRef(person, 'age')
+    }
+  }
+}
+```
+
+应用：要将响应式对象中的某个属性单独提供给外部使用时。（类似于对象的解构，页面上减少 obj.xxx 操作）
+
+`toRefs` 与 `toRef` 功能一致，但可以批量创建多个 `ref` 对象。
+
+```js
+import { reactive, toRefs } from 'vue'
+export default {
+  setup() {
+    const person = reactive({
+      name: '孙悟空',
+      age: 18
+    })
+    return {
+      ...toRefs(person)
+    }
+  }
+}
+```
