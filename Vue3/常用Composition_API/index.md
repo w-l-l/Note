@@ -391,3 +391,25 @@ function myRef(value) {
   })
 }
 ```
+
+## provide 和 inject
+
+作用：实现祖孙后代组件间通信
+
+套路；父组件有一个 `provide` 选项来提供数据，后代组件有一个 `inject` 选项来接收使用这些数据。
+
+```js
+// 祖组件里
+setup() {
+  const data = reactive({...})
+  provide('data', data)
+}
+```
+
+```js
+// 后代组件
+setup() {
+  const data = inject('data', initData)
+  return { data }
+}
+```
