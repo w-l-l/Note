@@ -339,3 +339,32 @@ shallowReadonly(reactive({...}))
 **注意：只读数据被修改时，源数据不会发生变化。**
 
 应用场景：不希望数据被修改时。
+
+## toRaw 和 markRaw
+
+`toRaw`：返回 `reactive` 或 `readonly` 代理的原始对象。
+
+使用场景：用于读取响应式对象对应的普通对象，对这个普通对象的所有操作，不会引起页面的更新。
+
+```js
+const obj = {}
+const reactiveObj = reactive(obj)
+toRaw(reactiveObj) === obj // true
+```
+
+`markRaw`：标记一个原始对象，使其永远不会再成为响应式对象。
+
+使用场景：
+
+- 有些值不应该设置为响应式的，例如复杂的第三方类库等。
+
+- 当渲染具有不可变数据源的大列表时，跳过响应式转换可以提高性能。
+
+```js
+const data = reactive({ name: '孙悟空' })
+data.a = { b: 100 }
+data.a.b++ // 页面会响应
+
+data.a = markRaw({ b: 100 })
+data.a.b++ // 页面不会响应，但是数据源会改变
+```
