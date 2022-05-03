@@ -200,3 +200,37 @@ watch([_ => reactive.obj1, _ => reactive.obj2], (newValue, oldValue) => {
   console.log('reactive中的obj1或obj2变化了', newValue, oldValue)
 }, { immediate: true, deep: true })
 ```
+
+## watchEffect 函数
+
+`watch` 的套路是：既要指明监视的属性，也要指明监视的回调。
+
+`watchEffect` 的套路是：不用指明监视哪个属性，监视的回调中用到哪个属性，那就监视哪个属性。
+
+**watchEffect 有点像 computed**
+
+- 但 `computed` 注重计算出来的值（回调函数的返回值），所以必须要写返回值。
+
+- 而 `watchEffect` 更注重的是过程（回调函数的函数体），所以不用写返回值。
+
+**注意：watchEffect 传递的回调会立即执行。**
+
+```js
+watchEffect(_ => {
+  // watchEffect 所指定的回调中用到的数据只要发生变化，则直接重新执行回调
+  const x = ref.value
+  const y = reactive
+  console.log('watchEffect配置的回调执行了')
+})
+```
+
+```js
+watchEffect(_ => {
+  setTimeout(_ => {
+    // 如果将数据源写在异步回调中，该数据源发生改变时，watchEffect 不会重新执行回调
+    const x = ref.value
+    const y = reactive
+  })
+  console.log('watchEffect配置的回调执行了')
+})
+```
