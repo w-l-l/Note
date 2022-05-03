@@ -368,3 +368,26 @@ data.a.b++ // 页面会响应
 data.a = markRaw({ b: 100 })
 data.a.b++ // 页面不会响应，但是数据源会改变
 ```
+
+## customRef
+
+`customRef`：创建一个自定义的 `ref`，并对其依赖项跟踪和更新触发进行显式控制。
+
+它需要一个工厂函数，该函数接收 `track` 和 `trigger` 函数作为参数，并且应该返回一个带有 `get` 和 `set` 的对象。
+
+```js
+function myRef(value) {
+  return customRef((track, trigger) => {
+    return {
+      get() {
+        track() // 告诉 vue 这个 value 值是需要被追踪的
+        return value
+      },
+      set(newValue) {
+        value = newValue
+        trigger() // 告诉 vue 去更新界面
+      }
+    }
+  })
+}
+```
