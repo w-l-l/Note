@@ -84,6 +84,7 @@
 
 - [Vue3简介](./Vue3/Vue3简介/index.md)
 - [创建Vue3工程](./Vue3/创建Vue3工程/index.md)
+- [常用Composition_API](./Vue3/常用Composition_API/index.md)
 
 ## React
 
