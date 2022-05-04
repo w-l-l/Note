@@ -86,6 +86,7 @@
 - [创建Vue3工程](./Vue3/创建Vue3工程/index.md)
 - [常用Composition_API](./Vue3/常用Composition_API/index.md)
 - [Vue3中的响应式原理](./Vue3/Vue3中的响应式原理/index.md)
+- [Vue3生命周期](./Vue3/Vue3生命周期/index.md)
 
 ## React
 
