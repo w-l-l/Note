@@ -88,6 +88,7 @@
 - [Vue3中的响应式原理](./Vue3/Vue3中的响应式原理/index.md)
 - [Vue3生命周期](./Vue3/Vue3生命周期/index.md)
 - [自定义hook函数](./Vue3/自定义hook函数/index.md)
+- [Vue3新增的内置组件](./Vue3/Vue3新增的内置组件/index.md)
 
 ## React
 
