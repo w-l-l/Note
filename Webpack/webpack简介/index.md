@@ -12,7 +12,7 @@
 
 - `output` 输出：指示 `webpack` 打包后的资源 `bundles` 输出到哪里去，以及如何命名。
 
-- `loader` 加载器：让 `webpack` 能够去处理那些非 js 文件。（`webpack` 自身只理解 js）
+- `loader` 加载器：让 `webpack` 能够去处理那些非 js 文件。（`webpack` 自身只理解 js 和 json）
 
 - `plugin` 插件：可以用于执行范围更广的任务，插件的范围包括，从打包优化和压缩，一直到重新定义环境中的变量等。
 
