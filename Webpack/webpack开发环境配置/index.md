@@ -66,3 +66,39 @@ module.exports = {
 - `css-loader`：将 `css` 文件变成 `Commonjs` 模块加载到 js 中，里面的内容是样式字符串。
 
 - `style-loader`：创建 `style` 标签，将 js 中的样式资源插入，并添加到 `head` 中生效。
+
+## 打包 html 资源
+
+下载安装 `plugin` 包。
+
+```js
+npm i html-webpack-plugin -D
+```
+
+`html-webpack-plugin` 的两个作用：
+
+- 自动在内存中根据指定页面生成一个内存的页面。
+
+- 自动把打包好的 `bundle.js` 追加到页面中去。
+
+修改 `webpack.config.js` 文件。
+
+```js
+const { resolve } = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+  ...
+  plugins: [
+    new HtmlWebpackPlugin({ // 创建一个在内存中生成 html 页面的插件
+      template: resolve(__dirname, './src/index.html'), // 模板路径，去生成内存中的页面
+      filename: 'index.html' // 自动生成的 html 文件的名称（生成的 html 文件在项目根目录下）
+    })
+  ]
+  ...
+}
+```
+
+在 `index.html` 中的 `script` 标签可以注释掉，因为 `html-webpack-plugin` 插件会自动把 `bundle.js` 注入到 `index.html` 页面中，不需要我们手动处理 js 的引用路径，插件会帮我们自动创建一个合适的 `script`，并且引入正确的路径。
+
+**注意：此时页面中显示的 index.html 文件不是 src 目录下的 index.html，而是内存中的 index.html。**
