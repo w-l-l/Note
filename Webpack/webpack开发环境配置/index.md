@@ -30,3 +30,39 @@ module.exports = {
 - 拿到配置对象指定的入口和出口，然后进行打包构建。
 
 所有的构建工具都是基于 `node.js` 平台运行的，模块化采用 `Commonjs`。
+
+## 打包样式资源
+
+下载安装 `loader` 包。
+
+```js
+npm i css-loader style-loader less-loader less sass-loader node-sass -D
+```
+
+在 `webpack.config.js` 文件中添加配置规则。
+
+```js
+module.exports = {
+  ...
+  module: {
+    rules: [ // 详细的 loader 配置
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      { test: /\.less/, use: ['style-loader', 'css-loader', 'less-loader'] },
+      { test: /\.scss/, use: ['style-loader', 'css-loader', 'sass-loader'] }
+    ]
+  }
+  ...
+}
+```
+
+- `test`：匹配哪些文件。
+
+- `use`：使用哪些 `loader` 进行处理。**use 数组 loader 的执行顺序是从后往前依次执行。**
+
+例如：
+
+- `less-loader`：将 `less` 文件编译成 `css` 文件。
+
+- `css-loader`：将 `css` 文件变成 `Commonjs` 模块加载到 js 中，里面的内容是样式字符串。
+
+- `style-loader`：创建 `style` 标签，将 js 中的样式资源插入，并添加到 `head` 中生效。
