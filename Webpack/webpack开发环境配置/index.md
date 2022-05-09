@@ -161,3 +161,25 @@ module.exports = {
 ```
 
 **注意：require() 只能接收常量。**
+
+## 压缩图片资源
+
+下载安装 `loader` 包。
+
+```js
+npm i image-webpack-loader -D
+```
+
+在 `webpack.config.js` 中配置规则。
+
+```js
+module.exports = {
+  ...
+  module: {
+    rules: [
+      { test: /\.(jpg|png|gif)$/, use: ['url-loader', 'image-webpack-loader'] }
+    ]
+  }
+  ...
+}
+```
