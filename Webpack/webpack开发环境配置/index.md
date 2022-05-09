@@ -183,3 +183,26 @@ module.exports = {
   ...
 }
 ```
+
+## 打包其他资源
+
+排除 html、js、css 以外的资源。
+
+```js
+module.exports = {
+  ...
+  module: {
+    rules: [
+      {
+        exclude: /\.(css|js|html|less|jpg|png|gif)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[hash:8]-[name].[ext]',
+          outputPath: 'media' // 其他文件打包放在输出路径的 media 文件目录下
+        }
+      }
+    ]
+  }
+  ...
+}
+```
