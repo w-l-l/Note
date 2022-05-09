@@ -206,3 +206,41 @@ module.exports = {
   ...
 }
 ```
+
+## webpack-dev-server
+
+开发服务器 `devServer`：用来启动一个本地服务（自动编译、自动打开浏览器、自动刷新浏览器）。
+
+特点：只会在内存中编译打包，不会有任何输出。
+
+下载安装包。
+
+```js
+npm i webpack-dev-server -D
+```
+
+在 `webpack.config.js` 中添加新属性 `devServer`。
+
+```js
+const { resolve } = require('path')
+
+module.exports = {
+  ...
+  devServer: {
+    contentBase: resolve(__dirname, 'dist'), // 项目构建后路径
+    compress: true, // 启动 gzip 压缩
+    port: 3000, // 设置端口号
+    open: true, // 自动打开浏览器
+    hot: true // 启用热更新
+  }
+  ...
+}
+```
+
+运行命令：`npx webpack-dev-server`。
+
+`webpack-dev-server` 帮我们打包生成的 `bundle.js` 文件，并没有存放到实际的物理磁盘上，而是直接托管到了电脑的内存中，所以我们在项目根目录中，根本找不到这个打包好的 `bundle.js`。
+
+我们可以认为，`webpack-dev-server` 帮我们打包生成的文件，以一种虚拟的形式，托管到了咱们项目的根目录中，虽然我们看不到它，但是可以认为和 dist、src、node_modules 平级，有一个看不见的文件，叫做 `bundle.js`。
+
+把 `bundle.js` 放在内存中的好处：由于需要实时打包编译，所以放在内存中速度会非常快。
