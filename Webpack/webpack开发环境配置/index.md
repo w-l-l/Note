@@ -102,3 +102,62 @@ module.exports = {
 在 `index.html` 中的 `script` 标签可以注释掉，因为 `html-webpack-plugin` 插件会自动把 `bundle.js` 注入到 `index.html` 页面中，不需要我们手动处理 js 的引用路径，插件会帮我们自动创建一个合适的 `script`，并且引入正确的路径。
 
 **注意：此时页面中显示的 index.html 文件不是 src 目录下的 index.html，而是内存中的 index.html。**
+
+## 打包图片资源
+
+下载 `loader` 包。
+
+```js
+npm i html-loader url-loader file-loader -D
+```
+
+在 `webpack.config.js` 中配置规则。
+
+```js
+module.exports = {
+  ...
+  module: {
+    rules: [
+      {
+        test: /\.(jpg|png|gif)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 8 * 1024,
+          // esModule: false,
+          name: '[hash:8]-[name].[ext]'
+        }
+      },
+      { test: /\.html$/, loader: 'html-loader' } // 处理 html 文件中的 img 图片，负责引入 img，从而能被 url-loader 进行处理
+    ]
+  }
+  ...
+}
+```
+
+`limit`：单位字节（byte），图片小于等于设置的值就会被 `base64` 处理。
+
+- 优点：减少请求数量（减轻服务器压力）。
+
+- 缺点：图片体积会更大（文件请求速度更慢）。
+
+`esModule`：关闭 `url-loader` 的 ES6 模块化，使用 `Commonjs` 解析。
+
+- 因为 `url-loader` 默认使用的是 ES6 模块化解析，而 `html-loader` 引入图片使用的是 `Commonjs` 解析。
+
+- 解析出现的问题：`src=[object Module]`。
+
+- 所以需要关闭 `url-loader` 的 ES6 模块化。
+
+`name`：给图片进行重命名。
+
+****
+
+父组件给子组件传图片路径参数，在父组件中 `src` 的值会被当作是普通字符串传给子组件，所以子组件只会当字符串处理，不会当路径处理。
+
+解决方法：结合 `require` 使用。
+
+```html
+<com :src="require('../xxx.png')"></com>
+```
+
+**注意：require() 只能接收常量。**
