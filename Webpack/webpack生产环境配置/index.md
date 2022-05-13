@@ -92,3 +92,25 @@ module.exports = {
   }
 }
 ```
+
+## 压缩 css
+
+下载插件。
+
+```js
+npm i optimize-css-assets-webpack-plugin -D
+```
+
+修改 `webpack.config.js`。
+
+```js
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+
+module.exports = {
+  ...
+  plugins: [
+    new OptimizeCssAssetsWebpackPlugin() // 压缩 css 成一行
+  ]
+  ...
+}
+```
