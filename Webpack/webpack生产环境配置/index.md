@@ -40,3 +40,55 @@ module.exports = {
   ...
 }
 ```
+
+## css 兼容性处理
+
+下载插件。
+
+```js
+npm i postcss-loader postcss-preset-env -D
+```
+
+修改 `webpack.config.js`。
+
+```js
+module.exports = {
+  ...
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
+      }
+    ]
+  }
+  ...
+}
+```
+
+创建 `postcss.config.js`。
+
+```js
+module.exports = {
+  plugins: [require('postcss-preset-env')]
+}
+```
+
+修改 `package.json`。
+
+```json
+{
+  "browserslist": {
+    "development": [ // 开发环境
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ],
+    "production": [ // 生产环境
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ]
+  }
+}
+```
