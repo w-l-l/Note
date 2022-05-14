@@ -216,3 +216,34 @@ module.exports = {
   ...
 }
 ```
+
+## html 压缩
+
+下载插件。
+
+```js
+npm i html-webpack-plugin -D
+```
+
+修改 `webpack.config.js`。
+
+```js
+const { resolve } = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+  ...
+  plugins: [
+    new HtmlWebpackPlugin([
+      template: resolve(__dirname, './src/index.html'),
+      minify: { // 压缩 html 代码
+        collapseWhitespace: true, // 移除空格
+        removeComments: true // 移除注释
+      }
+    ])
+  ]
+  ...
+}
+```
+
+**生产环境下会自动压缩 js 代码。**
