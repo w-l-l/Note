@@ -114,3 +114,48 @@ module.exports = {
   ...
 }
 ```
+
+## eslint 语法检查
+
+下载插件。
+
+```js
+npm i eslint eslint-loader eslint-config-airbnb-base eslint-plugin-import -D
+```
+
+修改 `webpack.config.js`。
+
+```js
+module.exports = {
+  ...
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+        options: {
+          fix: true // 自动修复 eslint 的错误
+        },
+        enforce: 'pre' // 优先执行这条规则
+      }
+    ]
+  }
+  ...
+}
+```
+
+配置 `package.json`。
+
+```json
+{
+  "eslintConfig": { // 设置检查规则
+    "extends": "airbnb-base",
+    "env": { // eslint 不认识 window、navigator 全局变量
+      "browser": true // 支持浏览器端的全局变量
+    }
+  }
+}
+```
+
+**注意：eslint-loader 规则必须要先于 babel-loader 规则。**
