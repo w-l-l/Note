@@ -159,3 +159,60 @@ module.exports = {
 ```
 
 **注意：eslint-loader 规则必须要先于 babel-loader 规则。**
+
+## js 兼容性处理
+
+下载插件。
+
+```js
+npm i babel-loader @babel/core @babel/preset-env @babel/polyfill core-js -D
+```
+
+js 兼容性处理的关键包：`babel-loader`、`@babel/core`。
+
+基本 js 兼容性处理：`@babel/preset-env`。
+
+- 只能转换基本语法，如 `Promise` 高级语法不能转换。
+
+全部 js 兼容性处理：`@babel/polyfill`。
+
+```js
+// 只需解决部分兼容性问题，但是将所有兼容性代码全部引入，体积太大
+import '@babel/polyfill'
+```
+
+**按需加载**
+
+```js
+module.exports = {
+  ...
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            [
+              '@babel/perset-env',
+              {
+                useBuiltIns: 'usage', // 按需加载
+                corejs: { version: 3 }, // 指定 core-js 版本
+                targets: { // 指定兼容性做到哪个版本浏览器
+                  chrome: '60',
+                  firefox: '60',
+                  ie: '9',
+                  safari: '10',
+                  edge: '17'
+                }
+              }
+            ]
+          ]
+        }
+      }
+    ]
+  }
+  ...
+}
+```
