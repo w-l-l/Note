@@ -120,3 +120,41 @@ module 会将 loader 的 source map 加入。
 - `hidden-source-map`：只隐藏源代码，会提示构建后代码错误信息。
 
 - `source-map / cheap-module-source-map`。
+
+## oneOf
+
+`webpack` 原本的 `loader` 是将每个文件都过一遍。
+
+> 比如有一个 js 文件，rules 中有 10 个 loader，第一个是处理 js 文件的 loader，当第一个 loader 处理完后，webpack 不会自动跳出，而是拿着这个 js 文件去尝试匹配剩下的 9 个 loader，相当于没有 break。  
+而 oneOf 就相当于这个 break。
+
+正常来讲，一个文件只能被一个 `loader` 处理。当一个文件要被多个 `loader` 处理，那么一定要指定 `loader` 执行的先后顺序。
+
+修改 `webpack.config.js`。
+
+```js
+module.exports = {
+  ...
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        enforce: 'pre', // 优先执行
+        loader: 'eslint-loader',
+        options: {
+          fix: true
+        }
+      },
+      {
+        oneOf: [ // 以下 loader 只会匹配一个，注意：不能有两个配置处理同一类型的文件
+          { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+          { test: /\.html$/, loader: 'html-loader' },
+          { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }
+        ]
+      }
+    ]
+  }
+  ...
+}
+```
