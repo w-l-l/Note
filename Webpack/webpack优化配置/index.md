@@ -56,3 +56,67 @@ if(module.hot) {
   })
 }
 ```
+
+## source-map
+
+一种提供源代码到构建后代码映射技术。（如果构建后代码出错了，通过映射可以追踪源代码错误）
+
+在 `webpack.config.js` 中添加 `devtool` 属性。
+
+```js
+module.exports = {
+  ...
+  devtool: 'source-map'
+  ...
+}
+```
+
+`devtool` 属性的值如下所示：
+
+- `source-map`：外部。  
+错误代码准确信息和源代码的错误位置。
+
+- `inline-source-map`：内联。  
+只生成一个内联 `source-map`。  
+错误代码准确信息和源代码的错误位置。
+
+- `hidden-source-map`：外部。  
+错误代码错误原因，但是没有错误位置。  
+不能追踪源代码错误，只能提示构建后代码的错误位置。
+
+- `eval-source-map`：内联。  
+每一个文件都生成对应的 `source-map`，都在 `eval`。  
+错误代码准确信息和源代码的错误位置。
+
+- `nosource-source-map`：外部。  
+错误代码准确信息，但是没有任何源代码信息。
+
+- `cheap-source-map`：外部。  
+错误代码准确信息和源代码的错误位置。
+
+- `cheap-module-source-map`：外部。  
+错误代码准确信息和源代码的错误位置。  
+module 会将 loader 的 source map 加入。
+
+内部和外部的区别：外部生成 `bundle.js.map` 文件，内联没有，内联构建速度更快。
+
+如何选择？
+
+开发环境：
+
+- 速度快：`eval > inline > cheap > ...`  
+`eval-cheap-source-map`  
+`eval-source-map`
+
+- 调试更友好：`source-map`  
+`cheap-module-source-map`  
+`cheap-source-map`  
+`eval-source-map / eval-cheap-module-source-map`
+
+生产环境：源代码要不要隐藏？调试要不要更友好？内联会让代码体积变大，所以在生产环境不用内联。
+
+- `nosource-source-map`：全部隐藏。
+
+- `hidden-source-map`：只隐藏源代码，会提示构建后代码错误信息。
+
+- `source-map / cheap-module-source-map`。
