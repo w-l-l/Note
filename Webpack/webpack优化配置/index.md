@@ -204,3 +204,27 @@ module.exports = {
   ]
 }
 ```
+
+## tree shaking 树摇
+
+去除无用代码。
+
+前提：必须使用 ES6 模块化，开启 `production` 环境。
+
+作用：减少代码体积。
+
+给 `package.json` 文件添加配置。
+
+```json
+{
+  "sideEffects": false // 所有代码都没有副作用（都可以进行 tree shaking）
+}
+```
+
+问题：可能会把 `css` 或 `@babel/polyfill`（副作用）文件干掉。
+
+```json
+{
+  "sideEffects": ["*.css", "*.less", ".scss"] // 样式文件不进行 tree shaking
+}
+```
