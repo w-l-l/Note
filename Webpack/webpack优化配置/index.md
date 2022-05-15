@@ -158,3 +158,49 @@ module.exports = {
   ...
 }
 ```
+
+## 缓存
+
+**babel 缓存**
+
+- `cacheDirectory: true`。（第二次构建时，会读取之前的缓存）
+
+**文件资源缓存**
+
+- `hash`：每次 `webpack` 构建时会生成一个唯一的 `hash` 值。  
+问题：因为 js 和 css 同时使用一个 hash 值，如果重新打包，会导致所有缓存失效，但我们只改动了一个文件。
+
+- `chunkhash`：根据 `chunk` 生成的 `hash` 值，如果打包来源于同一个 `chunk`，那么 `hash` 值就一样。  
+问题：js 和 css 的 `hash` 值还是一样的，因为 css 是在 js 中被引入的，所以同属于一个 `chunk。`
+
+- `contenthash`：根据文件的内容生成 `hash` 值。  
+不同文件的 `hash` 值是不一样的，让代码上线运行缓存更好使用。
+
+**设置缓存实现**
+
+```js
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'js/bundle.[contenthash:10].js',
+    path: resolve(__dirname, 'dist')
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true // 开启 babel 缓存，第二次构建时，会读取之前的缓存
+        }
+      }
+    ]
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'css/common.[contenthash:10].css'
+    })
+  ]
+}
+```
