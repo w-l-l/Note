@@ -228,3 +228,52 @@ module.exports = {
   "sideEffects": ["*.css", "*.less", ".scss"] // 样式文件不进行 tree shaking
 }
 ```
+
+## code split 代码分离
+
+**多入口**
+
+```js
+module.exports = {
+  entry: {
+    index: './src/js/index.js',
+    test: './src/js/test.js'
+  },
+  output: {
+    filename: 'js/[name].[contenthash:10].js',
+    path: resolve(__dirname, 'dist')
+  }
+}
+```
+
+**node_modules 代码分离**
+
+```js
+module.exports = {
+  ...
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  }
+  ...
+}
+```
+
+可以将 `node_modules` 中代码单独打包一个 `chunk` 最终输出。
+
+自动分析入口 `chunk` 中，有没有公共的文件，如果有会打包成单独一个 `chunk`。
+
+**通过 js 代码，让某个文件被单独打包成一个 chunk**
+
+`import` 动态导入语法：能将某个文件单独打包。
+
+```js
+import(/* webpackChunkName: 'test' */ './test')
+.then(result => {/* 成功 */})
+.catch(error => {/* 失败 */})
+```
+
+- `webpackChunkName`：打包后的文件名字。
+
+**code split 通常我们都设置一个入口文件，将 node_modules 单独打包，再结合实际，单独打包某些文件。**
