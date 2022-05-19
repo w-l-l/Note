@@ -277,3 +277,33 @@ import(/* webpackChunkName: 'test' */ './test')
 - `webpackChunkName`：打包后的文件名字。
 
 **code split 通常我们都设置一个入口文件，将 node_modules 单独打包，再结合实际，单独打包某些文件。**
+
+## 懒加载和预加载
+
+懒加载和预加载让文件单独打包才能实现。
+
+正常加载可以认为是并行加载（同一时间加载多个文件）。
+
+**懒加载**
+
+当文件需要时才加载。
+
+```js
+btnElement.onclick = function() {
+  import(/* webpackChunkName: 'test' */ './test').then(result => {...})
+}
+// 点击触发文件才会被加载，多次触发不会频繁加载，会直接从缓存中读取
+```
+
+**预加载**
+
+会在使用之前，提前加载 js 文件。
+
+```js
+btnElement.onclick = function() {
+  import(/* webpackChunkName: 'test', webpackPrefetch: true */, './test').then(result => {...})
+}
+// 等其他资源加载完毕，浏览器空闲了，在偷偷加载资源，后续也是直接从缓存中读取
+```
+
+**注意：预加载的兼容性不是很好。**
