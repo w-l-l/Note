@@ -351,3 +351,37 @@ if('serviceWorker' in navigator) {
 **注意：SW 代码必须运行在服务器上。**
 
 在浏览器调试模式的 `Application` 下的 `Cache Storage` 可以查看离线缓存的文件信息。
+
+## 多进程打包
+
+安装插件。
+
+```js
+npm i thread-loader -D
+```
+
+跟相关文件开启多进程打包（一般是 js 文件）。
+
+```js
+module.exports = {
+  ...
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'thread-loader', // 开启多进程打包，进程启动大概为 600ms，进程通信也有开销的，只有工作消耗时间比较长，才需要多进程打包
+            options: {
+              workers: 2 // 2 个进程
+            }
+          },
+          { loader: 'babel-loader' }
+        ]
+      }
+    ]
+  }
+  ...
+}
+```
