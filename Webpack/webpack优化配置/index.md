@@ -307,3 +307,47 @@ btnElement.onclick = function() {
 ```
 
 **注意：预加载的兼容性不是很好。**
+
+## PWA
+
+`PWA`：渐进式网络开发应用程序（离线可访问）。
+
+下载插件。
+
+```js
+npm i workbox-webpack-plugin -D
+```
+
+修改 `webpack.config.js` 文件。
+
+```js
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin')
+
+module.exports = {
+  ...
+  plugins: [
+    // 生成一个 service-worker.js 配置文件
+    new WorkboxWebpackPlugin.GenerateSW({
+      clientsClaim: true, // 帮助 serviceworker 快速启动
+      skipWaiting: true // 删除旧的 serviceworker
+    })
+  ]
+  ...
+}
+```
+
+在入口文件注册 serviceworker。
+
+```js
+if('serviceWorker' in navigator) {
+  window.addEventListener('load', _ => {
+    navigator.serviceWorker.register('./service-worker.js')
+    .then(_ => {/* SW 注册成功 */})
+    .catch(_ => {/* SW 注册失败 */})
+  })
+}
+```
+
+**注意：SW 代码必须运行在服务器上。**
+
+在浏览器调试模式的 `Application` 下的 `Cache Storage` 可以查看离线缓存的文件信息。
