@@ -503,3 +503,25 @@ module.exports = {
 - 如果没有给 `webpack.dll.js` 添加新的配置，只需执行 `webpack --config webpack.dll.js` 一次就行，不用每次打包前都执行。
 
 - 只要给 `webpack.dll.js` 添加了新的配置，就必须重新执行一下 `webpack --config webpack.dll.js`，重新生成 `manifest.json`，重新打包。
+
+## hard-source-webpack-plugin
+
+为模块提供中间缓存步骤，第一次构建花费正常的时间，第二次构建将显著加快。
+
+安装插件。
+
+```js
+npm i hard-source-webpack-plugin -D
+```
+
+在 `webpack.config.js` 中添加配置。
+
+```js
+const HardSourceWebpackPlugn = require('hard-source-webpack-plugin')
+
+module.exports = {
+  ...
+  plugins: [ new HardSourceWebpackPlugn() ]
+  ...
+}
+```
