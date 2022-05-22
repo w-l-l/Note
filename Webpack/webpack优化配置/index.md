@@ -385,3 +385,28 @@ module.exports = {
   ...
 }
 ```
+
+## externals
+
+当我们使用外部第三方文件的时候，可以禁止某些第三方文件被打包进去。（例如使用 `CDN`）
+
+修改 `webpack.config.js`。
+
+```js
+module.exports = {
+  ...
+  externals: {
+    jquery: 'jQuery' // 禁止 jquery 进行打包，该 jquery 代替了 npm 安装的 jquery 包
+    /*
+      属性名可以自定义，主要用于模块化的 js 中引入
+      属性值为已经存在的 window 全局变量或者函数
+    */
+  }
+  ...
+}
+```
+
+```js
+import $ from 'jquery'
+// 引入的不是 npm 包的 jquery，而是全局对象的 jQuery，所以构建的时候 jquery 这个包不会进行打包
+```
