@@ -410,3 +410,96 @@ module.exports = {
 import $ from 'jquery'
 // 引入的不是 npm 包的 jquery，而是全局对象的 jQuery，所以构建的时候 jquery 这个包不会进行打包
 ```
+
+## dll
+
+使用 `dll` 技术，对某些第三方库进行单独打包。
+
+- 当你运行 `webpack` 时，默认查找 `webpack.config.js` 配置文件。
+
+- 使用 `dll` 技术需要新创建一个配置文件 `webpack.dll.js`，并运行它。
+
+```js
+webpack --config webpack.dll.js
+```
+
+创建 `webpack.dll.js` 文件。
+
+```js
+const { resolve } = require('path')
+const webpack = require('webpack')
+
+module.exports = {
+  entry: {
+    jquery: ['jquery'], // 最终打包生成的 [name] --> jquery，['jquery'] 是要打包的库是 jquery
+    moment: ['moment']
+  },
+  output: {
+    filename: '[name].dll.js',
+    path: resolve(__dirname, './dll'),
+    library: '[name]_[hash]' // 打包的库里面向外暴露出去的内容叫什么名字，跟 webpack.DllPlugin 中的 name 保持一致
+  },
+  plugins: [
+    new webpack.DllPlugin({ // 打包生成一个 manifest.json --> 提供和 jquery 映射
+      context: __dirname,
+      name: '[name]_[hash]', // 映射库暴露的内容名称
+      path: resolve(__dirname, './dll/[name]-manifest.json') // 输出文件路径
+    })
+  ],
+  mode: 'production'
+}
+```
+
+安装插件。
+
+```js
+npm i add-asset-html-webpack-plugin -D
+```
+
+**注意：此插件需要结合 html-webpack-plugin 一起使用。**
+
+修改 `webpack.config.js`。
+
+```js
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
+const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin')
+
+module.exports = {
+  ...
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: 'index.html'
+    }),
+    new webpack.DllReferencePlugin({ // 告诉 webpack 哪些库不参与打包，同时使用时的名称也得变
+      context: __dirname,
+      manifest: resolve(__dirname. 'dll/jquery-manifest.js')
+    }),
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: resolve(__dirname. 'dll/moment-manifest.js')
+    }),
+    new AddAssetHtmlWebpackPlugin([ // 将某个文件打包输出出去，并在 html 中自动引入该资源
+      {
+        filepath: resolve(__dirname, 'dll/jquery.dll.js')
+      },
+      {
+        filepath: resolve(__dirname, 'dll/moment.dll.js')
+      }
+    ])
+  ],
+  mode: 'production'
+  ...
+}
+```
+
+总结：
+
+- 先执行 `webpack --config webpack.dll.js` 生成 `manifest.json` 文件。
+
+- 执行 `webpack` 进行打包。
+
+- 如果没有给 `webpack.dll.js` 添加新的配置，只需执行 `webpack --config webpack.dll.js` 一次就行，不用每次打包前都执行。
+
+- 只要给 `webpack.dll.js` 添加了新的配置，就必须重新执行一下 `webpack --config webpack.dll.js`，重新生成 `manifest.json`，重新打包。
