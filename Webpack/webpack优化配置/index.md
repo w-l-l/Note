@@ -525,3 +525,20 @@ module.exports = {
   ...
 }
 ```
+
+## babel-plugin-transform-remove-console
+
+清除所有的 `console` 信息。
+
+一般我们在生产环境才会清除所有的 `console` 信息，开发环境会使用 `console` 进行调试。
+
+`babel` 配置文件。
+
+```js
+const proPlugins = []
+if(process.env.NODE_ENV === 'production') proPlugins.push('transform-remove-console')
+
+module.exports = {
+  plugins: [...proPlugins]
+}
+```
