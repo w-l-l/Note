@@ -87,3 +87,23 @@ module.exports = {
   }
 }
 ```
+
+## resolve
+
+```js
+module.exports = {
+  // 解析模块规则
+  resolve: {
+    alias: { // 配置解析模块路径名：优点-简写路径，缺点-没有提示
+      css: resolve(__dirname, 'src/css'),
+      // import 'css/index.css' 等价于 import './src/css/index.css'
+      vue$: 'vue/dist/vue.js'
+      // $ 符号只命中关键字结尾的导入语句 import Vue from 'vue' 等价于 import Vue from 'vue/dist/vue.js'
+    },
+    extensions: ['.js', '.json', '.jsx', '.css'],
+    // 配置省略文件路径的后缀名，从左到右进行匹配，尽量不要重名 import './index' 等价于 import './index.js'
+    modules: [resolve(__dirname, '../../node_modules'), 'node_modules']
+    // 告诉 webpack 解析模块是去哪个目录，而不是一层一层向外找
+  }
+}
+```
