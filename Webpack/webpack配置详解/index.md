@@ -64,3 +64,26 @@ module.exports = {
   }
 }
 ```
+
+## module
+
+```js
+module.exports = {
+  module: {
+    rules: [ // loader 的配置
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] }, // 多个 loader 用 use
+      {
+        test: /\.js$/,
+        exclude: /node_modules/, // 排除 node_modules 下的 js 文件
+        include: resolve(__dirname, 'src'), // 只检查 src 下的 js 文件
+        enforce: 'pre', // 优先执行（'post' 为延后执行）
+        loader: 'eslint-loader', // 单个 loader 使用 loader 配置
+        options: {...}
+      },
+      {
+        oneOf: [...] // oneOf 下的配置只会生效一个
+      }
+    ]
+  }
+}
+```
