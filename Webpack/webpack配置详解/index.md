@@ -49,3 +49,18 @@ module.exports = {
 ```
 
 数组会形成一个 `bundle` 文件，所以这种方式只会形成两个 `bundle` 文件。
+
+## output
+
+```js
+module.exports = {
+  output: {
+    filename: 'js/[name].js', // 文件名称（指定名称 + 目录）
+    path: resolve(__dirname, 'dist'), // 输出文件目录，将所有资源输出的公共目录
+    publicPath: 'img/', // 所有资源引入公共路径前缀 a.png --> img/a.png
+    chunkFilename: 'js/[name]_chunk.js', // 非入口 chunk 的名称
+    library: '[name]', // 整个库向外暴露的变量名
+    libraryTarget: 'window' | 'global' | 'commonjs', // 变量名添加到哪个上
+  }
+}
+```
