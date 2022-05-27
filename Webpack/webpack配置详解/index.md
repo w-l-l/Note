@@ -107,3 +107,34 @@ module.exports = {
   }
 }
 ```
+
+## devServer
+
+```js
+module.exports = {
+  devServer: {
+    contentBase: resolve(__dirname, 'dist'), // 运行代码的目录
+    watchContentBase: true, // 监视 contentBase 目录下的所有文件，一旦文件变化就会 reload
+    watchOpyions: { // 监视配置
+      ignored: /node_modules/ // 忽略文件，不监视 node_modules 目录
+    },
+    compress: true, // 启动 gzip 压缩
+    port: 5000, // 端口号
+    host: 'localhost', // 域名
+    open: true, // 自动打开浏览器
+    hot: true, // 开启 HMR 功能
+    clientLogLevel: 'none', // 不要显示启动服务器日志信息
+    quiet: true, // 除了一些基本启动信息以外，其他内容都不要显示
+    overlay: false, // 如果报错，不要全屏提示
+    proxy: { // 服务器代理 --> 解决开发环境跨域问题
+      '/api': { // 一旦 devServer(5000) 服务器接收到 /api/xxx 的请求，就会把请求转发到另一个服务器(3000)
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        pathRewrite: { // 向 3000 服务器发送请求时，请求路径重写：将 /api/xxx --> /xxx（去掉 /api）
+          '^/api': ''
+        }
+      }
+    }
+  }
+}
+```
