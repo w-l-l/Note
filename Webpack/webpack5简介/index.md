@@ -11,3 +11,15 @@
 - 清除处于怪异状态的内部结构，同时在 v4 中实现功能而不引入任何重大更改。
 
 - 通过引入重大更改来为将来的功能做准备，以使我们能够尽可能长时间地使用 v5。
+
+## 默认值
+
+```js
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    path: resolve(__dirname, 'dist'),
+    filename: '[name].js'
+  }
+}
+```
