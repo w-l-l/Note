@@ -406,7 +406,7 @@ export default function App() {
 `Portal` 提供了一个最好的在父组件包含的 DOM 结构层级外的 DOM 节点渲染组件的方法。
 
 ```js
-React.createPortal(child, container)
+ReactDOM.createPortal(child, container)
 ```
 
 第一个参数 child 是可渲染的 `react` 子项，比如元素、字符串或者片段等。第二个参数 container 是一个 DOM 元素。
