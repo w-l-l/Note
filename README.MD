@@ -122,3 +122,4 @@
 - [webpack生产环境配置](./Webpack/webpack生产环境配置/index.md)
 - [webpack优化配置](./Webpack/webpack优化配置/index.md)
 - [webpack配置详解](./Webpack/webpack配置详解/index.md)
+- [webpack5简介](./Webpack/webpack5简介/index.md)
