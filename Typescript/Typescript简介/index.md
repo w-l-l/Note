@@ -21,3 +21,45 @@ npm i -g typescript
 ```js
 tsc xxx.ts
 ```
+
+## 编译选项
+
+使用 `tsc xxx.ts` 编译 `TS` 文件，就算报错了仍会产出文件。
+
+如果想要 `TS` 更严厉一些，你可以使用 `noEmitOnError` 编译选项。
+
+```js
+tsc --noEmitOnError xxx.ts
+```
+
+如果 `TS` 文件报错，使用 `noEmitOnError` 编译的时候则不会生成 JS 文件。
+
+****
+
+`TS` 默认转换为 `ES3`，一个 `ECMAScript` 非常老的版本。我们也可以使用 `target` 选项转换为比较新的版本。
+
+```js
+// 转换为 ECMAScript 2015 版本
+tsc --target es2015 xxx.ts
+```
+
+****
+
+`noImplicitAny`：当类型被隐式推断为 `any` 时，会抛出一个错误。
+
+```js
+function foo(n) {
+  // Parameter 'n' implicitly has an 'any' type
+  console.log(n.subtr(3))
+}
+```
+
+****
+
+`strictNullChecks`：让我们更明确的处理 `null` 和 `undefined`，也会让我们免于忧虑是否忘记处理 `null` 和 `undefined`。
+
+```js
+const o = [...]
+const item = o.find(item => item.xxx === xxx)
+console.log(item.xxx) // Object is possibly 'undefined'
+```
