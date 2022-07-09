@@ -190,3 +190,22 @@ const x: number = (<string>变量).length
 const x = { name: '孙悟空', age: 18 } as const
 x.age = 20 // 报错，因为是只读属性
 ```
+
+## 可选属性
+
+```ts
+// 第一种
+const x: { name: string, age?: number } = {
+  name: '孙悟空',
+  age: 10
+}
+// age 属性可写可不写
+
+// 第二种
+const x: { name: string, [propName: string]: any } = {
+  name: '孙悟空',
+  a: 1,
+  b: true
+}
+// 添加其他属性不会报错
+```
