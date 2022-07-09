@@ -127,3 +127,4 @@
 ## Typescript
 
 - [Typescript简介](./Typescript/Typescript简介/index.md)
+- [基本类型](./Typescript/基本类型/index.md)

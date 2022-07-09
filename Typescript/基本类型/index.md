@@ -252,3 +252,24 @@ function foo(x: string | number) {
   }
 }
 ```
+
+## 函数重载
+
+一些 JavaScript 函数在调用的时候可以传入不同数量和类型的参数，在 TS 中，我们可以通过写重载签名说明一个函数的不同调用方法。
+
+```ts
+function foo(m: number): Date
+function foo(m: number, d: number, y: number): Date
+function foo(m: number, d?: number, y?: number): Date {
+  if(d !== undefined && y !== undefined) {
+    return new Date(y, m, d)
+  } else {
+    return new Date(m)
+  }
+}
+const d1 = foo(123345678)
+const d2 = foo(5, 5, 5)
+const d3 = foo(1, 3) // 报错，虽然符合函数实现，但是不符合函数重载
+```
+
+在开发过程中，尽可能使用联合类型代替函数重载。
