@@ -209,3 +209,12 @@ const x: { name: string, [propName: string]: any } = {
 }
 // 添加其他属性不会报错
 ```
+
+## 函数结构的类型声明
+
+```ts
+let foo: (a: number, b: number) => number
+foo = function(a: number, b: number) {
+  return a + b
+}
+```
