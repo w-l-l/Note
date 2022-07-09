@@ -170,3 +170,23 @@ let c: Color = Color.Green // Green
 ```
 
 一个变量只有几个固定值的时候，我们通常使用枚举来定义。
+
+## 类型断言
+
+有些情况下，变量的类型对于我们来说是很明确的，但是 TS 编译器却并不清楚，此时，可以通过类型断言来告诉编译器变量的类型，断言有两种形式。
+
+```ts
+// 第一种
+const x: number = (变量 as string).length
+
+// 第二种
+const x: number = (<string>变量).length
+// 注意：.tsx 文件不支持该方式
+```
+
+使用 `as const` 可以将一个对象转为一个类型字面量。
+
+```ts
+const x = { name: '孙悟空', age: 18 } as const
+x.age = 20 // 报错，因为是只读属性
+```
