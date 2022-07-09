@@ -227,3 +227,13 @@ const a: X = 1
 const b: X = '1'
 const c: X = true // 报错
 ```
+
+## 非空断言操作符
+
+TS 提供了一个特殊的语法，可以在不做任何检查的情况下，从类型中移除 `null` 和 `undefined`，这就是在任意表达式后面写上 `!`，这是一个有效的类型断言，表示它的值不可能是 `null` 或者 `undefined`。
+
+```ts
+function foo(x?: number | null) {
+  console.log(x!.toFixed(2))
+}
+```
