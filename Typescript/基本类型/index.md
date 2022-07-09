@@ -218,3 +218,12 @@ foo = function(a: number, b: number) {
   return a + b
 }
 ```
+
+## 类型别名
+
+```ts
+type X = number | string
+const a: X = 1
+const b: X = '1'
+const c: X = true // 报错
+```
