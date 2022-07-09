@@ -237,3 +237,18 @@ function foo(x?: number | null) {
   console.log(x!.toFixed(2))
 }
 ```
+
+## 类型谓词
+
+类型谓词就是返回一个 `boolean` 值的函数，用 `is` 关键字表示，是实现类型保护的一种方式。
+
+```ts
+const isNumber = (x: any): x is number => typeof x === 'number'
+function foo(x: string | number) {
+  if(isNumber(x)){
+    // ts 可以识别这个分支的 x 是 number 类型的参数，这就叫类型保护
+  } else {
+    // ts 可以识别这个分支的 x 是 string 类型的参数
+  }
+}
+```
