@@ -101,3 +101,66 @@ module.exports = {
 ```
 
 在 src 目录下创建 TS 文件，并在命令行执行 `npm run build` 对代码进行编译，或者执行 `npm start` 来启动开发服务器。
+
+## Babel 结合 TS
+
+经过一系列的配置，使得 TS 和 `webpack` 已经结合到了一起，除了 `webpack`，开发中还经常需要结合 `Babel` 来对代码进行转换，以使其可以兼容到更多的浏览器，在上述步骤的基础上，通过以下步骤再将 `babel` 引入到项目中。
+
+安装依赖包：
+
+```js
+npm i -D @babel/core @babel/preset-env babel-loader core-js
+```
+
+共安装了 4 个包：
+
+- `@babel/core`：`babel` 的核心工具。
+
+- `@babel/preset-env`：`babel` 的预定义环境。
+
+- `babel-loader`：`babel` 在 `webpack` 中的加载器。
+
+- `core-js`：使老版本的浏览器支持新版 ES 语法。
+
+修改 `webpack.config.js`。
+
+```js
+// webpack.config.js
+module.exports = {
+  // ...
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    targets: {
+                      chrome: '58',
+                      ie: '11'
+                    },
+                    corejs: '3',
+                    useBuiltIns: 'usage'
+                  }
+                ]
+              ]
+            }
+          },
+          {
+            loader: 'ts-loader'
+          }
+        ],
+        exclude: /node_modules/
+      }
+    ]
+  }
+  // ...
+}
+```
+
+使用 TS 编译后的文件将会再次被 `babel` 处理，使得代码可以在大部分浏览器中直接使用，可以在配置选项的 `targets` 中指定要兼容的浏览器版本。
