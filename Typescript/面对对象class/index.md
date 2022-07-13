@@ -141,3 +141,27 @@ class Person {
   }
 }
 ```
+
+## 属性存取器
+
+对于一些不希望被任意修改的属性，可以将其设置为 `private`。
+
+直接将其设置为 `private` 将导致无法再通过对象修改其中的属性。
+
+我们可以在类中定义一组读取、设置属性的的方法，这种对属性读取或设置的方法称为 `属性的存取器`。
+
+读取属性的方法叫 `getter` 方法，设置属性的方法叫 `setter` 方法。
+
+```ts
+class Person {
+  constructor (private _name: string) {
+    this._name = _name
+  }
+  get name() {
+    return this._name
+  }
+  set name(value) {
+    this._name = value
+  }
+}
+```
