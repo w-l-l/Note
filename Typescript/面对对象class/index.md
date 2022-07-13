@@ -126,9 +126,18 @@ person._name // 报错
 class Person {
   constructor(
     public name: string,
+    private _sex: string,
     protected age: number
   ) {
-    // ...
+    this.name = name
+    this._sex = _sex
+    this.age = age
+  }
+  get sex() {
+    return this._sex
+  }
+  set sex(value) {
+    this._sex = value
   }
 }
 ```
