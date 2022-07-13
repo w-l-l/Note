@@ -165,3 +165,27 @@ class Person {
   }
 }
 ```
+
+## 抽象类（abstract class）
+
+抽象类是专门用来被其他类所继承的类，它只能被其他类所继承，不能用来创建实例。
+
+```ts
+abstract class Person {
+  abstract name: string // 抽象属性
+  abstract run(): void // 抽象方法
+}
+
+class Student extends Person {
+  // 必须实现抽象类中的抽象属性和抽象方法
+  constructor(public name: string) {
+    super()
+    this.name = name
+  }
+  run() {
+    // ...
+  }
+}
+```
+
+使用 `abstract` 开头的属性（方法）叫做抽象属性（方法），抽象属性（方法）没有具体实现，只能定义在抽象类中，继承抽象类时抽象方法必须要实现。
