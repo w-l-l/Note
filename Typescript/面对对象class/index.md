@@ -21,3 +21,26 @@
 以人为例：人的姓名、性别、年龄、身高、体重等属于数据；人可以说话、走路、吃饭、睡觉这些属于人的功能。
 
 数据在对象中被称为属性，而这些功能就称为方法。所以简言之，在程序中一切皆是对象。
+
+## 定义 class 类
+
+```ts
+/*
+  class 类名 {
+    属性名: 类型
+    constructor(参数: 类型) {
+      this.属性名 = 参数
+    }
+    方法名() {...}
+  }
+*/
+class Person {
+  name: string
+  constructor(name: string) {
+    this.name = name
+  }
+  sayName() {
+    console.log(this.name)
+  }
+}
+```
