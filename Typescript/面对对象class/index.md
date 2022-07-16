@@ -174,6 +174,9 @@ class Person {
 abstract class Person {
   abstract name: string // 抽象属性
   abstract run(): void // 抽象方法
+  say() {
+    console.log(this.name)
+  }
 }
 
 class Student extends Person {
@@ -186,6 +189,34 @@ class Student extends Person {
     // ...
   }
 }
+const student = new Student('孙悟空')
+student.say() // 孙悟空
 ```
 
 使用 `abstract` 开头的属性（方法）叫做抽象属性（方法），抽象属性（方法）没有具体实现，只能定义在抽象类中，继承抽象类时抽象方法必须要实现。
+
+## 接口（interface）
+
+接口的作用类似于抽象类，不同点在于接口中的所有属性和方法都是没有实值的，换句话说接口中的所有方法都是抽象方法。接口主要负责定义一个类的结构，接口可以去限制一个对象的接口，对象只有包含接口中定义的所有属性和方法时才能匹配接口。同时，可以让一个类去实现接口，实现接口时类中要包含接口中的所有属性。
+
+```ts
+interface Person {
+  name: string
+  age: number
+}
+
+function foo(person: Person) {
+  console.log(person)
+}
+foo({ name: '孙悟空', age: 18 })
+
+class Student implements Person {
+  constructor(
+    public name: string,
+    public age: number
+  ) {
+    this.name = name
+    this.age = age
+  }
+}
+```
