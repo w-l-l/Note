@@ -220,3 +220,79 @@ class Student implements Person {
   }
 }
 ```
+
+## 泛型（Generic）
+
+定义一个函数或类时，有些情况下无法确定其中要使用的具体类型（返回值、参数、属性的类型不能确定），此时泛型便能够发挥作用。
+
+```ts
+function test(arg: any): any {
+  return arg
+}
+```
+
+上例中，test 函数有一个参数类型不确定，但是能确定的是其返回值的类型和参数的类型是相同的，由于类型不确定所以参数和返回值均使用了 `any`，但是很明显这样做是不合适的，首先使用 `any` 会关闭 TS 的类型检查，其次这样设置也不能体现出参数和返回值是相同的类型。
+
+### 使用泛型
+
+```ts
+function test<T>(arg: T): T {
+  return arg
+}
+```
+
+这里的 `<T>` 就是泛型，`T` 是我们给这个类型起的名字（不一定非叫 `T`，叫什么都行），设置泛型后就可以在函数中使用 `T` 来表示该类型。所以泛型其实很好理解，就表示某个类型。
+
+- 方式一（直接使用）：
+
+```ts
+test(10)
+// 使用时可以直接传递参数使用，类型会由 TS 自动推断出来，但有时候编译器无法自动推断时还需要使用下面的方式
+```
+
+- 方式二（指定类型）：
+
+```ts
+test<number>(10)
+// 在函数名后面手动指定泛型
+```
+
+### 指定多个泛型
+
+可以同时指定多个泛型，多个泛型间使用逗号隔开。
+
+```ts
+function test<T, K>(a: T, b: K): K {
+  return b
+}
+test<number, string>(10, 'xxx')
+// 使用泛型时，完全可以将泛型当成是一个普通的类去使用
+```
+
+### class类中使用泛型
+
+```ts
+class MyClass<T> {
+  prop: T
+  constructor(prop: T) {
+    this.prop = prop
+  }
+}
+
+new MyClass<string>('prop')
+```
+
+### 泛型约束
+
+```ts
+interface Inter {
+  length: number
+}
+
+function test<T extends Inter>(arg: T): number {
+  return arg.length
+}
+test<string>('1234')
+```
+
+使用 `T extends Inter` 表示泛型 `T` 必须是 `Inter` 的子类，不一定非要使用接口类和抽象类同样适用。

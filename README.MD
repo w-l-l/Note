@@ -130,3 +130,4 @@
 - [基本类型](./Typescript/基本类型/index.md)
 - [编译选项](./Typescript/编译选项/index.md)
 - [webpack打包TS](./Typescript/webpack打包TS/index.md)
+- [面对对象class](./Typescript/面对对象class/index.md)
