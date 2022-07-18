@@ -52,3 +52,12 @@ git config --list
 git config [--global/--system] --unset user.name
 git config [--global/--system] --unset user.email
 ```
+
+## git 基本操作
+
+- `git status`：状态查看，查看工作区、暂存区状态。
+
+- `git add [./fileName]`：将工作区的 “新建/修改” 添加到暂存区。
+
+- `git commit -m '描述' [fileName]`：将暂存区的内容提交到本地库。  
+可以设置 `-a` 参数，被跟踪的文件可以跳过 `git add` 步骤。
