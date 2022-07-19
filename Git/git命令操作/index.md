@@ -61,3 +61,21 @@ git config [--global/--system] --unset user.email
 
 - `git commit -m '描述' [fileName]`：将暂存区的内容提交到本地库。  
 可以设置 `-a` 参数，被跟踪的文件可以跳过 `git add` 步骤。
+
+## git 查看历史记录
+
+- `git log`：显示详细提交的历史记录。  
+多屏显示控制方式：  
+&emsp;&emsp;空格 --> 向下翻页。  
+&emsp;&emsp;b --> 向上翻页。  
+&emsp;&emsp;q --> 退出。
+
+- `git log --pretty=oneline`：每条提交历史记录一行显示（哈希值、提交信息）。
+
+- `git log --oneline`：显示 7 位哈希和提交信息。
+
+**以上 3 种方式只会显示当前所在版本之前的版本提交历史记录。**
+
+- `git reflog`：查看所有分支的所有操作记录（包括已经删除的 `commit` 记录和 `reset` 的操作）。
+
+- `git reflog --decorate`：查看当前分支所指对象（提供这一功能的参数是 `--decorate`）。
