@@ -153,6 +153,10 @@ let foo = (a, b, c) => a + b + c
 
 - 使用 bind、call、apply 指定 this 在箭头函数中是无效的。
 
+- 不可以当作构造函数，也就是不能对箭头函数使用 `new` 命令，否则会报错。
+
+- 不可以使用 `yield` 命令，因此箭头函数不能用作 `Generator` 函数。
+
 ```js
 let foo = () => console.log(this)
 let o = {
