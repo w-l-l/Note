@@ -155,3 +155,12 @@ git reset --hard xxx
 ```bash
 git reset --hard HEAD
 ```
+
+## 比较文件差异（diff）
+
+- `git diff [fileName]`：将工作区中的文件和暂存区进行比较。
+
+- `git diff [本地库中历史版本] [fileName]`：将工作区的文件和本地库历史记录比较。  
+`git diff --cached` 或者 `git diff --staged`（v1.6.1 以上）。
+
+- 不带文件名的话会比较多个文件。
