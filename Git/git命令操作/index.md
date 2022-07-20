@@ -185,3 +185,11 @@ git config --global alias.别名 原命令
 git config --global alias.ci commit
 # 当输入 git commit 时，只需要输入 git ci
 ```
+
+## git 后悔药
+
+- `git checkout -- fileName`：撤销工作目录的修改。
+
+- `git reset HEAD fileName`：撤销暂存区更改。
+
+- `git commit --amend`：撤销提交/修改最新一次的提交日志。
