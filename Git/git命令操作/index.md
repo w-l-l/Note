@@ -171,3 +171,17 @@ git reset --hard HEAD
 
 - `git mv oldFileName newFileName`：将工作目录中的文件进行重命名，再将修改添加到暂存区。  
 git 中重命名相当于删除了原文件，新增了一个新的文件。
+
+## git 配别名
+
+如果不想每次都输入完整的 git 命令，可以通过 `git config` 文件来轻松的为每一个命令设置一个别名。
+
+```bash
+git config --global alias.别名 原命令
+```
+
+```bash
+# 例如
+git config --global alias.ci commit
+# 当输入 git commit 时，只需要输入 git ci
+```
