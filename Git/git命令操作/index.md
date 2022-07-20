@@ -79,3 +79,61 @@ git config [--global/--system] --unset user.email
 - `git reflog`：查看所有分支的所有操作记录（包括已经删除的 `commit` 记录和 `reset` 的操作）。
 
 - `git reflog --decorate`：查看当前分支所指对象（提供这一功能的参数是 `--decorate`）。
+
+## git 前进后退版本
+
+- 基于索引值操作（推荐）：
+
+```bash
+git reset --hard [局部索引值]
+```
+
+- 使用 `^` 符号，只能后退：
+
+```bash
+git reset --hard HEAD^
+# 注意：一个 ^ 表示后退一步，n 个 ^ 表示后退 n 个版本
+
+git reset --hard HEAD^^^
+# 后退了 3 个版本
+```
+
+- 使用 `~` 符号，只能后退：
+
+```bash
+git reset --hard HEAD~n
+# 注意：n 表示后退几个版本
+
+git reset --hard HEAD~3
+# 后退了 3 个版本
+```
+
+**将本地后退的分支同步到远程：git push -f。**
+
+### reset 命令的三个参数对比
+
+- `--mixed` 参数：
+
+```bash
+git reset --mixed xxx
+# 在本地库移动 HEAD 指针
+# 重置暂存区
+# 当前文件内容不变，修改的内容在工作区
+```
+
+- `--soft` 参数：
+
+```bash
+git reset --soft xxx
+# 仅仅在本地库移动 HEAD 指针
+# 当前文件内容不变，修改的内容在暂存区
+```
+
+- `hard` 参数：
+
+```bash
+git reset --hard xxx
+# 在本地库移动 HEAD 指针
+# 重置暂存区和工作区
+# 当前文件内容跟 HEAD 指针指向的版本内容一致
+```
