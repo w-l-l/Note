@@ -164,3 +164,10 @@ git reset --hard HEAD
 `git diff --cached` 或者 `git diff --staged`（v1.6.1 以上）。
 
 - 不带文件名的话会比较多个文件。
+
+## git 删除重命名文件
+
+- `git rm fileName`：删除工作目录中对应的文件，再将修改添加到暂存区。
+
+- `git mv oldFileName newFileName`：将工作目录中的文件进行重命名，再将修改添加到暂存区。  
+git 中重命名相当于删除了原文件，新增了一个新的文件。
