@@ -373,6 +373,15 @@ Object.prototype[Symbol.iterator] = function() {
     next: () => ({ value: values[i++], done: i > len })
   }
 }
+
+// 简写
+Object.prototype[Symbol.iterator] = function*() {
+  const values = Object.values(this)
+  let i = 0
+  while(i < values.length) {
+    yield values[i++]
+  }
+}
 ```
 
 现在我们再来遍历下 Object 对象。
