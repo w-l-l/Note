@@ -35,3 +35,14 @@ git clone -b [远程分支名] [远程地址]
 - 创建 `origin` 远程地址别名。
 
 - 初始化本地库。
+
+## 拉取（pull）
+
+```bash
+# pull = fetch + merge
+
+git fetch [远程库地址别名] [远程分支名]
+git merge [远程地址别名/远程分支名]
+
+git pull [远程地址别名] [远程分支名]
+```
