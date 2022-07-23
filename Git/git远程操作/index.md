@@ -71,3 +71,61 @@ ssh-keygen -t rsa -C 'youremail'
 git remote add [别名] git@github.com:xxx.git
 # 注意：这里的远程地址必须使用 git 开头的地址才能实现免密登录，不能使用 https 开头的地址
 ```
+
+## 远程跟踪分支
+
+克隆仓库，会自动为 master 做分支。
+
+- 本地没有分支。
+
+```bash
+git checkout --track origin/远程分支名
+# 注意：远程刚创建分支，可能没有和本地同步，所以还需要执行下面这条命令
+
+git remote update origin --prune
+# 更新本地和远程分支同步
+```
+
+- 本地已经创建了分支。
+
+```bash
+git branch -u origin/远程分支名
+# 注意：远程分支名必须存在，没有的话可以使用 git push origin [localBranch]:[remoteBranch] 命令创建远程分支
+
+git push --set-upstream origin localBranch
+# 创建远程分支，并建立本地和远程的跟踪，push 代码
+# 注意：localBranch 必须存在
+```
+
+- 查看设置的所有跟踪分支。
+
+```bash
+git branch -vv
+```
+
+- 查看本地和远程的分支。
+
+```bash
+git branch -a
+
+git branch -r
+# 仅查看远程分支
+```
+
+- 删除远程分支。
+
+```bash
+git push origin --delete [branchName]
+
+git remote prune <origin> --dry-run
+# 列出仍在远程跟踪但是远程已被删除的无用分支
+
+git remote prune <origin>
+# 清楚上面命令列出来的远程跟踪
+```
+
+- 本地新建分支推送远程并建立分支跟踪。
+
+```bash
+git push -u origin localBranch
+```
