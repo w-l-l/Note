@@ -138,3 +138,4 @@
 - [git简介](./Git/git简介/index.md)
 - [git命令操作](./Git/git命令操作/index.md)
 - [git分支管理](./Git/git分支管理/index.md)
+- [git基本原理](./Git/git基本原理/index.md)
