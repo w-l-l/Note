@@ -172,3 +172,28 @@ git ls-files -s
 每一个树对象都对应一个 `hash(tree 类型)`。
 
 我们可以认为树对象就是我们项目的快照。
+
+## 提交对象（commit）
+
+我们可以通过调用 `commit-tree` 命令创建一个提交对象，为此需要指定一个树对象的 `SHA-1` 值，以及该提交的父提交对象（如果有的话，第一次将暂存区做快照就没有父对象）。
+
+创建提交对象：
+
+```bash
+echo 'xxx' | git commot-tree [treeHash]
+# 返回 commitHash
+```
+
+查看提交对象：
+
+```bash
+git cat-file -p [commitHash]
+# 返回：
+# tree ...
+# parent ...
+# author ...
+# committer ...
+# 提交日志
+```
+
+**注意：git commit-tree 不但生成提交对象，而且会将对应的快照（树对象）提交到本地库中。**
