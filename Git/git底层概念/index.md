@@ -115,3 +115,60 @@ git cat-file -t 校验和
 解决方案：树对象。
 
 **注意：当前的操作都是在对本地数据库进行操作，不涉及暂存区。**
+
+## 树对象（tree）
+
+一个树对象包含了一条或多条记录。
+
+每条记录含有一个指向 `git` 对象或子树对象的 `SHA-1` 指针，以及对应的模式、类型、文件名信息。
+
+一个树对象也可以包含另一个树对象
+
+我们可以通过 `update-index`、`write-tree`、`read-tree` 等命令来构建树对象并塞入到暂存区。
+
+### 创建暂存区
+
+利用 `update-index` 命令为文件的首个版本创建一个暂存区。
+
+```bash
+gti update-index --add --cacheinfo 100644 [hash] [fileName]
+# 文件模式
+#   100644：表明这是一个普通对象
+#   100755：表明这是一个可执行文件
+#   120000：表明这是一个符合链接
+
+# --add 选项：不在暂存区的文件，首次需要 --add
+# --cacheinfo 选项：要添加的文件位于 git 数据库中，而不是位于当前目录下，所以需要 --cacheinfo
+```
+
+### 生成树对象
+
+通过 `write-tree` 命令生成树对象。
+
+```bash
+git update-index ...
+git write-tree
+```
+
+### 将一个树对象加入第二个树对象，使其成为新的树对象
+
+`read-tree` 命令，可以把树对象读入暂存区。
+
+```bash
+git read-tree --prefix=bak [treeHash]
+git write-tree
+```
+
+### 查看暂存区当前的样子
+
+```bash
+git ls-files -s
+```
+
+### 总结
+
+在 `git` 中每一个文件（数据）都对应一个 `hash(blob 类型)`。
+
+每一个树对象都对应一个 `hash(tree 类型)`。
+
+我们可以认为树对象就是我们项目的快照。
