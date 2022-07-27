@@ -28,3 +28,11 @@ git tag -a v1.0.0
 git tag -a v1.0.0 commitHash
 git tag -a v1.0.0 commitHash -m '标签信息'
 ```
+
+## 查看特定标签
+
+使用 `git show` 命令可以显示任意类型的对象（`git` 对象、树对象、提交对象、`tag` 对象）。
+
+```bash
+git show tagName
+```
