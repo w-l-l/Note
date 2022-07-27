@@ -36,3 +36,21 @@ git tag -a v1.0.0 commitHash -m '标签信息'
 ```bash
 git show tagName
 ```
+
+## 远程标签
+
+默认情况下，`git push` 命令并不会传送标签到远程仓库服务器上。
+
+在创建完标签后你必须显式地推送标签到远程服务器上。
+
+```bash
+git push <origin> [tagName]
+```
+
+如果想一次性推送很多标签，也可以使用带有 `--tags` 选项的 `git push` 命令。
+
+这将会把所有不在远程仓库服务器上的标签全部传送过去。
+
+```bash
+git push <origin> --tags
+```
