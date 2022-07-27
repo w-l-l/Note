@@ -54,3 +54,13 @@ git push <origin> [tagName]
 ```bash
 git push <origin> --tags
 ```
+
+## 删除标签
+
+```bash
+git tag -d v1.0.0
+# 删除本地标签
+
+git push <origin> :refs/tags/v1.0.0
+# 删除远程标签
+```
