@@ -35,3 +35,20 @@ npm run lint
 }
 // ...
 ```
+
+## 跳过 eslint 校验
+
+- `eslint-disable-line`：禁用单行检查。
+
+```js
+const a = 'xx' // eslint-disable-line
+```
+
+- `eslint-disable`：禁用多行检查。
+
+```js
+/*eslint-disable*/
+  xxx
+  xxx
+/*eslint-disable*/
+```
