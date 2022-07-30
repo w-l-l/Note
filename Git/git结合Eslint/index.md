@@ -52,3 +52,29 @@ const a = 'xx' // eslint-disable-line
   xxx
 /*eslint-disable*/
 ```
+
+## git 与 eslint 结合
+
+在没有通过 `eslint` 校验成功的情况下，禁止提交。
+
+```bash
+npm i husky -D
+# 安装 husky，为 git 仓库设置钩子程序
+# 在仓库初始化之后，再去安装 husky
+```
+
+在 `package.json` 文件写配置。
+
+```json
+{
+  // ...
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+      // 在 git commit 之前一定要通过 npm run lint 的检查
+      // 只有检查通过时，git commit 才能真正的执行
+    }
+  }
+  // ...
+}
+```
