@@ -17,3 +17,7 @@
 - `pending` 变为 `rejected`。
 
 说明：只有这 2 种，且一个 `Promise` 对象只能改变一次。无论变为成功还是失败，都会有一个结果数据。成功的结果数据一般称为 `value`，失败的结果数据一般称为 `reason`。
+
+## Promise 的基本流程
+
+![Promise的基本流程](./img/Promise_process.png)
