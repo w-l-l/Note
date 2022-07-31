@@ -39,3 +39,75 @@
 - 解决方案：`Promise` 链式调用。
 
 - 终极解决方案：`async` / `await`。
+
+## Promise 的 API
+
+`Promise` 构造函数：`new Promise(executor){}`。
+
+- `executor` 函数：同步执行 `(resolve, reject) => {}`。
+
+- `resolve` 函数：内部定义成功时我们调用的函数 `value => {}`。
+
+- `reject` 函数：内部定义失败时我们调用的函数 `reason => {}`。
+
+**注意：executor 会在 Promise 内部立即同步回调，异步操作在执行器中执行。**
+
+****
+
+`Promise.prototype.then` 方法：`(onResolved, onRejected) => {}`。
+
+- `onResolved` 函数：成功的回调函数 `value => {}`。
+
+- `onRejected` 函数：失败的回调函数 `reason => {}`。
+
+指定用于得到成功 `value` 的成功回调和用于得到失败 `reason` 的失败回调，返回一个 `Promise` 对象。
+
+**注意：.then 中成功或者失败的回调函数都是异步回调函数。**
+
+****
+
+`Promise.prototype.catch` 方法：`(onRejected) => {}`。
+
+- `onRejected` 函数：失败的回调函数 `reason => {}`。
+
+`.then` 方法的语法糖，相当于：`.then(undefined, onRejected)`。
+
+****
+
+`Promise.resolve` 方法：`value => {}`。
+
+- `value`：成功的数据或 `Promise` 对象。
+
+返回一个成功或者失败的 `Promise` 对象。
+
+****
+
+`Promise.reject` 方法：`reason => {}`。
+
+- `reason`：失败的原因。
+
+返回一个失败的 `Promise` 对象。
+
+****
+
+`Promise.all` 方法：`promises => {}`。
+
+- `promises`：包含 n 个 `Promise` 实例的数组。
+
+返回一个新的 `Promise`，只有所有的 `Promise` 都执行成功了才成功，有一个失败就直接失败。
+
+****
+
+`Promise.race` 方法：`promises => {}`。
+
+- `promises`：包含 n 个 `Promise` 实例的数组。
+
+返回一个新的 `Promise`，最先执行完成的 `Promise` 的结果状态就是 `race` 最终的结果状态。
+
+****
+
+`Promise.allSettled` 方法：`promises => {}`。
+
+- `promises`：包含 n 个 `Promise` 实例的数组。
+
+返回一个新的 `Promise`，等所有 `Promise` 都执行完成（不管成功或失败），带有一个对象数组，每个对象对应每个 `Promise` 的结果。

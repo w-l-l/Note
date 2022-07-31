@@ -148,3 +148,4 @@
 ## Promise高级
 
 - [Promise准备知识](./Promise高级/Promise准备知识/index.md)
+- [Promise的理解和使用](./Promise高级/Promise的理解和使用/index.md)
