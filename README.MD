@@ -144,3 +144,7 @@
 - [git存储](./Git/git存储/index.md)
 - [git标签](./Git/git标签/index.md)
 - [git结合Eslint](./Git/git结合Eslint/index.md)
+
+## Promise高级
+
+- [Promise准备知识](./Promise高级/Promise准备知识/index.md)
