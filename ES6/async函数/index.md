@@ -47,3 +47,9 @@ async function foo() {
 
 foo() // 打印 100
 ```
+
+## 注意
+
+- `await` 必须写在 `async` 函数中，当然 `async` 函数中可以没有 `await`。
+
+- 如果 `await` 的 `Promise` 失败了，就会抛出异常，需要通过 `try...catch` 来捕获处理。
