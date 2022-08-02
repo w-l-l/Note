@@ -85,3 +85,17 @@ new Promise((resolve, reject) => {...})
 .catch(...)
 // 只要前面 .then 中语法报错或返回 rejected，都会执行 .catch 里面的回调
 ```
+
+## 中断 Promise 链
+
+在使用 `Promise` 的 `.then()` 链式调用时，在中间中断，不再调用后面的回调函数。
+
+可以在回调函数中返回一个 `pending` 状态的 `Promise` 对象。
+
+```js
+new Promise((resolve, reject) => {...})
+.then(...)
+.then(value => console.log(value), reason => new Promise(() => {})) // 如果前面报错或者返回 rejected，后续的链式调用将不再执行
+.then(...)
+.then(...)
+```
