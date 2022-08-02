@@ -63,3 +63,9 @@ new Promise((resolve, reject) => {
 )
 // 打印结果：reason1:100 value2:undefined
 ```
+
+## Promise 如何串联多个操作任务
+
+`Promise` 的 `.then()` 返回一个新的 `promise`，可以看成 `.then()` 的链式调用。
+
+通过 `.then()` 的链式调用串联多个同步/异步任务。
