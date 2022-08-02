@@ -69,3 +69,19 @@ new Promise((resolve, reject) => {
 `Promise` 的 `.then()` 返回一个新的 `promise`，可以看成 `.then()` 的链式调用。
 
 通过 `.then()` 的链式调用串联多个同步/异步任务。
+
+## Promise 异常穿透
+
+当使用 `promise` 的 `then` 链式调用时，可以在最后指定失败的回调。
+
+前面任何操作出了异常，都会传到最后失败的回调中处理。
+
+```js
+new Promise((resolve, reject) => {...})
+.then(...)
+.then(...)
+.then(...)
+.then(...)
+.catch(...)
+// 只要前面 .then 中语法报错或返回 rejected，都会执行 .catch 里面的回调
+```
