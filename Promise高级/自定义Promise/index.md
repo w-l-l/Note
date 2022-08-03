@@ -80,6 +80,7 @@ function Promise(executor) {
 ## .then 原型方法
 
 ```js
+// .then 原型方法
 Promise.prototype.then = function(onResolved, onRejected) {
   // 如果 onResolved 或者 onRejected 不是函数，则设置一个默认函数，能够将 Promise 产生的值继续向后面传递
   typeof onResolved === 'function' || (onResolved = value => value)
@@ -118,5 +119,14 @@ Promise.prototype.then = function(onResolved, onRejected) {
         break
     }
   })
+}
+```
+
+## .catch 原型方法
+
+```js
+// .catch 原型方法
+Promise.prototype.catch = function(onRejected) {
+  return this.then(undefined, onRejected)
 }
 ```
