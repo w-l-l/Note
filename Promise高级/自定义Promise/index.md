@@ -130,3 +130,16 @@ Promise.prototype.catch = function(onRejected) {
   return this.then(undefined, onRejected)
 }
 ```
+
+## .resolve 静态方法
+
+```js
+// .resolve 静态方法
+Promise.resolve = function(value) {
+  return new Promise((resolve, reject) => {
+    value instanceof Promise
+      ? value.then(resolve, reject)
+      : resolve(value)
+  })
+}
+```
