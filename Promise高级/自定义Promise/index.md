@@ -143,3 +143,12 @@ Promise.resolve = function(value) {
   })
 }
 ```
+
+## .reject 静态方法
+
+```js
+// .reject 静态方法
+Promise.reject = function(reason) {
+  return new Promise((resolve, reject) => reject(reason))
+}
+```
