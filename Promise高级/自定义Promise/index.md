@@ -76,3 +76,47 @@ function Promise(executor) {
   }
 }
 ```
+
+## .then 原型方法
+
+```js
+Promise.prototype.then = function(onResolved, onRejected) {
+  // 如果 onResolved 或者 onRejected 不是函数，则设置一个默认函数，能够将 Promise 产生的值继续向后面传递
+  typeof onResolved === 'function' || (onResolved = value => value)
+  typeof onRejected === 'function' || (onRejected = reason => {throw reason})
+  // .then 方法返回的是一个新的 Promise 对象
+  return new Promise((resolve, reject) => {
+    // 公共回调
+    const handle = callback => {
+      try {
+        const result = callback(this.data)
+        // onResolved 或者 onRejected 可能返回一个普通值，也有可能返回一个 Promise 对象，所以这里要判断一下
+        result instanceof Promise
+          // 如果返回 Promise 对象，则需要获取该对象的结果值，然后改变当前 Promise 对象的 status 和 data
+          ? result.then(resolve, reject)
+          : resolve(result)
+      } catch(error) {
+        reject(error)
+      }
+    }
+    // 根据当前 Promise 对象的状态进行相应的操作
+    switch (this.status) {
+      // PENDING 状态将 .then 中的回调保存到 callbacks 中，后续执行
+      case PENDING:
+        this.callbacks.push({
+          onResolved: () => handle(onResolved),
+          onRejected: () => handle(onRejected)
+        })
+        break
+      // RESOLVED 状态则直接执行 onResolved（因为微任务不好手动实现，所以用 setTimeout 代替）
+      case RESOLVED:
+        setTimeout(() => handle(onResolved))
+        break
+      // REJECTED 状态则直接执行 onRejected
+      case REJECTED:
+        setTimeout(() => handle(onRejected))
+        break
+    }
+  })
+}
+```
