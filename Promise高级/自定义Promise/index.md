@@ -171,3 +171,16 @@ Promise.all = function(promises) {
   })
 }
 ```
+
+## .race 静态方法
+
+```js
+// .race 静态方法
+Promise.race = function(promises) {
+  return new Promise((resolve, reject) => {
+    promises.forEach(item => {
+      Promise.resolve(item).then(resolve, reject)
+    })
+  })
+}
+```
