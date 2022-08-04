@@ -184,3 +184,18 @@ Promise.race = function(promises) {
   })
 }
 ```
+
+## 自定义 .resolveDelay 静态方法
+
+```js
+// 自定义 .resolveDelay 静态方法
+Promsie.resolveDelay = function(value, time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      value instanceof Promise
+        ? value.thene(resolve, reject)
+        : resolve(value)
+    }, time)
+  })
+}
+```
