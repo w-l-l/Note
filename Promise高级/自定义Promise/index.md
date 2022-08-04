@@ -152,3 +152,22 @@ Promise.reject = function(reason) {
   return new Promise((resolve, reject) => reject(reason))
 }
 ```
+
+## .all 静态方法
+
+```js
+// .all 静态方法
+Promise.all = function(promises) {
+  const values = []
+  let resolvedCount = 0
+  return new Promise((resolve, reject) => {
+    promises.forEach((item, index) => {
+      Promise.resolve(item).then(value => {
+        values[index] = value
+        resolvedCount++
+        if(resolvedCount === promises.length) resolve(values)
+      }, reject)
+    })
+  })
+}
+```
