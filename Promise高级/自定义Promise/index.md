@@ -199,3 +199,12 @@ Promsie.resolveDelay = function(value, time) {
   })
 }
 ```
+
+## 自定义 .rejectDelay 静态方法
+
+```js
+// 自定义 .rejectDelay 静态方法
+Promise.rejectDelay = function(reason, time) {
+  return new Promise((resolve, reject) => setTimeout(reject, time, reason))
+}
+```
