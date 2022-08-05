@@ -93,3 +93,21 @@ name=xxx&age=18
 - `PUT`：更新服务器端已有的数据。
 
 - `DELETE`：删除服务器端数据。
+
+## API 分类
+
+`restful`：REST API。
+
+- 发送请求进行 CRUD，哪个操作由请求方式决定。
+
+- 同一个请求路径可以进行多个操作。
+
+- 请求方式会用到 GTE/POST/PUT/DELETE。
+
+`restless`：非 REST API。
+
+- 请求方式不决定请求的 CRUD 操作。
+
+- 一个请求路径只对应一个操作。
+
+- 一般只有 GET/POST。

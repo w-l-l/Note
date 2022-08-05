@@ -152,3 +152,7 @@
 - [Promise的理解和使用](./Promise高级/Promise的理解和使用/index.md)
 - [Promise的几个关键问题](./Promise高级/Promise的几个关键问题/index.md)
 - [自定义Promise](./Promise高级/自定义Promise/index.md)
+
+## Axios高级
+
+- [HTTP相关](./Axios高级/HTTP相关/index.md)
