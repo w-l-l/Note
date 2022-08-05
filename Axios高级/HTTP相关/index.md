@@ -83,3 +83,13 @@ name=xxx&age=18
 ```
 
 - `Content-Type: multipart/form-data`：用于文件上传请求。
+
+## 不同类型的请求及其作用
+
+- `GET`：从服务器端读取数据。
+
+- `POST`：向服务器端添加新数据。
+
+- `PUT`：更新服务器端已有的数据。
+
+- `DELETE`：删除服务器端数据。
