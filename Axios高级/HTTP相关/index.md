@@ -64,3 +64,22 @@ Set-Cookie: BD_CK_SAM=1;path=/
 ```
 
 响应体：html 文本、json 文本、js、css、图片。。。
+
+## POST 请求体参数格式
+
+- `COntent-Type: application/x-www-form-urlencoded;charset=utf-8`：用于键值对参数，参数的健值用 `=` 连接，参数之间用 `&` 连接。
+
+```js
+name=xxx&age=18
+```
+
+- `Content-Type: application/json;charset=utf-8`：用于 `json` 字符串参数。
+
+```json
+{
+  "name": "xxx",
+  "age": 18
+}
+```
+
+- `Content-Type: multipart/form-data`：用于文件上传请求。
