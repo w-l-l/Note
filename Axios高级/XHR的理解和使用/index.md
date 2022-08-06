@@ -58,3 +58,55 @@
 - `getAllResponseHeaders()`：获取所有响应头组成的字符串。
 
 - `setRequestHeader(name, value)`：设置请求头。
+
+## XHR 的 ajax 封装（简易版 axios）
+
+`axios` 特点：
+
+- 函数的返回值为 `Promise`，成功的结果为 `response`，异常的结果为 `error`。
+
+- 能处理多种类型的请求：GET/POST/PUT/DELETE。
+
+- 函数的参数为一个配置对象。
+
+- 响应 json 数据自动解析为 js。
+
+**编码实现**
+
+```js
+function axiox({url, method = 'GET', params = {}, data={}}) {
+  return new Promise((resolve, reject) => {
+    // 处理参数
+    method = method.toUpperCase()
+    let queryString = Object.keys(params).reduce((result, key) => result += `${key}=${params[key]}&`, '')
+    if(queryString) {
+      queryString = queryString.slice(0, -1)
+      url += '?' + queryString
+    }
+    // 创建 XHR 对象
+    const xhr = new XMLHttpRequest()
+    xhr.open(method, url, true)
+    if(['GET', 'DELETE'].includes(method)) {
+      xhr.send()
+    } else if(['POST', 'PUT'].includes(method)) {
+      xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8')
+      xhr.send(JSON.stringify(data))
+    }
+    // 绑定状态改变的监听
+    xhr.onreadystatechange = function() {
+      if(xhr.readyState != 4) return
+      const { status, statusText } = xhr
+      if(status >= 200 && status <= 299) {
+        const response = {
+          data: JSON.parse(xhr.response),
+          status,
+          statusText
+        }
+        resolve(response)
+      } else {
+        reject(new Error('request error status is' + status))
+      }
+    }
+  })
+}
+```
