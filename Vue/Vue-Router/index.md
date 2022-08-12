@@ -295,6 +295,8 @@ const home = {
 
 - `deactivated`：被 `keep-alive` 缓存的组件停用时调用。
 
+> 第一次切换到新的组件时，该组件的created、mounted、activated都会执行，离开该组件时，该组件的destroyed不会执行，只执行deactivated。再进入该组件只执行activated，created和mounted都不会执行。
+
 **注意：这两个钩子函数在服务器端渲染期间是不被调用的。**
 
 ## 路由编程式导航
