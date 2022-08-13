@@ -48,3 +48,19 @@
 - 默认匹配的值很可能不一样。
 
 - `axios.create()` 创建出来的实例没有 `axios` 后面添加的一些方法：`create()`、`CancelToken()`、`all()`。
+
+## axios 运行的整体流程
+
+整体流程：`request(config)` --> `dispatchRequest(config)` --> `xhrAdapter(config)`。
+
+`request(config)`：将请求拦截器 --> dispatchRequest() --> 响应拦截器通过 `Promise` 链串联起来，返回 `Promise`。
+
+`dispatchRequest(config)`：转换请求数据 --> 调用 xhrAdapter() 发请求 --> 请求返回后转换响应数据，返回 `Promise`。
+
+`xhrAdapter(config)`：创建 XHR 对象，根据 config 进行相应设置，发送特定请求，并接收响应数据，返回 `Promise`。
+
+![axios 执行流程](./img/axios_process.png)
+
+**request 串联整个流程图**
+
+![interceptors 执行流程](./img/interceptors_process.png)
