@@ -22,3 +22,13 @@
 ├── index.d.ts                 # 配置TypeScript的声明文件
 └── index.js                   # 入口文件
 ```
+
+## axios 与 Axios 的关系
+
+从语法上来说：`axios` 不是 `Axios` 的实例。
+
+从功能上来说：`axios` 是 `Axios` 的实例。
+
+`axios` 是 `Axios.prototype.request` 函数 `bind(Axios 的实例)` 返回的函数。
+
+`axios` 作为对象，有 `Axios` 原型对象上的所有方法（`get()`、`post()`、`put()`、`delete()`），也有 `Axios` 对象上的所有属性（`defaults`、`interceptors`），后面又添加了 `create()`、`CancelToken()`、`all()`。
