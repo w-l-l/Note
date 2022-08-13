@@ -32,3 +32,19 @@
 `axios` 是 `Axios.prototype.request` 函数 `bind(Axios 的实例)` 返回的函数。
 
 `axios` 作为对象，有 `Axios` 原型对象上的所有方法（`get()`、`post()`、`put()`、`delete()`），也有 `Axios` 对象上的所有属性（`defaults`、`interceptors`），后面又添加了 `create()`、`CancelToken()`、`all()`。
+
+## axios.create() 与 axios 的区别
+
+相同点：
+
+- 都是一个能发任意请求的函数：`request(config)`。
+
+- 都有发特定请求的各种方法：`get()`、`post()`、`put()`、`delete()`。
+
+- 都有默认配置和拦截器得到属性：`defaults`、`interceptors`。
+
+不同点：
+
+- 默认匹配的值很可能不一样。
+
+- `axios.create()` 创建出来的实例没有 `axios` 后面添加的一些方法：`create()`、`CancelToken()`、`all()`。
