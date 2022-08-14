@@ -126,3 +126,21 @@ response.data = JSON.parse(response.data)
   request
 }
 ```
+
+## 取消请求
+
+当配置了 `cancelToken` 对象时，保存 `cancel` 函数。
+
+- 创建一个用于将来中断请求的 `cancelPromise`。
+
+- 并定义了一个用于取消请求的 `cancel` 函数。
+
+- 将 `cancel` 函数传递出来。
+
+调用 `cancel()` 取消请求。
+
+- 执行 `cancel` 函数，传入错误信息 message。
+
+- 内部会让 `cancelPromise` 变为成功状态，且成功的值为一个 `Cancel` 对象。
+
+- 在 `cancelPromise` 的成功回调中中断请求，并让请求的 `Promise` 失败，失败的 `reason` 为 `Cancel` 对象。
