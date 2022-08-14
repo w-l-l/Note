@@ -86,3 +86,43 @@
 - 成功的回调函数，传递的默认是 `response`。
 
 - 失败的回调函数，传递的默认是 `error`。
+
+## axios 数据转换器
+
+`请求转换器`：对请求头和请求体数据进行特定处理的函数。
+
+```js
+if(utils.isObject(data)) {
+  setContentTypeIfUnset(headers, 'application/json;charset=utf-8')
+  return JSON.stringify(data)
+}
+```
+
+`响应转换器`：将响应体 json 字符串解析为 js 对象或数组的函数。
+
+```js
+response.data = JSON.parse(response.data)
+```
+
+`response` 的整体结构：
+
+```js
+{
+  data,
+  status,
+  statusText,
+  headers,
+  config,
+  request
+}
+```
+
+`error` 的整体结构：
+
+```js
+{
+  message,
+  response,
+  request
+}
+```
