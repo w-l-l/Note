@@ -99,3 +99,40 @@ new Promise((resolve, reject) => {...})
 .then(...)
 .then(...)
 ```
+
+## resolve 一个 Promise 实例会发生什么
+
+如果 `resolve` 传递的是一个 `Promise` 实例，则后续 `.then()` 接收到的值不是 `Promise` 实例，而是这个实例传递过来的数据。
+
+```js
+const p1 = new Promise((resolve, reject) => {
+  // ...
+})
+
+const p2 = new Promise((resolve, reject) => {
+  // ...
+  resolve(p1)
+})
+```
+
+上面代码这，p1 和 p2 都是 `Promise` 的实例，但是 p2 的 `resolve` 方法将 p1 作为参数，即一个异步操作的结果返回另一个异步操作。
+
+注意：这时 p1 的状态就会传递给 p2，也就是说，p1 的状态决定了 p2 的状态。如果 p1 的状态是 `pending`，那么 p2 的回调函数就会等待 p1 的状态改变；如果 p1 的状态已经是 `resolved` 或者 `rejected`，那么 p2 的回调函数将会立刻执行。
+
+```js
+const p1 = new Promise((resolve, reject) => {
+  setTimeout(reject, 3000, new Error('error'))
+})
+
+const p2 = new Promise((resolve, reject) => {
+  resolve(p1)
+})
+
+p2.then(value => console.log(value, 'success'))
+.catch(reason => console.log(reason, 'error'))
+// Error: error 'error'
+```
+
+上面代码中，p1 是一个 `Promise`，3 秒后变为 `rejected`。p2 的状态直接改变，`resolve` 方法返回 p1。由于 p2 返回的是另一个 `Promise`，导致 p2 自己的状态无效了，由 p1 的状态决定 p2 的状态。所以，后面的 `then` 语句都变成针对后者 p1。3 秒之后 p1 变为 `rejected`，导致触发 `catch` 方法指定的回调函数。
+
+**注意：reject 一个 Promise 实例，后续接收到的就是该实例，这跟 resolve 有所不同。**
