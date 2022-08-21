@@ -136,3 +136,26 @@ p2.then(value => console.log(value, 'success'))
 上面代码中，p1 是一个 `Promise`，3 秒后变为 `rejected`。p2 的状态直接改变，`resolve` 方法返回 p1。由于 p2 返回的是另一个 `Promise`，导致 p2 自己的状态无效了，由 p1 的状态决定 p2 的状态。所以，后面的 `then` 语句都变成针对后者 p1。3 秒之后 p1 变为 `rejected`，导致触发 `catch` 方法指定的回调函数。
 
 **注意：reject 一个 Promise 实例，后续接收到的就是该实例，这跟 resolve 有所不同。**
+
+## Promise 会吃掉错误
+
+在传统代码中，一旦 js 代码报错就会终止 js 脚本的执行。
+
+```js
+(function() {
+  console.log(x)
+})()
+setTimeout(_ => console.log(1))
+// Uncaught ReferenceError: x is not defined
+```
+
+上面代码中，因为 x 变量未定义，所以会报错，导致后续代码将不会执行，所以控制台不会打印 1。
+
+```js
+new Promise(resolve => resolve(x))
+setTimeout(_ => console.log(1))
+// Uncaught (in promise) ReferenceError: x is not defined
+// 1
+```
+
+上面代码中，`Promise` 对象内部有语法错误，控制台会报错，但是不会退出进程，终止脚本执行，后面控制台会输出 1。这就是说，`Promise` 内部的错误不会影响到 `Promise` 外部的代码，通俗的说法就是 `Promise 会吃掉错误`。
