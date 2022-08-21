@@ -106,6 +106,14 @@
 
 ****
 
+`Promise.any` 方法：`promises => {}`。
+
+- `promises`：包含 n 个 `Promise` 实例的数组。
+
+返回一个新的 `Promise`，其中一个 `Promise` 执行成功就成功，所有的 `Promise` 执行失败才失败。
+
+****
+
 `Promise.allSettled` 方法：`promises => {}`。
 
 - `promises`：包含 n 个 `Promise` 实例的数组。
