@@ -108,3 +108,23 @@ g.next() // { value: 1, done: false }
 g.throw(new Error('报错了')) // 不报错 { value: undefined, done: true }
 g.next() // { value: undefined, done: true }
 ```
+
+## yield*
+
+`yield*` 后面跟一个可遍历的结构，它会调用该结构的遍历器接口。
+
+```js
+function* gen() {
+  yield 1
+  yield* [2, 3, 4]
+  yield 5
+}
+
+const g = gen()
+g.next() // { value: 1, done: false }
+g.next() // { value: 2, done: false }
+g.next() // { value: 3, done: false }
+g.next() // { value: 4, done: false }
+g.next() // { value: 5, done: false }
+g.next() // { value: undefined, done: true }
+```

@@ -91,12 +91,12 @@ Promise.reject(100) // rejected 100
 - `Promise.all([p1, p2...])`：所有 promise 实例成功的时候才会触发成功回调，有一个实例失败就触发失败回调。
 
 ```js
-const p1 = new Promise((resolve, reject) => setTimeout(resolve(1)))
-const p2 = new Promise((resolve, reject) => setTimeout(resolve(2)))
+const p1 = new Promise((resolve, reject) => setTimeout(_ => resolve(1)))
+const p2 = new Promise((resolve, reject) => setTimeout(_ => resolve(2)))
 
 Promise.all([p1, p2]) // fulfilled [1, 2]
 
-const p3 = new Promise((resolve, reject) => setTimeout(reject(3)))
+const p3 = new Promise((resolve, reject) => setTimeout(_ => reject(3)))
 
 Promise.all([p1, p3]) // rejected 3
 ```
@@ -104,22 +104,22 @@ Promise.all([p1, p3]) // rejected 3
 - `Promise.race([p1, p2...])`：数组中某一个 promise 对象先执行成功就触发成功的回调，先执行失败就触发失败的回调。
 
 ```js
-const p1 = new Promise((resolve, reject) => setTimeout(resolve(1)))
-const p2 = new Promise((resolve, reject) => setTimeout(resolve(2)))
+const p1 = new Promise((resolve, reject) => setTimeout(_ => resolve(1)))
+const p2 = new Promise((resolve, reject) => setTimeout(_ => resolve(2)))
 
 Promise.race([p1, p2]) // fulfilled 1
 
-const p3 = new Promise((resolve, reject) => setTimeout(reject(3)))
+const p3 = new Promise((resolve, reject) => setTimeout(_ => reject(3)))
 
 Promise.race([p3, p1]) // rejected 3
 ```
 
-- `Promise.any([p1, p2...])`：接收一个 promsie 对象的集合，当其中的一个 promise 成功，就返回那个成功的 promise 的值。
+- `Promise.any([p1, p2...])`：接收一个 promsie 对象的集合，当其中的一个 promise 成功，就执行成功的回调，全部失败才会执行失败的回调。
 
 ```js
-const p1 = new Promise((resolve, reject) => setTimeout(resolve(1)))
-const p2 = new Promise((resolve, reject) => setTimeout(resolve(2)))
-const p3 = new Promise((resolve, reject) => setTimeout(reject(3)))
+const p1 = new Promise((resolve, reject) => setTimeout(_ => resolve(1)))
+const p2 = new Promise((resolve, reject) => setTimeout(_ => resolve(2)))
+const p3 = new Promise((resolve, reject) => setTimeout(_ => reject(3)))
 
 Promise.any([p3, p2, p1]) // fulfilled 2
 ```
@@ -127,9 +127,9 @@ Promise.any([p3, p2, p1]) // fulfilled 2
 - `Promise.allSettled([p1, p2...])`：等到所有的 promise 都行执行通过（不管成功或失败），返回一个 promise，并带有一个对象数组，每个对象对应每个 promise 的结果。
 
 ```js
-const p1 = new Promise((resolve, reject) => setTimeout(resolve(1)))
-const p2 = new Promise((resolve, reject) => setTimeout(resolve(2)))
-const p3 = new Promise((resolve, reject) => setTimeout(reject(3)))
+const p1 = new Promise((resolve, reject) => setTimeout(_ => resolve(1)))
+const p2 = new Promise((resolve, reject) => setTimeout(_ => resolve(2)))
+const p3 = new Promise((resolve, reject) => setTimeout(_ => reject(3)))
 
 Promise.allSettled([p1, p2, p3])
 /*

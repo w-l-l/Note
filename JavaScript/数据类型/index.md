@@ -349,8 +349,8 @@ const obj = {
   c: 3
 }
 // 报错 obj is not iterable
-for (const v of obj) {
-  console.log(v)
+for (const [key, value] of obj) {
+  console.log(key, value)
 }
 ```
 
@@ -358,28 +358,30 @@ for (const v of obj) {
 
 ```js
 Object.prototype[Symbol.iterator] = function() {
-  // 获取对象的属性值放到一个数组中
-  const values = Object.values(this)
+  // 获取对象的键名放到一个数组中
+  const keys = Object.keys(this)
 
   // 获取数组长度
-  const len = values.length
+  const len = keys.length
 
   // 初始化索引
   let i = 0
 
   // 返回一个包含 next 方法的对象，遍历时内部会自行调用
   return {
-    // next 方法将返回一个对象，包含当前遍历的属性值 value，是否遍历完成 done
-    next: () => ({ value: values[i++], done: i > len })
+    // next 方法将返回一个对象，包含当前遍历的值 value，是否遍历完成 done
+    next: () => {
+      const key = keys[i++]
+      return { value: [key, this[key]], done: i > len }
+    }
   }
 }
 
-// 简写
-Object.prototype[Symbol.iterator] = function*() {
-  const values = Object.values(this)
-  let i = 0
-  while(i < values.length) {
-    yield values[i++]
+// 使用 Generator 简写
+Object.prototype[Symbol.iterator] = function* () {
+  const keys = Object.keys(this)
+  for(let key of keys){
+    yield [key, this[key]]
   }
 }
 ```
@@ -393,8 +395,13 @@ const obj = {
   c: 3
 }
 for (const v of obj) {
-  console.log(v) // 依次输出1 2 3
+  console.log(v)
 }
+/*
+  a 1
+  b 2
+  c 3
+*/
 ```
 
 ## BigInt类型
