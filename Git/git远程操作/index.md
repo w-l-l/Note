@@ -124,6 +124,12 @@ git remote prune <origin>
 # 清楚上面命令列出来的远程跟踪
 ```
 
+- 删除仍在远程跟踪但是远程已被删除的无用分支（:gone）。
+
+```bash
+git branch -vv | grep ': gone' | grep -v "\*" | awk '{ print $1;}' | xargs -r  git branch -D
+```
+
 - 本地新建分支推送远程并建立分支跟踪。
 
 ```bash
