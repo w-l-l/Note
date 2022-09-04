@@ -179,7 +179,14 @@ export const INCREMENT = 'increment'
 ```js
 // action.js
 import { INCREMENT } from './const'
+// 同步 action
 export const increment = data => ({ type: INCREMENT, data })
+// 异步 action
+export const asyncIncrement = data => {
+  return dispatch => {
+    setTimeout(_ => dispatch(increment(data)), 1000)
+  }
+}
 ```
 
 ```js
@@ -219,7 +226,7 @@ store.subscribe(_ => {
 ```js
 import React from 'react'
 import store from '../../redux/store'
-import { increment } from '../../redux/action'
+import { increment, asyncIncrement } from '../../redux/action'
 
 export default class Count extends React.Component {
   render() {
@@ -227,7 +234,8 @@ export default class Count extends React.Component {
     return (
       <>
         <h1>{ count }</h1>
-        <button onClick={ _ => store.dispatch(increment(1)) }>+1</button>
+        <button onClick={ _ => store.dispatch(increment(1)) }>同步+1</button>
+        <button onClick={ _ => store.dispatch(asyncIncrement(1)) }>异步+1</button>
       </>
     )
   }
