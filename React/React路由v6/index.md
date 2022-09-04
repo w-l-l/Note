@@ -12,15 +12,17 @@
 
 ![包大小对比](./img/comparison_v5.png)
 
-- `Route` 特性变更。  
+- `Route` 组件特性变更。  
 `path`：与当前页面对应的 url 匹配。  
-`element`：新增，用于决定路由匹配时，渲染哪个组件。代替了 v5 的 `component` 和 `render`。
+`element`：新增，用于决定路由匹配时，渲染哪个组件。代替了 v5 的 `component` 和 `render` 属性。
 
 - `Routes` 组件代替了 `Switch` 组件。
 
-- `Outlet` 让嵌套路由更简单。
+- `Outlet` 组件让嵌套路由更简单。
 
 - `useNavigate` 代替了 `useHistory`。
+
+- 移除 `Redirect` 组件，改用 `Navigate` 组件代替。
 
 - 移除了 `NavLink` 中的 `activeClassName` 和 `activeStyle`。
 
@@ -34,15 +36,10 @@
 import { Routes, Route } from 'react-router-dom'
 
 <Routes>
-  <Route index element={<Home />}>
   <Route path='/home' element={<Home />} />
   <Route path='/about' element={<About />} />
 </Routes>
 ```
-
-`index` 用于嵌套路由，仅匹配父路径时，设置渲染的组件。
-
-解决当嵌套路由有多个子路由但本身无法确认默认渲染哪个子路由的时候，可以增加 `index` 属性来指定默认路由。`index` 路由和其他路由不同的地方是它没有 `path` 属性，它和父路由共享同一个路径。
 
 **路由重定向**
 
@@ -91,8 +88,8 @@ export default function Redirect({ to }) {
 
 ```js
 <Route path='/about' element={<About />}>
-  {/* <Route index element={<List />}></Route> */}
-  <Route index element={<Navigate to='list' />}></Route>
+  {/* <Route index element={<Navigate to='list' />}></Route> */}
+  <Route index element={<List />}></Route>
   <Route path='list' element={<List />}></Route>
   <Route path='detail' element={<Detail />}></Route>
 </Route>
@@ -111,6 +108,16 @@ export default function About() {
   )
 }
 ```
+
+**嵌套路由必须在父级追加 Outlet 组件，作为子级组件的占位符，类似于 vue-router 中的 router-view。**
+
+`index` 属性用于嵌套路由，仅匹配父路径时，设置渲染的组件。
+
+解决当嵌套路由有多个子路由但本身无法确认默认渲染哪个子路由的时候，可以增加 `index` 属性来指定默认路由。`index` 路由和其他路由不同的地方是它没有 `path` 属性，它和父路由共享同一个路径。
+
+如上面示例，设置了 `index` 属性之后，访问 `localhost:8080/about` 和 访问 `localhost:8080/about/list` 渲染的页面是一样的。
+
+如果不喜欢这样，可以写成 `<Route index element={<Navigate to='list' />}></Route>`，访问 `localhost:8080/about` 路径的时候直接重定向到 `localhost:8080/about/list`。
 
 ## 声明式导航与编程式导航
 
@@ -184,6 +191,10 @@ function AuthComponent({ children }) {
 ```
 
 ## 实现 withRouter 类组件跳转方法
+
+v5 版本的时候将普通组件转换为路由组件需要使用 `withRouter` 对普通组件进行包裹，才能使用路由相关的方法。v6 提供了很多 hooks 函数，可以省去这一步骤，在普通组件中也能操作路由。
+
+下面简单封装一下 `withRouter` 的实现。
 
 ```js
 import { useNavigate, useLocation, useMatch } from 'react-router-dom'
