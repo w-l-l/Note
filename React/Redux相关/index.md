@@ -61,7 +61,23 @@ export const store = createStore(reducer)
 
 - `dispatch(action)`：分发 `action`，触发 `reducer` 调用，产生新的 `state`。
 
-- `subscribe(listener)`：注册监听，当产生新的 `state` 时，自动调用。
+- `subscribe(listener)`：注册监听，当产生新的 `state` 时，自动调用，该方法返回一个取消监听的函数。
+
+```jsx
+function Demo() {
+  useEffect(_ => {
+    // 订阅
+    const unsubscribe = store.subscribe(_ => {
+      // ...
+    })
+    return _ => {
+      // 取消订阅
+      unsubscribe()
+    }
+  }, [])
+  return <>...</>
+}
+```
 
 `Redux` 只负责管理状态，至于状态的改变驱动着页面的展示，要靠我们自己写。
 
