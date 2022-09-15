@@ -213,3 +213,40 @@ per.get() // { name: '孙悟空', age: 100 }
 per.set('猪八戒', 200)
 per.get() // { name: '猪八戒', age: 200 }
 ```
+
+## class 表达式
+
+```js
+const MyClass = class Me {
+  getClassName() {
+    return Me.name
+  }
+}
+
+const m = new MyClass()
+m.getClassName() // Me
+Me.name // ReferenceError: Me is not defined
+```
+
+上面示例中，类的名字是 Me，但是 Me 只能在 class 内部访问，指代当前类。在 class 外部，这个类只能用 MyClass 引用。
+
+如果类的内部没用到的话，可以省略 Me，也就是可以写成下面的形式。
+
+```js
+const MyClass = class {/* ... */}
+```
+
+采用 class 表达式，可以写出立即执行的 class。
+
+```js
+let person = new class {
+  constructor(name) {
+    this.name = name
+  }
+  sayName() {
+    console.log(this.name)
+  }
+}('小明')
+
+person.sayName() // 小明
+```
