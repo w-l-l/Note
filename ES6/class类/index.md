@@ -82,12 +82,17 @@ class Student extends Person {
     this.age = age
   }
   sayPerson() {
+    super.sayPerson()
     console.log('我是Student类的方法', this.name)
   }
 }
 
 const stu = new Student('孙悟空', 100)
-stu.sayPerson() // 我是Student类的方法 孙悟空
+stu.sayPerson()
+/*
+  我是Person类的方法 孙悟空
+  我是Student类的方法 孙悟空
+*/
 ```
 
 ## 特点
@@ -104,7 +109,8 @@ class Person {
 }
 ```
 
-- 通过 `static` 关键字可以定义一个类的一个静态属性，该静态方法不会实例化，只能类自己访问（通常用于一个应用程序创建工具函数）。
+- 通过 `static` 关键字可以定义一个类的一个静态属性，该静态方法不会实例化，只能类自己访问（通常用于一个应用程序创建工具函数）。  
+**注意：如果静态方法包含 this 关键字，这个 this 指的是类，而不是实例。**
 
 ```js
 class Person {
@@ -212,6 +218,47 @@ const per = new Person('孙悟空', 100)
 per.get() // { name: '孙悟空', age: 100 }
 per.set('猪八戒', 200)
 per.get() // { name: '猪八戒', age: 200 }
+```
+
+私有属性不限于从 `this` 引用，只要是在类的内部，实例也可以引用私有属性。
+
+```js
+class Foo {
+  #n = 1
+  getN(foo){
+    return foo.#n
+  }
+}
+
+const foo = new Foo()
+foo.getN(foo) // 1
+```
+
+私有属性和私有方法前面，也可以加上 `static` 关键字，表示这是一个静态的私有属性或私有方法。
+
+```js
+class Person {
+  static #name = '孙悟空'
+  static age = 18
+
+  static #getName() {
+    return Person.#name
+  }
+
+  static nameHandle() {
+    console.log('nameHandle')
+    return Person.#getName()
+  }
+}
+
+Person.age // 18
+Person.nameHandle()
+/*
+  nameHandle
+  孙悟空
+*/
+Person.#name // 报错
+Person.#getName() // 报错
 ```
 
 ## class 表达式
