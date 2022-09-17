@@ -297,3 +297,76 @@ let person = new class {
 
 person.sayName() // 小明
 ```
+
+## class 静态块
+
+静态属性的一个问题，它的初始化要么写在类的外部，要么写在 `constructor()` 方法里面。
+
+```js
+class Person {
+  static name = '孙悟空'
+}
+Person.name = 'xxx'
+
+/*-------------------*/
+
+class Person {
+  static name = '孙悟空'
+  constructor() {
+    Person.name = 'xxx'
+  }
+}
+```
+
+这两种方法都不是很理想，前者是将类的内部逻辑写到了外部，后者则是每次新建实例都会运行一次。
+
+为了解决这个问题，`ES2022` 引入了静态块，允许在类的内部设置一个代码块，在类生成时运行一次，主要作用是对静态属性进行初始化。
+
+```js
+class Person {
+  static name = '孙悟空'
+  static age
+  static {
+    this.name = 'xxx'
+    this.age = 18
+  }
+}
+```
+
+上面代码的好处是将静态属性的初始化逻辑，写入了类的内部，而且只运行一次。
+
+静态块内部不能有 `return` 语句。
+
+```js
+class Person {
+  static name
+  static {
+    this.name = 'xxx'
+    return true
+  }
+}
+// Uncaught SyntaxError: Illegal return statement
+```
+
+在静态块中只能访问之前声明的静态属性，后面声明的静态属性不能访问。
+
+```js
+class Person {
+  static name = '孙悟空'
+  static {
+    console.log(this.name) // 孙悟空
+    console.log(this.age) // undefined
+  }
+  static age = 18
+}
+```
+
+静态块内部可以使用类名或者 `this`，指代当前类。
+
+```js
+class Person {
+  static {
+    console.log(this === Person) // true
+  }
+}
+```
