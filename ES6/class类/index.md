@@ -370,3 +370,82 @@ class Person {
   }
 }
 ```
+
+## new.target
+
+`new` 是从构造函数生成实例对象的命令。`ES6` 为 `new` 命令引入了一个 `new.target` 属性，该属性一般用在构造函数之中，返回 `new` 命令作用于的那个构造函数。如果构造函数不是通过 `new` 命令或 `Reflect.constructor()` 调用的，`new.target` 会返回 `undefined`，因此这个属性可以用来确定构造函数是怎么调用的。
+
+```js
+function Person() {
+  console.log(new.target, new.target === Person)
+}
+
+Person() // undefined false
+new Person() // Person true
+```
+
+可以通过 `new.target` 来确保构造函数只能通过 `new` 命令调用。
+
+```js
+function Person() {
+  if(new.target === Person) {
+    // ...
+  } else {
+    throw new Error('必须使用 new 命令生成实例')
+  }
+}
+
+Person() // 报错
+new Person() // 正确
+```
+
+`class` 内部调用 `new.target`，返回当前 `calss`。
+
+```js
+class Person {
+  constructor() {
+    console.log(new.target, new.target === Person)
+  }
+}
+
+new Person() // Person true
+```
+
+需要注意的是，子类继承父类，`new.target` 会返回子类。
+
+```js
+class Parent {
+  constructor() {
+    console.log(new.target, new.target === Parent)
+  }
+}
+
+class Child extends Parent {
+  constructor() {
+    super()
+  }
+}
+
+new Child() // Child false
+```
+
+利用这个特点，可以写出不能独立使用、必须继承后才能使用的类。
+
+```js
+class Parent {
+  constructor() {
+    if(new.target === Parent) {
+      throw new Error('本类不能实例化')
+    }
+  }
+}
+
+class Child extends Parent {
+  constructor() {
+    super()
+  }
+}
+
+new Parent() // 报错
+new Child() // 正确
+```
