@@ -64,6 +64,18 @@ const stu = new Student('孙悟空', 100) // { name: '孙悟空', age: 100 }
 stu.sayPerson() // 我是Person类的方法 孙悟空
 ```
 
+如果子类没有定义 `constructor()` 方法，这个方法会默认添加，并且里面会调用 `super()`，也就是说，不管有没有显示定义，任何一个子类都有 `constructor()` 方法。
+
+```js
+class Student extends Person {}
+// 等同于
+class Student extends Person {
+  constructor(...args) {
+    super(...args)
+  }
+}
+```
+
 重写从父类中继承的一般方法。
 
 ```js
