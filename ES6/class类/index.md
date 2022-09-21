@@ -323,6 +323,45 @@ class Child extends Parent {
 }
 ```
 
+## 静态属性和静态方法的继承
+
+父类的静态属性和静态方法，也会被子类继承。
+
+```js
+class Parent {
+  static a = 1
+  static b() {
+    console.log('b')
+  }
+}
+
+class Child extends Parent {}
+
+Child.a // 1
+Child.b() // b
+```
+
+**注意：静态属性是通过浅拷贝实现继承的。**
+
+```js
+class Parent {
+  static a = 100
+  static b = { n: 100 }
+}
+
+class Child extends Parent {}
+
+Child.a--
+Child.a // 99
+Parent.a // 100
+
+Child.b.n--
+Child.b.n // 99
+Parent.b.n // 99
+```
+
+上面示例中，`Parent.b` 的值是一个对象，浅拷贝导致 `Child.b` 和 `Parent.b` 指向同一个对象。所以，子类 `Child` 修改这个对象的属性值，会影响到父类 `Parent`。
+
 ## class 表达式
 
 ```js
