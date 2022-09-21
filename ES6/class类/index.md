@@ -273,6 +273,56 @@ Person.#name // 报错
 Person.#getName() // 报错
 ```
 
+## 私有属性和私有方法的继承
+
+父类所有的属性和方法，都会被子类继承，除了私有的属性和方法。
+
+子类无法继承父类的私有属性，或者说，私有属性只能在定义它的 `class` 里面使用。
+
+```js
+class Parent {
+  #a = 1
+  #b() {
+    console.log('b')
+  }
+}
+
+class Child extends Parent {
+  constructor() {
+    super()
+    console.log(this.#a) // 报错
+    this.#b() // 报错
+  }
+}
+```
+
+上面示例中，子类 Child 调用父类 Parent 的私有属性和私有方法，都会报错。
+
+如果父类定义了私有属性的读写方法，子类就可以通过这些方法，读写私有属性。
+
+```js
+class Parent {
+  #a = 1
+  getA() {
+    return this.#a
+  }
+  #b() {
+    console.log('b')
+  }
+  callB() {
+    this.#b()
+  }
+}
+
+class Child extends Parent {
+  constructor() {
+    super()
+    console.log(this.getA()) // 1
+    this.callB() // b
+  }
+}
+```
+
 ## class 表达式
 
 ```js
