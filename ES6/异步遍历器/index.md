@@ -71,3 +71,46 @@ async function runner() {
   await writer.return()
 }
 ```
+
+## 异步 Generator 函数
+
+就像 `Generator` 函数返回一个同步遍历器对象一样，异步 `Generator` 函数的作用，是返回一个异步遍历器对象。
+
+在语法上，异步 `Generator` 函数就是 `async` 函数与 `Generator` 函数的结合。
+
+```js
+async function* gen() {
+  yield 'hello'
+}
+const g = gen()
+g.next().then(x => console.log(x))
+// { value: 'hello', done: false }
+```
+
+异步遍历器的设计目的之一，就是 `Generator` 函数处理同步操作和异步操作时，能够使用同一套接口。
+
+```js
+// 同步 Generator 函数
+function* map(iterable, func) {
+  const iter = iterable[Symbol.iterator]()
+  while(true) {
+    const { value, done } = iter.next()
+    if(done) break
+    yield func(value)
+  }
+}
+
+// 异步 Generator 函数
+async function* map(iterable, func) {
+  const iter = iterable[Symbol.asyncIterator]()
+  while(true) {
+    const { value, done } = await iter.next()
+    if(done) break
+    yield func(value)
+  }
+}
+```
+
+上面有两个版本的 `map`，前一个处理同步遍历器，后一个处理异步遍历器，可以看到两个版本的写法基本上是一致的。
+
+异步 `Generator` 函数内部，能够同时使用 `await` 和 `yield` 命令。可以这样理解，`await` 命令用于将外部操作产生的值输入函数内部，`yield` 命令用于将函数内部的值输出。
