@@ -43,6 +43,7 @@
 - [class类](./ES6/class类/index.md)
 - [深拷贝](./ES6/深拷贝/index.md)
 - [宏队列与微队列](./ES6/宏队列与微队列/index.md)
+- [异步遍历器](./ES6/异步遍历器/index.md)
 
 ## 模块化
 

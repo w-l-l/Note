@@ -114,3 +114,66 @@ async function* map(iterable, func) {
 上面有两个版本的 `map`，前一个处理同步遍历器，后一个处理异步遍历器，可以看到两个版本的写法基本上是一致的。
 
 异步 `Generator` 函数内部，能够同时使用 `await` 和 `yield` 命令。可以这样理解，`await` 命令用于将外部操作产生的值输入函数内部，`yield` 命令用于将函数内部的值输出。
+
+## for await...of
+
+前面介绍过，`for...of` 循环用于遍历同步的 `Iterator` 接口。新引入的 `for await...of` 循环，则是用于遍历异步的 `Iterator` 接口。
+
+```js
+async function* gen() {
+  yield 1
+  yield 2
+  yield 3
+}
+
+for await(const x of gen()) {
+  console.log(x) // 1 2 3
+}
+```
+
+上面代码中，`gen()` 返回一个拥有异步遍历器接口的对象，`for...of` 循环自动调用这个对象的异步遍历器的 `next` 方法，会得到一个 `Promise` 对象。`await` 用来处理这个 `Promise` 对象，一旦 `resolve`，就把得到的值传入 `for...of` 的循环体。
+
+如果 `next` 方法返回的 `Promise` 对象被 `reject`，`for await...of` 就会报错，要用 `try...catch` 捕获。
+
+```js
+async function* gen() {
+  yield 1
+  yield 2
+  throw new Error('报错了')
+  yield 3
+}
+
+try {
+  for await(const x of gen()) {
+    console.log(x) // 1 2
+  }
+} catch(e) {
+  console.error(e) // 报错了
+}
+```
+
+注意：`for await...of` 循环也可以用于同步遍历器。
+
+```js
+for await(const x of [1, 2, 3]) {
+  console.log(x) // 1 2 3
+}
+```
+
+`yield*` 语句也可以跟一个异步遍历器。
+
+```js
+async function* gen1() {
+  yield 1
+  yield 2
+}
+
+async function* gen2() {
+  yield* gen1()
+  yield 3
+}
+
+for await(const x of gen2()) {
+  console.log(x) // 1 2 3
+}
+```
