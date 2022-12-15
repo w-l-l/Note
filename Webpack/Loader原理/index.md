@@ -165,3 +165,43 @@ module.exports.pitch = function(remainingRequest, precedingRequest, data) {
 在这个过程中如果任何 `pitch` 有返回值，则 loader 链被阻断。`webpack` 会跳过后面所有的 `pitch` 和 `loader`，直接进入上一个 loader。
 
 ![pitch-loader 返回值](./img/pitch-loader2.png)
+
+## Loader API
+
+- `this.async`：异步回调 loader。返回 `this.callback`。
+
+```js
+const callback = this.async()
+```
+
+- `this.callback`：可以同步或者异步调用的并返回多个结果的函数。
+
+```js
+this.callback(err, content, sourceMap?, meta?)
+```
+
+- `this.getOptions`：可以获取 loader 的 options。
+
+```js
+this.getOptions(schema)
+```
+
+- `this.emitFile`：产生一个文件。
+
+```js
+this.emitFile(name, content, sourceMap)
+```
+
+- `this.utils.contextify`：返回一个相对路径。
+
+```js
+this.utils.contextify(content, request)
+```
+
+- `this.utils.absolutify`：返回一个绝对路径。
+
+```js
+this.utils.absolutify(content, request)
+```
+
+更多文件，请查阅 [webpack 官网 loader api 文档](https://webpack.docschina.org/api/loaders/#the-loader-context)。
