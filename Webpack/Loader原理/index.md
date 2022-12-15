@@ -78,3 +78,21 @@ import Styles from '-!style-loader!css-loader?modules!./styles.css'
 // !! 跳过 pre、normal 和 post loader
 import Styles from '!!style-loader!css-loader?modules!./styles.css'
 ```
+
+## 开发一个 Loader
+
+```js
+// 它接收要处理的源码作为参数，输出转换后的 js 代码。
+module.exports = function loader(content) {
+  console.log('hello loader')
+  return content
+}
+```
+
+loader 接收的参数：
+
+- `content`：源文件的内容。
+
+- `map`：SourceMap 数据。
+
+- `meta`：数据，可以是任何内容。
