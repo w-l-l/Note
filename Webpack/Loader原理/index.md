@@ -130,7 +130,7 @@ module.exports = function(content, map, meta) {
 }
 ```
 
-**注意：由于同步计算过于耗时，在 Node.js 这样的单线程环境下进行此操作并不是好的方案，我们建议尽可能地使你的 loader 异步化。但如果计算量下，同步 loader 也是可以的。**
+**注意：由于同步计算过于耗时，在 Node.js 这样的单线程环境下进行此操作并不是好的方案，我们建议尽可能地使你的 loader 异步化。但如果计算量小，同步 loader 也是可以的。**
 
 ### Raw Loader
 
