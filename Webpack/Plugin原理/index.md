@@ -37,3 +37,43 @@ exports.MultiHook = require("./MultiHook");
 - `tapAsync`：回调方式注册异步钩子。
 
 - `tapPromise`：Promise 方式注册异步钩子。
+
+## Plugin 构建对象
+
+### Compiler
+
+`compiler` 对象中保存着完整的 `webpack` 环境配置，每次启动 `webpack` 构建时它都是一个独一无二，仅仅会创建一次的对象。
+
+这个对象会在首次启动 `webpack` 时创建，我们可以通过 `compiler` 对象上访问到 `webpack` 的主环境配置，比如 loader、plugin 等等配置信息。
+
+主要属性：
+
+- `compiler.options`：可以访问本次启动 `webpack` 时候所有的配置文件，包括但不限于 loaders、entry、output、plugin 等等完整配置信息。
+
+- `compiler.inputFileSystem` 和 `compiler.outputFileSystem`：可以进行文件操作，相当于 Nodejs 中 fs。
+
+- `compiler.hooks`：可以注册 `tapable` 的不同种类 Hook，从而可以在 `compiler` 生命周期中植入不同的逻辑。
+
+[compiler hooks 文档](https://webpack.docschina.org/api/compiler-hooks/)
+
+### Compilation
+
+`compilation` 对象代表一次资源的构建，`compilation` 实例能够访问所有的模块和它们的依赖。
+
+一个 `compilation` 对象会对构建依赖图中所有模块，进行编译。在编译阶段，模块会被加载（load）、封存（seal）、优化（optimize）、分块（chunk）、哈希（hash）和重新创建（restore）。
+
+主要属性：
+
+- `compilation.modules`：可以访问所有模块，打包的每一个文件都是一个模块。
+
+- `compilation.chunks`：chunk 即是多个 modules 组成而来的一个代码块。入口文件引入的资源组成一个 chunk，通过代码分割的模块又是另外的 chunk。
+
+- `compilation.assets`：可以访问本次打包生成所有文件的结果。
+
+- `compilatuon.hooks`：可以注册 tapable 的不同种类 Hook，用于在 `compilation` 编译模块阶段进行逻辑添加以及修改。
+
+[compilatuon hooks 文档](https://webpack.docschina.org/api/compilation-hooks/)
+
+### 生命周期简图
+
+![生命周期简图](./img/plugin_process.jpg)
