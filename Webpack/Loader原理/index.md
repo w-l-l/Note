@@ -205,3 +205,61 @@ this.utils.absolutify(content, request)
 ```
 
 更多文件，请查阅 [webpack 官网 loader api 文档](https://webpack.docschina.org/api/loaders/#the-loader-context)。
+
+## 自定义 Loader
+
+修改 `webpack.config.js`。
+
+```js
+// ...
+module: {
+  rules: [
+    {
+      test: /\.js$/,
+      loader: './loaders/babel-loader.js',
+      options: {
+        presets: ['@babel/preset-env']
+      }
+    }
+  ]
+}
+// ...
+```
+
+设置 `schema` 规则。将 `schema` 传递给 `this.getOptions(schema)` 进行校验，不符合规则的 `options`，编译时会报错。当然这步操作不是必须的，不设置 `schema` 就不会对 `options` 进行校验。
+
+```json
+{
+  "type": "object", // options 数据类型
+  "properties": { // options 里的属性
+    "presets": { // options 里的属性名
+      "type": "array" // 该属性的数据类型
+    }
+  },
+  "additionalProperties": true // 是否允许添加其他属性，为 false 的话，options 中只能有 presets 属性，添加其他属性时编译会报错
+}
+
+```
+
+自定义 `babel-loader`。
+
+```js
+const schema = require('./schema/babel.json')
+const babel = require('@babel/core')
+
+module.exports = function(content) {
+  // 异步 loader
+  const callback = this.async()
+  // 获取 options
+  const options = this.getOptions(schema)
+
+  // 使用 babel 处理代码
+  babel.transform(content, options, function(err, result) {
+    if (err) {
+      callback(err)
+    } else {
+      callback(null, result.code)
+    }
+  })
+}
+```
