@@ -158,3 +158,43 @@ class TestPlugin {
   }
 }
 ```
+
+## Plugin 插件调试
+
+通过调试可以很直观的查看 `compiler` 和 `compilation` 对象数据情况。
+
+`package.json` 配置指令：
+
+```json
+{
+  "scripts": {
+    "debug": "node --inspect-brk ./node_modules/webpack-cli/bin/cli.js"
+  }
+}
+```
+
+运行指令：
+
+```bash
+npm run debug
+```
+
+此时控制台输出以下内容：
+
+```bash
+> debug
+> node --inspect-brk ./node_modules/webpack-cli/bin/cli.js
+
+Debugger listening on ws://127.0.0.1:9229/4948994d-846f-4905-85aa-d2dea790d65b
+For help, see: https://nodejs.org/en/docs/inspector
+```
+
+打开 `Chrome` 浏览器，F12 打开浏览器调试控制台。
+
+此时控制台会显示一个绿色的图标。
+
+![Plugin 调试入口](./img/console.png)
+
+点击绿色的图标进入调试模式。
+
+在需要调试代码处用 `debugger` 打断点，从而调试查看数据情况。
