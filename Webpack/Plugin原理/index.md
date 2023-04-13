@@ -77,3 +77,84 @@ exports.MultiHook = require("./MultiHook");
 ### 生命周期简图
 
 ![生命周期简图](./img/plugin_process.jpg)
+
+## Plugin 插件开发
+
+`webpack` 读取配置时，会执行插件的 `constructor` 方法。
+
+然后创建 `compiler` 对象。
+
+遍历所有插件，调用插件的 `apply` 方法。
+
+```js
+class TestPlugin {
+  constructor() {
+    console.log('TestPlugin---constructor()')
+  }
+  apply(compiler) {
+    console.log('TestPlugin---apply()')
+  }
+}
+
+module.exports = TestPlugin
+```
+
+注册 `hooks`。
+
+```js
+class TestPlugin {
+  constructor() {
+    console.log('TestPlugin---constructor()')
+  }
+  apply(compiler) {
+    console.log('TestPlugin---apply()')
+
+    // 注册同步钩子（SyncHook），只能用 tap 注册
+    compiler.hooks.compile.tap('TestPlugin', compilation => console.log('compiler---compile()'))
+
+    /*
+      注册异步并行钩子，特点是异步任务同时执行；
+      可以使用 tap、tapAsync、tapPromise 注册；
+      如果使用 tap 注册的话，进行异步操作是不会等待异步操作执行完成的。
+    */
+    compiler.hooks.make.tap('TestPlugin', comilation => {
+      comilation.hooks.seal.tap('TestPlugin', () => console.log('comilation---seal'))
+      setTimeout(() => console.log('compiler---make---111'), 1000)
+    })
+    compiler.hooks.make.tapAsync('TestPlugin', (comilation, callback) => {
+      setTimeout(() => {
+        console.log('compiler---make---222')
+        callback()
+      }, 2000)
+    })
+    compiler.hooks.make.tapPromise('TestPlugin', comilation => {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          console.log('compiler---make---333')
+          resolve()
+        }, 3000)
+      })
+    })
+
+    // 注册异步串行钩子，特点就是异步任务顺利执行
+    compiler.hooks.emit.tapAsync('TestPlugin', (compilation, callback) => {
+      setTimeout(() => {
+        console.log('compiler---emit---111')
+        callback()
+      }, 1000);
+    })
+    compiler.hooks.emit.tapAsync('TestPlugin', (compilation, callback) => {
+      setTimeout(() => {
+        console.log('compiler---emit---222')
+        callback()
+      }, 2000);
+    })
+    compiler.hooks.emit.tapAsync('TestPlugin', (compilation, callback) => {
+      setTimeout(() => {
+        console.log('compiler---emit---333')
+        callback()
+      }, 3000);
+    })
+  }
+}
+```
