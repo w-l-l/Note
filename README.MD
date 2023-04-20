@@ -127,6 +127,7 @@
 - [webpack配置详解](./Webpack/webpack配置详解/index.md)
 - [webpack5简介](./Webpack/webpack5简介/index.md)
 - [Loader原理](./Webpack/Loader原理/index.md)
+- [Plugin原理](./Webpack/Plugin原理/index.md)
 
 ## Typescript
 

@@ -198,3 +198,46 @@ For help, see: https://nodejs.org/en/docs/inspector
 点击绿色的图标进入调试模式。
 
 在需要调试代码处用 `debugger` 打断点，从而调试查看数据情况。
+
+## 自定义 Plugin
+
+自定义 AnalyzeWebpackPlugin Plugin。
+
+```js
+class AnalyzeWebpackPlugin {
+  apply(compiler) {
+    compiler.hooks.emit.tap('AnalyzeWebpackPlugin', (compilation) => {
+      const assets = Object.entries(compilation.assets)
+      const content = assets.reduce((result, [fileName, file]) => {
+        return result += `\n| ${fileName} | ${Math.ceil(file.size() / 1024)}kb |`
+      }, `| 资源名称 | 资源大小 |
+| --- | --- |`)
+      // 生成文件
+      compilation.assets['analyze.md'] = {
+        source() {
+          return content
+        },
+        size() {
+          return content.length
+        }
+      }
+    })
+  }
+}
+
+module.exports = AnalyzeWebpackPlugin
+```
+
+`webpack.config.js` 使用。
+
+```js
+const AnalyzeWebpackPlugin = require('./plugins/AnalyzeWebpackPlugin')
+
+module.exports = {
+  // ...
+  plugins: [
+    new AnalyzeWebpackPlugin(),
+  ]
+  // ...
+}
+```
