@@ -130,8 +130,9 @@ git remote prune <origin>
 git branch -vv | grep ': gone' | grep -v "\*" | awk '{ print $1;}' | xargs -r  git branch -D
 ```
 
-- 本地新建分支推送远程并建立分支跟踪。
+- 本地新建分支推送远程，创建远程分支，并建立分支跟踪。
 
 ```bash
 git push -u origin localBranch
+# -u 是 --set-upstream 的缩写
 ```
