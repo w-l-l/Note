@@ -59,6 +59,19 @@ git merge [分支名]
 #     git merge [有新内容的分支名]
 ```
 
+- 根据 `commit-id` 查找对应分支。
+
+```bash
+git branch --merged <commit-id>
+# --merged: 列出合并到 HEAD（或指定的 commit）中的分支
+
+git branch --no-merged <commit-id>
+# --no-merged: 列出尚未合并到 HEAD（或指定的 commit）中的分支
+
+# 配合 -r 即可查看合并/未合并的「远程」分支
+# 配合 -a 即可查看合并/未合并的「本地」和「远程」分支
+```
+
 - 查看项目分叉历史。
 
 ```bash
