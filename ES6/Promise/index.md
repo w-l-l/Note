@@ -22,7 +22,7 @@ Promise 对象的 3 个状态。
 let promise = new Promise((resolve, reject) => {
   // 初始化 promise 状态为 pending
   // 执行异步操作
-  if(异步操作成功) {
+  if(/* 异步操作成功 */) {
     resolve(response) // 修改 promise 的状态为 fulfilled
   } else {
     reject(errMsg) // 修改 promise 的状态为 rejected
@@ -124,7 +124,7 @@ const p3 = new Promise((resolve, reject) => setTimeout(_ => reject(3)))
 Promise.any([p3, p2, p1]) // fulfilled 2
 ```
 
-- `Promise.allSettled([p1, p2...])`：等到所有的 promise 都行执行通过（不管成功或失败），返回一个 promise，并带有一个对象数组，每个对象对应每个 promise 的结果。
+- `Promise.allSettled([p1, p2...])`：等到所有的 promise 都执行通过（不管成功或失败），返回一个 promise，并带有一个对象数组，每个对象对应每个 promise 的结果。
 
 ```js
 const p1 = new Promise((resolve, reject) => setTimeout(_ => resolve(1)))

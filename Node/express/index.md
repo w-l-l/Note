@@ -9,21 +9,21 @@ npm i express --save
 引入 `express`。
 
 ```js
-const exprss = require('express')
+const express = require('express')
 ```
 
 创建服务器应用程序。
 
 ```js
-const exprss = require('express')
-const app = exprss()
+const express = require('express')
+const app = express()
 ```
 
 设置端口。
 
 ```js
-const exprss = require('express')
-const app = exprss()
+const express = require('express')
+const app = express()
 app.listen(3000, _ => console.log('服务器启动成功...'))
 ```
 
@@ -44,11 +44,11 @@ response.json(data)：传送 json 响应。
 response.jsonp(data)：传送 jsonp 响应。
 
 ```js
-const exprss = require('express')
-const app = exprss()
+const express = require('express')
+const app = express()
 app.listen(3000, _ => console.log('服务器启动成功...'))
 app.get('/', (request, response) => {
-  response.send('访问 exprss 根路径')
+  response.send('访问 express 根路径')
 })
 ```
 
@@ -177,7 +177,7 @@ app.post('/post', (request, response) => {
 })
 ```
 
-`express` 最新版本可以直接获取 post 请求数据，不允许安装 `body-parser`，低版本才需要安装。
+`express` 最新版本可以直接获取 post 请求数据，不需要安装 `body-parser`，低版本才需要安装。
 
 ```js
 app.use(express.urlencoded({ extended: false }))

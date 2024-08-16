@@ -22,7 +22,7 @@
 
 ## DOM查询
 
-- `ddocument.getElementById()`：通过 id 获取元素。
+- `document.getElementById()`：通过 id 获取元素。
 
 - `document.getElementsByTagName()`：通过标签名来获取一组元素节点对象。  
 这个方法会给我们返回一个伪数组对象，所有查询到的元素都会封装到对象中。  

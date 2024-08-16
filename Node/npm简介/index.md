@@ -106,4 +106,4 @@ package-lock.json 这个文件就是来解决这个问题的。锁定版本号�
 
 2. node 在使用模块名字来引入模块时，它会首先在当前目录的 node_modules 中寻找是否含有该模块。如果有则直接使用，没有则去上一级目录中的 node_modules 中寻找。如果有则直接使用，没有则再去上一级目录中的 node_modules 中寻找，直到找到为止。如果直到找到磁盘根目录还是没有，则报错。
 
-`npm-shrinkwrap.json`：可以用来指定第三方包的子依赖版本。
+`npm-shrinkwrap.json`：可以用来指定第三方包的子依赖版本，通过 `npm shrinkwrap` 命令生成 `npm-shrinkwrap.json` 文件。

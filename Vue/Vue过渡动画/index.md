@@ -141,7 +141,7 @@ vue 会给目标元素添加或移除特定的 class 类名。
 ```html
 <transition>
   <h1 v-if="msg" key="1">显示</h1>
-  <h1 v-else key="2"></h1>
+  <h1 v-else key="2">隐藏</h1>
 </transition>
 ```
 

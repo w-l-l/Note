@@ -12,7 +12,6 @@
 | checkbox | 复选框。<br>注意：以 name 标签属性分组。<br>必须有value属性，为了后台获取后的识别。（不写统一为on）<br>checked 标签属性，选中控制。 |
 | submit | 提交按钮。 |
 | reset | 重置按钮。 |
-| submit | 提交按钮。 |
 | button | 普通按钮。 |
 
 ### select标签

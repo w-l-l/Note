@@ -159,7 +159,7 @@ sayOne() // undefined
 sayTwo() // undefined
 ```
 
-- class 类原型上的属性必须定义在类的外面定义。
+- class 类原型上的属性必须在类的外面定义。
 
 ```js
 class Person {
@@ -180,6 +180,8 @@ Person.prototype.name // 孙悟空
 
 在属性前面加上 `#` 号，可以表示私有字段，只能内部访问，外部是访问不了的。
 
+**注意，从 Chrome 111 开始，开发者工具里面可以读写私有属性，不会报错，原因是 Chrome 团队认为这样方便调试。**
+
 ```js
 class Person {
   // 注意：私有字段必须在封闭类中声明
@@ -197,7 +199,7 @@ class Person {
 const per = new Person('孙悟空', 100)
 per.say() // 孙悟空 100
 per.#name // 报错
-per['#name'] // 报错
+per['#name'] // undefined
 ```
 
 私有字段无法在外部访问，读写只能通过内部函数调用进行读写。
@@ -500,7 +502,7 @@ Person() // 报错
 new Person() // 正确
 ```
 
-`class` 内部调用 `new.target`，返回当前 `calss`。
+`class` 内部调用 `new.target`，返回当前 `class`。
 
 ```js
 class Person {
