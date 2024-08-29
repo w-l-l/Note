@@ -16,7 +16,7 @@
 
 ```js
 Vue.component('componentName', Vue.extend({
-  tempalte: 'xxx'
+  template: 'xxx'
 }))
 ```
 
